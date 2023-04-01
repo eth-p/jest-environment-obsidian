@@ -1,0 +1,27 @@
+# Examples
+examples
+
+# Development
+node_modules
+.*
+*.config.js
+*.config.mjs
+*.config.cjs
+
+/scripts
+tsconfig*.json
+*.test.ts
+*.spec.ts
+
+# System
+.DS_Store
+._*
+
+# IDEs
+.vscode
+*.code-workspace
+.idea
+*.iml
+
+# Deployment
+.github
