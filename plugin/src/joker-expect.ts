@@ -1,3 +1,5 @@
+import { serialize } from './joker-serialize';
+
 /**
  * Error thrown when an expectation fails.
  */
@@ -6,8 +8,8 @@ export class ExpectationFailedError extends Error {
 	public readonly valueReceived: string;
 	public readonly expectation: string;
 
-	public constructor(expected: string, operator: string, actually: string) {
-		super(`Expected \`${expected}\` ${operator}, but got \`${actually}\``);
+	public constructor(actually: string, operator: string, expected: string) {
+		super(`Expected \`${actually}\` ${operator} \`${expected}\``);
 		this.valueExpected = expected;
 		this.valueReceived = actually;
 		this.expectation = operator;
@@ -47,17 +49,17 @@ export class ExpectationUnimplemenetedError extends Error {
 	}
 }
 
-function serialize(value: any): string {
-	return JSON.stringify(value);
-}
-
 export class Expect<T> {
 	#value: T;
 	#negated: boolean;
+	#fail: (actually: T, op: string, expected: any) => never;
 
 	public constructor(value: T) {
 		this.#value = value;
 		this.#negated = false;
+		this.#fail = (a, o, e) => {
+			throw new ExpectationFailedError(serialize(a), `${this.#negated ? 'not ' : ''}${o}`, serialize(e));
+		};
 	}
 
 	public get not(): Expect<T> {
@@ -66,15 +68,24 @@ export class Expect<T> {
 		return expect;
 	}
 
-	public toBe(value: any): void {
-		if ((this.#value === value) === this.#negated) {
-			throw new ExpectationFailedError(value, 'to be', serialize(this.#value));
+	public toBe(expected: any): void {
+		if ((this.#value === expected) === this.#negated) {
+			this.#fail(this.#value, 'to be', expected);
 		}
 	}
 
-	public toStrictEqual(value: any): void {
-		if ((serialize(this.#value) === serialize(value)) === this.#negated) {
-			throw new ExpectationFailedError(value, 'to strictly equal', serialize(this.#value));
+	public async toThrow(): Promise<void> {
+		try {
+			await (this.#value as () => unknown)();
+			if (this.#negated) throw new ExpectationFailedError('Function', 'not to throw', '');
+		} catch (ex) {
+			if (!this.#negated) throw new ExpectationFailedError('Function', 'to throw', '');
+		}
+	}
+
+	public toStrictEqual(expected: any): void {
+		if ((serialize(this.#value) === serialize(expected)) === this.#negated) {
+			this.#fail(this.#value, 'to strictly equal', expected);
 		}
 	}
 }
