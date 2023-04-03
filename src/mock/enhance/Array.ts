@@ -13,11 +13,18 @@
 //     interface ArrayConstructor {
 //         combine<T>(arrays: T[][]): T[];
 //     }
+//
 import { __UNIMPLEMENTED__ } from '../../util';
 
-//
 export default function patch(ctor: ArrayConstructor) {
 	const proto = ctor.prototype as ArrayConstructor['prototype'];
+
+	Object.assign(ctor, {
+		combine<T>(arrays: T[][]): T[] {
+			return arrays.flat(1);
+		},
+	});
+
 	Object.assign(proto, {
 		//
 
@@ -51,5 +58,7 @@ export default function patch(ctor: ArrayConstructor) {
 		unique<T>(this: Array<T>): T[] {
 			__UNIMPLEMENTED__();
 		},
+
+		//
 	});
 }
