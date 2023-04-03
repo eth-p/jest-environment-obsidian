@@ -18,3 +18,28 @@ export function __UNIMPLEMENTED__(): never {
 	err.stack = `${err.toString()}\n${space}at ${name} (${loc})`;
 	throw err;
 }
+
+/**
+ * Extends the static methods and instance methods of an object.
+ *
+ * @param target The constructor function of the type to extend.
+ * @param extensions The extensions to add to the type.
+ */
+export function extendType<T extends { new (...args: any[]): any; prototype: Record<string, any> }, E extends T>(
+	target: T,
+	extensions: E,
+): asserts target is E {
+	// Extend the constructor.
+	class Empty {}
+	for (const [prop, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(extensions))) {
+		if (prop === 'prototype') continue;
+		if (Object.getOwnPropertyDescriptor(Empty, prop)) continue;
+
+		Object.defineProperty(target, prop, descriptor);
+	}
+
+	// Extend the prototype.
+	if ('prototype' in target) {
+		Object.defineProperties(target.prototype, Object.getOwnPropertyDescriptors(extensions.prototype));
+	}
+}
