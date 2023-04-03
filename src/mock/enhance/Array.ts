@@ -16,49 +16,41 @@
 //
 import { __UNIMPLEMENTED__ } from '../../util';
 
-export default function patch(ctor: ArrayConstructor) {
-	const proto = ctor.prototype as ArrayConstructor['prototype'];
-
-	Object.assign(ctor, {
-		combine<T>(arrays: T[][]): T[] {
+export default function createExtension(globalThis: typeof global) {
+	return class<T> extends Array<T> {
+		static combine<T>(arrays: T[][]): T[] {
 			return arrays.flat(1);
-		},
-	});
+		}
 
-	Object.assign(proto, {
-		//
-
-		first<T>(this: Array<T>): T | undefined {
+		first(): T | undefined {
 			if (this.length === 0) return undefined;
 			return this[0];
-		},
+		}
 
-		last<T>(this: Array<T>): T | undefined {
+		last(): T | undefined {
 			if (this.length === 0) return undefined;
 			return this[this.length - 1];
-		},
+		}
 
-		remove<T>(this: Array<T>, target: T): void {
+		remove(target: T): void {
 			for (let i = 0; i < this.length; i++) {
 				if (this[i] === target) {
 					this.splice(i, 1);
 					i--;
 				}
 			}
-		},
+		}
 
-		contains<T>(this: Array<T>, item: T): boolean {
+		contains(item: T): boolean {
 			return this.includes(item);
-		},
+		}
 
-		shuffle<T>(this: Array<T>): Array<T> {
+		shuffle(): Array<T> {
 			__UNIMPLEMENTED__();
-		},
+		}
 
-		unique<T>(this: Array<T>): T[] {
+		unique(): T[] {
 			__UNIMPLEMENTED__();
-		},
-
-		//
-	});
+		}
+	};
 }

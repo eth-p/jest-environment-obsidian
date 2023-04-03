@@ -5,14 +5,11 @@
 //         isNumber(obj: any): obj is number;
 //     }
 //
-export default function patch(ctor: NumberConstructor) {
-	Object.assign(ctor, {
-		//
 
-		isNumber(obj: any): obj is number {
+export default function createExtension(globalThis: typeof global) {
+	return class extends Number {
+		static isNumber(obj: any): obj is number {
 			return typeof obj === 'number';
-		},
-
-		//
-	});
+		}
+	};
 }

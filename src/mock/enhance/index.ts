@@ -1,11 +1,13 @@
-import patchArray from "./Array";
-import patchMath from "./Math";
-import patchString from "./String";
-import patchNumber from "./Number";
+import { extendType } from '../../util';
+
+import Array from './Array';
+import Math from './Math';
+import Number from './Number';
+import String from './String';
 
 export function patch(globals: any) {
-	patchArray(globals.Array);
-	patchMath(globals.Math);
-	patchString(globals.String);
-	patchNumber(globals.Number);
+	extendType(globals.Array, Array(globals));
+	extendType(globals.Math, Math(globals));
+	extendType(globals.String, String(globals));
+	extendType(globals.Number, Number(globals));
 }

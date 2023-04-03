@@ -12,34 +12,23 @@
 //         isString(obj: any): obj is string;
 //     }
 //
-export default function patch(ctor: StringConstructor) {
-	const proto = ctor.prototype as StringConstructor['prototype'];
 
-	Object.assign(ctor, {
-		//
-
-		isString(obj: any): obj is string {
+export default function createExtension(globalThis: typeof global) {
+	return class extends String {
+		static isString(obj: any): obj is string {
 			return typeof obj === 'string';
-		},
+		}
 
-		//
-	});
-
-	Object.assign(proto, {
-		//
-
-		contains(this: string, target: string) {
+		contains(target: string) {
 			return this.includes(target);
-		},
+		}
 
-		format(this: string, ...args: string[]) {
+		format(...args: string[]) {
 			// Special case: If any value is strictly `undefined`, it should be replaced with the formatting arg.
 			return this.replace(/\{(\d+)\}/g, (match, num) => (args[num] === undefined ? match : `${args[num]}`));
-		},
+		}
 
 		// --> startsWith is part of ES6
 		// --> endsWith is part of ES6
-
-		//
-	});
+	};
 }
