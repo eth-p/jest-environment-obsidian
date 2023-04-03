@@ -1,0 +1,55 @@
+.jest-environment-obsidian-test-component {
+	padding: var(--size-4-2);
+
+	border: 1px solid var(--divider-color);
+	margin-bottom: var(--size-4-2);
+	border-radius: var(--radius-s);
+}
+
+.jest-environment-obsidian-test-component-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.jest-environment-obsidian-test-info {
+	display: flex;
+	flex-direction: column;
+	flex: 2 1 auto;
+}
+
+.jest-environment-obsidian-test-summary {
+	justify-self: end;
+}
+
+.jest-environment-obsidian-test-component[data-test-result="pass"] .jest-environment-obsidian-test-summary {
+	color: var(--color-green);
+}
+
+.jest-environment-obsidian-test-component[data-test-result="fail"] .jest-environment-obsidian-test-summary {
+	color: var(--color-red);
+}
+
+.jest-environment-obsidian-test-path {
+	color: var(--text-faint);
+	font-size: var(--font-ui-small);
+}
+
+.jest-environment-obsidian-test-description {
+
+}
+
+.jest-environment-obsidian-error-internal {
+	padding-top: var(--size-4-2);
+
+}
+
+.jest-environment-obsidian-error-internal-title {
+	font-weight: bold;
+}
+
+.jest-environment-obsidian-test-results {
+	overflow: auto;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}

@@ -1,0 +1,10 @@
+{
+	"id": "jest-environment-obsidian-tests",
+	"version": "0.0.0",
+	"description": "Runs the self-tests for jest-environment-obsidian on Obsidian itself.",
+	"author": "eth-p",
+	"authorUrl": "https://github.com/eth-p",
+	"name": "TEST: jest-environment-obsidian",
+	"minAppVersion": "1.0.0",
+	"isDesktopOnly": false
+}
