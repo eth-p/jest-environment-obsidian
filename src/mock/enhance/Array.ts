@@ -1,4 +1,5 @@
 // From Obsidian Type Definitions:
+// Version 1.1.1
 //
 //     interface Array<T> {
 //         first(): T | undefined;
@@ -9,9 +10,15 @@
 //         unique(): T[];
 //     }
 //
-export default function patch(ctor: ArrayConstructor): void {
-	const proto = ctor.prototype as any;
-	Object.assign(ctor.prototype as any, {
+//     interface ArrayConstructor {
+//         combine<T>(arrays: T[][]): T[];
+//     }
+import { __UNIMPLEMENTED__ } from '../../util';
+
+//
+export default function patch(ctor: ArrayConstructor) {
+	const proto = ctor.prototype as ArrayConstructor['prototype'];
+	Object.assign(proto, {
 		//
 
 		first<T>(this: Array<T>): T | undefined {
@@ -33,11 +40,16 @@ export default function patch(ctor: ArrayConstructor): void {
 			}
 		},
 
-		contains: Array.prototype.includes,
+		contains<T>(this: Array<T>, item: T): boolean {
+			return this.includes(item);
+		},
 
-		// TODO: shuffle(): this
-		// TODO: unique(): T[]
+		shuffle<T>(this: Array<T>): Array<T> {
+			__UNIMPLEMENTED__();
+		},
 
-		//
+		unique<T>(this: Array<T>): T[] {
+			__UNIMPLEMENTED__();
+		},
 	});
 }

@@ -19,3 +19,9 @@ test('remove', async () => {
 	arr.remove('foo');
 	expect(arr).toStrictEqual(['bar']);
 });
+
+test('contains', async () => {
+	const arr = ['foo', 'bar', 'foo'];
+	expect(arr.contains('bar')).toBe(true);
+	expect(arr.contains('nope')).toBe(false);
+});
