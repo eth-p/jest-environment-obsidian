@@ -20,17 +20,15 @@ import { __UNIMPLEMENTED__ } from '../../util';
 
 export default function createExtension(globalThis: typeof global) {
 	return class extends globalThis.Node {
-		instanceOf<T>(this: Node, type: { new (): T }): boolean {
+		instanceOf<T>(type: { new (): T }): boolean {
 			return this instanceof type;
 		}
 
-		empty(this: Node): void {
-			while (this.firstChild != null) {
-				this.removeChild(this.firstChild);
-			}
+		empty(): void {
+			empty(this);
 		}
 
-		detach(this: Node): void {
+		detach(): void {
 			if (this.parentNode != null) {
 				this.parentNode.removeChild(this);
 			}
@@ -75,4 +73,10 @@ export default function createExtension(globalThis: typeof global) {
 			return this.win;
 		}
 	};
+}
+
+export function empty(node: Node) {
+	while (node.firstChild != null) {
+		node.removeChild(node.firstChild);
+	}
 }
