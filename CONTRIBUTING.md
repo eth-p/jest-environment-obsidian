@@ -43,7 +43,7 @@ If it's possible to do within the browser, you can add an implementation to [plu
 
 #### Unimplemented Setup/Teardown
 
-Currently, Jest hooks for setting up and tearing down tests aren't implemented. If the effort warrants it, this may be fixed in the future.
+Currently, Jest `beforeAll`/`afterAll` for setting up and tearing down tests aren't implemented. If the effort warrants it, this may be fixed in the future.
 
 ## Releases
 

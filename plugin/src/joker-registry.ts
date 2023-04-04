@@ -25,8 +25,9 @@ export function allTests(): Test[] {
 }
 
 interface RegistryContext {
-	defineTest(description: string, main: TestFunction): Promise<void>;
-	defineSuite(description: string, main: TestFunction): Promise<void>;
+	defineTest(description: string, main: TestFunction): void;
+	defineSuite(description: string, main: TestFunction): void;
+	addLifecycleBeforeEach(setup: TestFunction): void;
 }
 
 /**
@@ -83,13 +84,13 @@ class TestFileContext implements RegistryContext {
 	}
 
 	/** @override */
-	public async defineTest(description: string, main: TestFunction): Promise<void> {
+	public defineTest(description: string, main: TestFunction): void {
 		const { file } = this;
 		file.tests.add(new Test(description, main, { suite: file }));
 	}
 
 	/** @override */
-	public async defineSuite(description: string, main: TestFunction): Promise<void> {
+	public defineSuite(description: string, main: () => void): void {
 		const { file } = this;
 		let suite = file.suites.get(description);
 		if (suite == null) {
@@ -99,10 +100,20 @@ class TestFileContext implements RegistryContext {
 
 		try {
 			TEST_CONTEXT_STACK.push(new TestSuiteContext(suite));
-			await runTestFunction(main);
+			main();
 		} finally {
 			TEST_CONTEXT_STACK.pop();
 		}
+	}
+
+	/** @override */
+	public addLifecycleBeforeEach(setup: TestFunction): void {
+		this.file.foreachSetup.push(setup);
+	}
+
+	/** @override */
+	public addLifecycleAfterEach(setup: TestFunction): void {
+		this.file.foreachTeardown.push(setup);
 	}
 }
 
@@ -113,13 +124,23 @@ class TestSuiteContext implements RegistryContext {
 	}
 
 	/** @override */
-	public async defineTest(description: string, main: TestFunction): Promise<void> {
+	public defineTest(description: string, main: TestFunction): void {
 		const { suite } = this;
 		suite.tests.add(new Test(description, main, { suite }));
 	}
 
 	/** @override */
-	public async defineSuite(description: string, main: TestFunction): Promise<void> {
+	public defineSuite(description: string, main: TestFunction): void {
 		throw new Error('Cannot call `describe` within `describe`.');
+	}
+
+	/** @override */
+	public addLifecycleBeforeEach(setup: TestFunction): void {
+		this.suite.foreachSetup.push(setup);
+	}
+
+	/** @override */
+	public addLifecycleAfterEach(setup: TestFunction): void {
+		this.suite.foreachTeardown.push(setup);
 	}
 }

@@ -6,10 +6,14 @@ export function expect<T>(value: T) {
 	return new Expect(value);
 }
 
-export async function describe(name: string, fn: TestFunction): Promise<void> {
+export function describe(name: string, fn: TestFunction): void {
 	context().defineSuite(name, fn);
 }
 
-export async function test(name: string, fn: TestFunction): Promise<void> {
+export function test(name: string, fn: TestFunction): void {
 	context().defineTest(name, fn);
+}
+
+export function beforeEach(setupFn: TestFunction): void {
+	context().addLifecycleBeforeEach(setupFn);
 }

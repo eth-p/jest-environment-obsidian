@@ -22,8 +22,20 @@ export class TestRunner {
 	 * @returns The test runs.
 	 */
 	public async runTest(test: Test): Promise<TestResult> {
+		// Perform setup.
+		for (const setup of test.suite?.foreachSetup ?? []) {
+			await runTestFunction(setup);
+		}
+
+		// Run test.
 		const results = await runTestFunction(test.testMain);
 
+		// Perform teardown.
+		for (const setup of test.suite?.foreachTeardown ?? []) {
+			await runTestFunction(setup);
+		}
+
+		// Process results.
 		if (results.error instanceof TypeError) {
 			const matchesUnimplemented = /^expect\(\.\.\.\)\.([^ ]+) is not a function/.exec(results.error.message);
 			if (matchesUnimplemented != null) {
@@ -53,18 +65,18 @@ export class TestRunner {
 		const updates = [] as Array<[Test, TestResult]>;
 
 		const { maxSliceDuration } = this;
-		let sliceDuration = 0;
+		let sliceStart = performance.now();
 		for (const test of tests) {
 			const testResult = await this.runTest(test);
 			results.set(test, testResult);
 			updates.push([test, testResult]);
 
 			// Wait for a little while.
-			sliceDuration += testResult.duration;
-			if (sliceDuration > maxSliceDuration) {
-				sliceDuration = 0;
+			if (performance.now() - sliceStart > maxSliceDuration) {
 				progress?.(updates.splice(0, updates.length));
 				await defer();
+
+				sliceStart = performance.now();
 			}
 		}
 
