@@ -1,6 +1,7 @@
 import { extendType } from '../../util';
 
 import Array from './Array';
+import Element from './Element';
 import Math from './Math';
 import Node from './Node';
 import Number from './Number';
@@ -12,4 +13,5 @@ export function patch(globals: any) {
 	extendType(globals.String, String(globals));
 	extendType(globals.Number, Number(globals));
 	extendType(globals.Node, Node(globals));
+	extendType(globals.Element, Element(globals));
 }
