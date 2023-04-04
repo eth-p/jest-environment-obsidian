@@ -45,7 +45,7 @@ function cleanTestFileName(name: string): string {
  */
 function inferTestFile(): TestFile | null {
 	const stack = new Error().stack!;
-	const matches = /^\s*at ([^ ]+\.test\.(?:ts|js) )/m.exec(stack);
+	const matches = /^\s*at ([^ ]+\.test\.(?:(?:ts|js)x?) )/m.exec(stack);
 	if (matches == null) {
 		return null;
 	}
