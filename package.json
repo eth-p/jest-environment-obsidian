@@ -22,9 +22,7 @@
 		}
 	},
 	"imports": {
-		"test-environment-obsidian": {
-			"typescript": "./src/environment.ts"
-		}
+		"#jsx/jsx-runtime": "./src/testutil/jsx-runtime.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -43,6 +41,7 @@
 		"jest"
 	],
 	"devDependencies": {
+		"@babel/plugin-transform-react-jsx": "^7.21.0",
 		"@babel/preset-env": "^7.21.4",
 		"@babel/preset-typescript": "^7.21.4",
 		"@swc/core": "^1.3.44",

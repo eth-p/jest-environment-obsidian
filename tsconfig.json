@@ -1,5 +1,5 @@
 {
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", "src/mock/enhance/Element.test.tsx", "jsx.testutil.ts"],
 	"exclude": ["src/**/*.test.ts"],
 	"compilerOptions": {
 		"lib": ["ES5", "ES6", "ES7"],
@@ -13,7 +13,11 @@
 		"strict": true,
 		"noEmit": true,
 		"paths": {
-			"jest-environment-obsidian": ["./src/environment.ts"]
-		}
+			"#jsx/jsx-runtime": ["./src/testutil/jsx-runtime.ts"],
+		},
+
+		// For running tests
+		"jsxImportSource": "#jsx",
+		"jsx": "react-jsx"
 	}
 }
