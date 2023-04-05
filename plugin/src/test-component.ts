@@ -33,22 +33,22 @@ export default class TestComponent extends Component {
 		this.resultsEl = this.componentEl.createDiv('jest-environment-obsidian-test-results');
 	}
 
-	public setTest(test: Test): typeof this {
+	public setTest(test: Test): this {
 		this.test = test;
 		return this;
 	}
 
-	public setPath(path: string | null | undefined): typeof this {
+	public setPath(path: string | null | undefined): this {
 		this.pathEl.textContent = path ?? '';
 		return this;
 	}
 
-	public setDesc(desc: string | null | undefined): typeof this {
+	public setDesc(desc: string | null | undefined): this {
 		this.descEl.textContent = desc ?? '';
 		return this;
 	}
 
-	public setResult(result: TestResult | null | undefined): typeof this {
+	public setResult(result: TestResult | null | undefined): this {
 		if (result == null) {
 			this.summaryEl.textContent = '';
 			this.componentEl.setAttribute('data-test-result', 'not-run');
