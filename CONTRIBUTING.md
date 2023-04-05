@@ -45,6 +45,11 @@ If it's possible to do within the browser, you can add an implementation to [plu
 
 Currently, Jest `beforeAll`/`afterAll` for setting up and tearing down tests aren't implemented. If the effort warrants it, this may be fixed in the future.
 
+## Commits
+
+The `jest-environment-obsidian` project uses [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+
+
 ## Releases
 
 (TODO)
