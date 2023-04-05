@@ -40,5 +40,15 @@ At the top of your `(something).test.ts` file, add the following multi-line comm
  */
 ```
 
+## Pragmas
+
+Depending on the situation, you may want to specify certain docblock pragmas in your unit test files.
+
+> **@obsidian-api strict**  
+> If specified, the test environment will strictly conform to Obsidian's API.  
+> As a consequence, unit tests will need more boilerplate.
+>
+> - Elements will need to be attached to the Window.
+
 ## Contributing
 Want to help out? Check out the [contributing guide](./CONTRIBUTING.md)!

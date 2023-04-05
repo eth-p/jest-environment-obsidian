@@ -6,7 +6,9 @@
 //     }
 //
 
-export default function createExtension(globalThis: typeof global) {
+import EnvironmentOptions from "../../environment-options";
+
+export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends Number {
 		static isNumber(obj: any): obj is number {
 			return typeof obj === 'number';

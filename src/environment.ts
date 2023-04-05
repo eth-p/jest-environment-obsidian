@@ -3,23 +3,35 @@ import { createContext } from 'node:vm';
 import { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
 import { TestEnvironment as JSDomEnvironment } from 'jest-environment-jsdom';
 
-import { hookResolver } from './resolver-hook';
+import EnvironmentOptions from './environment-options';
 import { patch } from './mock/enhance';
+import { hookResolver } from './resolver-hook';
 
 /**
  * A Jest environment for testing Obsidian plugins.
  */
 export default class ObsidianEnvironment extends JSDomEnvironment {
+	private options: EnvironmentOptions;
+
 	public constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
 		super(config, context);
 		this.customExportConditions.push('obsidian', 'jest-environment-obsidian');
+
+		this.options = {
+			conformance: 'lax',
+			...(config.projectConfig.testEnvironmentOptions as unknown as Partial<EnvironmentOptions>),
+		};
+
+		if (context.docblockPragmas['obsidian-conformance']) {
+			this.options.conformance = context.docblockPragmas['obsidian-conformance'].toString() as any;
+		}
 	}
 
 	/** @override */
 	public async setup() {
 		await super.setup();
 
-		patch(this.global);
+		patch(this.global, this.options);
 	}
 
 	/** @override */

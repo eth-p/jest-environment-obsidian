@@ -13,7 +13,9 @@
 //     }
 //
 
-export default function createExtension(globalThis: typeof global) {
+import EnvironmentOptions from "../../environment-options";
+
+export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends String {
 		static isString(obj: any): obj is string {
 			return typeof obj === 'string';

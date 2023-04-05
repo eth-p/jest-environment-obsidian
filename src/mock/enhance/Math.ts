@@ -7,7 +7,9 @@
 //     }
 //
 
-export default function createExtension(globalThis: typeof global) {
+import EnvironmentOptions from "../../environment-options";
+
+export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class {
 		static clamp(value: number, min: number, max: number): number {
 			if (value < min) return min;

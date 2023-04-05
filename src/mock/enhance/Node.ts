@@ -16,9 +16,10 @@
 //         constructorWin: Window;
 //     }
 //
+import EnvironmentOptions from '../../environment-options';
 import { __UNIMPLEMENTED__ } from '../../util';
 
-export default function createExtension(globalThis: typeof global) {
+export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.Node {
 		instanceOf<T>(type: { new (): T }): boolean {
 			return this instanceof type;
