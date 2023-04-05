@@ -88,4 +88,8 @@ export class Expect<T> {
 			this.#fail(this.#value, 'to strictly equal', expected);
 		}
 	}
+
+	public toBeNull(): void {
+		this.toBe(null);
+	}
 }
