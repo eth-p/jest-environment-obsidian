@@ -18,7 +18,9 @@ export default class ObsidianEnvironment extends JSDomEnvironment {
 		this.customExportConditions.push('obsidian', 'jest-environment-obsidian');
 
 		this.options = {
+			ignoreWarnings: [],
 			conformance: 'lax',
+
 			...(config.projectConfig.testEnvironmentOptions as unknown as Partial<EnvironmentOptions>),
 		};
 
