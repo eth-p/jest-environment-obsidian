@@ -45,7 +45,7 @@ export default function createExtension(globalThis: typeof global) {
 			return this.includes(item);
 		}
 
-		shuffle(): Array<T> {
+		shuffle(): this {
 			__UNIMPLEMENTED__();
 		}
 
