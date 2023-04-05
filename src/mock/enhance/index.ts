@@ -3,6 +3,7 @@ import { extendType } from '../../util';
 
 import Array from './Array';
 import Element from './Element';
+import HTMLElement from './HTMLElement';
 import Math from './Math';
 import Node from './Node';
 import Number from './Number';
@@ -15,4 +16,5 @@ export function patch(globals: any, options: EnvironmentOptions) {
 	extendType(globals.Number, Number(globals, options));
 	extendType(globals.Node, Node(globals, options));
 	extendType(globals.Element, Element(globals, options));
+	extendType(globals.HTMLElement, HTMLElement(globals, options));
 }
