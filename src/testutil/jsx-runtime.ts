@@ -47,7 +47,7 @@ function createFragment(value: typeof Fragment, attributes: { children: Array<un
 export function jsx<T extends keyof JSX.IntrinsicElements>(
 	tagName: T,
 	attributes: WithChildren<JSX.IntrinsicElements[T]>,
-): JSX.DOMElements[T];
+): JSX.IntrinsicElementsNodes[T];
 
 /**
  * Creates a DOM fragment.
@@ -58,7 +58,7 @@ export function jsx<T extends keyof JSX.IntrinsicElements>(
 export function jsx<T extends keyof JSX.IntrinsicElements>(
 	fragment: typeof Fragment,
 	attributes: WithChildren<Record<string, never>>,
-): JSX.DOMElements[T];
+): JSX.IntrinsicElementsNodes[T];
 
 /**
  * A JSX factory that uses the DOM API.
