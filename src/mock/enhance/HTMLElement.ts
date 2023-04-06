@@ -15,7 +15,7 @@
 //
 import EnvironmentOptions from '../../environment-options';
 import { __UNIMPLEMENTED__ } from '../../util';
-import { printWarning } from '../../warnings';
+import { __WARNING__, Warning } from '../../warnings';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.HTMLElement {
@@ -65,12 +65,10 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			// Strict conformance.
 			if (options.conformance === 'strict') {
 				if (!globalThis.document.contains(this)) {
-					printWarning(
+					__WARNING__(
 						globalThis,
-						options,
-						'node-must-be-within-document',
-						'HTMLElement.prototype.isShown',
-						"Under strict conformance, this function will always return false when that happens.",
+						Warning.NodeMustBeWithinDocument,
+						null,
 					);
 					return false;
 				}
