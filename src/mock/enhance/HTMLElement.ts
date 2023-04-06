@@ -97,15 +97,11 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		}
 
 		setCssStyles(styles: Partial<CSSStyleDeclaration>): void {
-			for (const [key, value] of Object.entries(styles)) {
-				(this.style as Record<string, any>)[key] = value;
-			}
+			setCssStyles(this, styles);
 		}
 
 		setCssProps(props: Record<string, string>): void {
-			for (const [key, value] of Object.entries(props)) {
-				this.style.setProperty(key, value);
-			}
+			setCssProps(this, props);
 		}
 
 		get innerWidth(): number {
@@ -118,4 +114,16 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			return 0;
 		}
 	};
+}
+
+export function setCssStyles(target: HTMLElement|SVGElement, styles: Partial<CSSStyleDeclaration>): void {
+	for (const [key, value] of Object.entries(styles)) {
+		(target.style as Record<string, any>)[key] = value;
+	}
+}
+
+export function setCssProps(target: HTMLElement|SVGElement, props: Record<string, string>): void {
+	for (const [key, value] of Object.entries(props)) {
+		target.style.setProperty(key, value);
+	}
 }
