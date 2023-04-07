@@ -24,7 +24,11 @@ export function createDefault(): EnvironmentOptions {
 export function applyJestConfig(target: EnvironmentOptions, config: JestEnvironmentConfig) {
 	for (const [name, value] of Object.entries(config.projectConfig.testEnvironmentOptions)) {
 		if (!(name in Appliers)) {
-			throw new EnvironmentOptionError(name, true, 'is not a known option');
+			if (IntrinsicOptions.has(name)) {
+				continue;
+			}
+
+			throw new EnvironmentOptionError(name, false, 'is not a known option');
 		}
 
 		try {
@@ -65,9 +69,13 @@ export function applyJestPragmas(target: EnvironmentOptions, pragmas: Record<str
 class EnvironmentOptionError extends Error {
 	public readonly option: string;
 	constructor(option: string, optionIsPragma: boolean, message: string) {
-		super(`Failed to set up jest-environment-obsidian.\n${optionIsPragma ? "The docblock pragma" : "The environment option"} "${option}" ${message}`);
+		super(
+			`Failed to set up jest-environment-obsidian.\n${
+				optionIsPragma ? 'The docblock pragma' : 'The environment option'
+			} "${option}" ${message}`,
+		);
 		this.option = option;
-		this.stack = "";
+		this.stack = '';
 	}
 }
 
@@ -80,6 +88,7 @@ type EnvironmentOptionAppliers = {
 	};
 };
 
+const IntrinsicOptions = new Set(['customExportConditions']);
 const Appliers: EnvironmentOptionAppliers = {
 	conformance: {
 		assign(target, value) {
