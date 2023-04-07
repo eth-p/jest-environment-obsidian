@@ -1,6 +1,6 @@
 import { ButtonComponent, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
-import { allTests } from './joker-registry';
+import { allFiles, allTests } from './joker-registry';
 import { TestRunner } from './joker-runner';
 import { Test, TestResult } from './joker-test';
 import TestComponent from './test-component';
@@ -58,7 +58,10 @@ class TestPluginSettingTab extends PluginSettingTab {
 			return;
 		}
 
-		this.summarySetting.setName('Results').setDesc(`${failed} of ${results.size} tests failed.`);
+		this.summarySetting
+			.setName('Results')
+			.setDesc(`${failed} of ${results.size} tests failed.`)
+			.then((s) => s.descEl.setAttr('style', 'color: var(--text-error)'));
 	}
 
 	/** @override */
@@ -68,9 +71,16 @@ class TestPluginSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
+		const desc = document.createDocumentFragment();
+		desc.createEl('p', {
+			text: 'Run the jest-environment-obsidian tests under Obsidian',
+			attr: { style: 'margin-top: 0' },
+		});
+		desc.createEl('p', { text: `There are ${allTests().length} tests across ${allFiles().length} files.` });
+
 		new Setting(containerEl)
 			.setName('Run Tests')
-			.setDesc('Run the jest-environment-obsidian tests under Obsidian')
+			.setDesc(desc)
 			.setDisabled(this.isRunning)
 			.addButton((btn) => {
 				btn.setButtonText('Run Tests').onClick(() => {
