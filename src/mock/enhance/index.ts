@@ -9,6 +9,7 @@ import Node from './Node';
 import Number from './Number';
 import SVGElement from './SVGElement';
 import String from './String';
+import global from './global';
 
 export function patch(globals: any, options: EnvironmentOptions) {
 	extendType(globals.Array, Array(globals, options));
@@ -19,4 +20,6 @@ export function patch(globals: any, options: EnvironmentOptions) {
 	extendType(globals.Element, Element(globals, options));
 	extendType(globals.HTMLElement, HTMLElement(globals, options));
 	extendType(globals.SVGElement, SVGElement(globals, options));
+
+	extendType(globals, global(globals, options));
 }
