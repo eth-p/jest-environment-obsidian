@@ -40,6 +40,20 @@ At the top of your `(something).test.ts` file, add the following multi-line comm
  */
 ```
 
+## Features
+
+### Obsidian's Prototype Extensions
+
+Obsidian adds custom functions and properties to existing DOM and ECMAScript types. These have been reimplemented under `jest-environment-obsidian` and are available within unit tests.
+
+### Obsidian Module
+
+The Obsidian module is automatically shimmed for you. While it's still good practice to isolate code, as long as you use `jest-environment-obsidian`, having `import {...} from "obsidian"` in source files no longer prevents unit tests from running.
+
+### Warnings
+
+As a way to help with test-driven-development and identify why certain unit tests may be failing, `jest-environment-obsidian` creates and prints warning messages after running tests.
+
 ## Configuration
 
 The test environment can be configured globally with the `testEnvironmentOptions` option inside your Jest config, or on a per-file basis using one of the supported doc block pragmas.
