@@ -95,7 +95,32 @@ class TestPluginSettingTab extends PluginSettingTab {
 				});
 			});
 
-		this.summarySetting = new Setting(containerEl).setDesc('Press the button above to run tests.');
+		this.summarySetting = new Setting(containerEl)
+			.setDesc('Press the button above to run tests.')
+			.addExtraButton(btn => {
+				const components = this.components;
+				let filtered = false;
+
+				function hidePassed() {
+					btn.setIcon("lucide-eye");
+					components.forEach(c => (c.passed ? c.componentEl.hide() : c.componentEl.show()));
+				}
+
+				function showAll() {
+					btn.setIcon("lucide-filter");
+					components.forEach(c => c.componentEl.show());
+				}
+
+				btn.setIcon("lucide-filter")
+					.onClick(() => {
+						filtered = !filtered;
+						if (filtered) {
+							hidePassed();
+						} else {
+							showAll();
+						}
+					});
+			});
 
 		containerEl.appendChild(this.componentsContainer);
 	}

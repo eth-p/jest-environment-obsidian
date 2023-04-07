@@ -13,6 +13,7 @@ export default class TestComponent extends Component {
 	public readonly resultsEl: HTMLElement;
 
 	public test: Test;
+	public passed: boolean = true;
 
 	public constructor() {
 		super();
@@ -59,6 +60,7 @@ export default class TestComponent extends Component {
 		this.summaryEl.textContent = result.passed ? 'Pass' : 'Fail';
 		this.componentEl.setAttribute('data-test-result', result.passed ? 'pass' : 'fail');
 		this.resultsEl.empty();
+		this.passed = result.passed;
 
 		if (!result.passed && result.error != null) {
 			if ('toHTML' in result.error && typeof result.error.toHTML === 'function') {
