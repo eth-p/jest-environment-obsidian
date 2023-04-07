@@ -13,9 +13,16 @@
 //         readonly innerHeight: number;
 //     }
 //
+//     interface HTMLElement extends Element {
+//         find(selector: string): HTMLElement;
+//         findAll(selector: string): HTMLElement[];
+//         findAllSelf(selector: string): HTMLElement[];
+//     }
+//
 import EnvironmentOptions from '../../environment-options';
 import { __UNIMPLEMENTED__, getCallerName } from '../../util';
 import { Warning, __WARNING__ } from '../../warnings';
+import { find, findAll, findAllSelf } from './Element';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.HTMLElement {
@@ -108,6 +115,20 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		get innerHeight(): number {
 			__UNIMPLEMENTED__();
 			return 0;
+		}
+
+		find(selector: string): HTMLElement {
+			// NOTE: Type definitions don't describe null as a return type, but
+			//       testing revealed that it is a possible option.
+			return find(this, selector) as HTMLElement;
+		}
+
+		findAll(selector: string): HTMLElement[] {
+			return findAll(this, selector) as HTMLElement[];
+		}
+
+		findAllSelf(selector: string): HTMLElement[] {
+			return findAllSelf(this, selector) as HTMLElement[];
 		}
 	};
 }
