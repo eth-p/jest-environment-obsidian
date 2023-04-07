@@ -27,7 +27,7 @@ To validate that our tests conform to Obsidian's API implementation, we use a cu
 
 Should the unit tests pass when run through `npm run test`, they should also pass when run within Obsidian. If they don't pass within Obsidian, the tests (and therefore, our implementation) do not correctly conform to the Obsidian API.
 
-To add new tests to the Obsidian plugin, add a run-time import statement within [plugin/src/tests.ts](./plugin/src/tests.ts). Note that in order for tests to be identified correctly, they *must* be imported as `import("path/to/Something.test.ts")` and not as `import "path/to/Something.test.ts"!.
+To add new tests to the Obsidian plugin, add a run-time import statement within [validation/src/tests.ts](./validation/src/tests.ts). Note that in order for tests to be identified correctly, they *must* be imported as `import("path/to/Something.test.ts")` and not as `import "path/to/Something.test.ts"!.
 
 #### Limitations
 
@@ -39,7 +39,7 @@ If you run into this problem, separate the tests into two files and only include
 
 When running the validation plugin, if you get an error about an `expect(...)` function being unimplemented, it means that our Jest-compatible test loader/runner doesn't have that specific function implemented.
 
-If it's possible to do within the browser, you can add an implementation to [plugin/src/joker-expect.ts](./plugin/src/joker-expect.ts).
+If it's possible to do within the browser, you can add an implementation to [validation/src/joker-expect.ts](./validation/src/joker-expect.ts).
 
 #### Unimplemented Setup/Teardown
 
