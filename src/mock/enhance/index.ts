@@ -7,6 +7,7 @@ import HTMLElement from './HTMLElement';
 import Math from './Math';
 import Node from './Node';
 import Number from './Number';
+import SVGElement from './SVGElement';
 import String from './String';
 
 export function patch(globals: any, options: EnvironmentOptions) {
@@ -17,4 +18,5 @@ export function patch(globals: any, options: EnvironmentOptions) {
 	extendType(globals.Node, Node(globals, options));
 	extendType(globals.Element, Element(globals, options));
 	extendType(globals.HTMLElement, HTMLElement(globals, options));
+	extendType(globals.SVGElement, SVGElement(globals, options));
 }
