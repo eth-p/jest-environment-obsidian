@@ -14,8 +14,8 @@
 //     }
 //
 import EnvironmentOptions from '../../environment-options';
-import { __UNIMPLEMENTED__ } from '../../util';
-import { __WARNING__, Warning } from '../../warnings';
+import { __UNIMPLEMENTED__, getCallerName } from '../../util';
+import { Warning, __WARNING__ } from '../../warnings';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.HTMLElement {
@@ -65,11 +65,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			// Strict conformance.
 			if (options.conformance === 'strict') {
 				if (!globalThis.document.contains(this)) {
-					__WARNING__(
-						globalThis,
-						Warning.NodeMustBeWithinDocument,
-						null,
-					);
+					__WARNING__(globalThis, Warning.NodeMustBeWithinDocument, null);
 					return false;
 				}
 			}
@@ -97,7 +93,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		}
 
 		setCssStyles(styles: Partial<CSSStyleDeclaration>): void {
-			setCssStyles(this, styles);
+			setCssStyles(globalThis, this, styles);
 		}
 
 		setCssProps(props: Record<string, string>): void {
@@ -116,13 +112,28 @@ export default function createExtension(globalThis: typeof global, options: Envi
 	};
 }
 
-export function setCssStyles(target: HTMLElement|SVGElement, styles: Partial<CSSStyleDeclaration>): void {
+export function setCssStyles(
+	globalThis: typeof global,
+	target: HTMLElement | SVGElement,
+	styles: Partial<CSSStyleDeclaration>,
+): void {
 	for (const [key, value] of Object.entries(styles)) {
+		if (!(key in target.style)) {
+			__WARNING__(
+				globalThis,
+				key.startsWith('--')
+					? Warning.SetCssStylesDoesNotSetVariables
+					: Warning.SetCssStylesDoesNotSetUnknownProperties,
+				getCallerName(),
+				key,
+			);
+		}
+
 		(target.style as Record<string, any>)[key] = value;
 	}
 }
 
-export function setCssProps(target: HTMLElement|SVGElement, props: Record<string, string>): void {
+export function setCssProps(target: HTMLElement | SVGElement, props: Record<string, string>): void {
 	for (const [key, value] of Object.entries(props)) {
 		target.style.setProperty(key, value);
 	}

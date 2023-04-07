@@ -183,4 +183,38 @@ export namespace Warning {
 			].join("\n");
 		}
 	}
+	export class SetCssStylesDoesNotSetVariables extends AbstractWarning {
+		public readonly property: string;
+
+		constructor(context: string, property: string) {
+			super(context);
+			this.property = property;
+		}
+
+		toString() {
+			return [
+				`${this.caller} does not change CSS variables.`,
+				`To actually set \`${this.property}\` within the DOM, use \`setCssProperty\` instead.`,
+				"",
+				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`
+			].join("\n");
+		}
+	}
+	export class SetCssStylesDoesNotSetUnknownProperties extends AbstractWarning {
+		public readonly property: string;
+
+		constructor(context: string, property: string) {
+			super(context);
+			this.property = property;
+		}
+
+		toString() {
+			return [
+				`${this.caller} does not set unknown style properties.`,
+				`To actually set \`${this.property}\` within the DOM, use \`setCssProperty\` instead.`,
+				"",
+				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`
+			].join("\n");
+		}
+	}
 }

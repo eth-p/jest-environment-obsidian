@@ -1,7 +1,10 @@
 /**
  * @jest-environment <rootDir>/src/environment.ts
- * @jest-environment-options {"ignoreWarnings": ["node-must-be-within-document"]}
+ *
  * @obsidian-conformance strict
+ * @obsidian-jest-ignore node-must-be-within-document
+ * @obsidian-jest-ignore set-css-styles-does-not-set-unknown-properties
+ * @obsidian-jest-ignore set-css-styles-does-not-set-variables
  */
 import 'obsidian';
 
@@ -204,6 +207,17 @@ describe('setCssStyles', () => {
 		expect(el.style.width).toBe('');
 		expect((el.style as unknown as Record<string, string>)['-not-valid']).toBe('1em');
 		expect(el.style.getPropertyValue('-not-valid')).toBe('');
+	});
+
+	test('is a css variable property', () => {
+		// @ts-expect-error -- TypeScript doesn't pick up on this type definition for some reason.
+		el.setCssStyles({
+			'--my-var': '1em',
+		});
+
+		expect(el.style.width).toBe('');
+		expect((el.style as unknown as Record<string, string>)['--my-var']).toBe('1em');
+		expect(el.style.getPropertyValue('--my-var')).toBe('');
 	});
 
 	test('valid properties', () => {

@@ -44,7 +44,6 @@ At the top of your `(something).test.ts` file, add the following multi-line comm
 
 The test environment can be configured globally with the `testEnvironmentOptions` option inside your Jest config, or on a per-file basis using one of the supported doc block pragmas.
 
-
 ### `conformance`
 
 Configures how strictly the test environment tries to conform to Obsidian's implementation of its API.
@@ -62,6 +61,8 @@ Disables printing of specific [warning messages](#warnings).
 **Pragma:** `@obsidian-jest-ignore`  
 **Options:** A string array of warning IDs, or a single string ID if within a pragma comment.  
 **Default:** `[]`  
+
+
 
 ## Contributing
 Want to help out? Check out the [contributing guide](./CONTRIBUTING.md)!
