@@ -17,7 +17,7 @@ npm install --save-dev jest-environment-obsidian
 
 ## Usage
 
-You can either specify the environment for all tests it to your `jest.config.js` file, or at the top of a test file as a doc comment.
+You can either specify the environment for all tests it to your `jest.config.js` file, or at the top of a test file as a doc block pragma comment.
 
 ### For All Tests
 
@@ -40,15 +40,28 @@ At the top of your `(something).test.ts` file, add the following multi-line comm
  */
 ```
 
-## Pragmas
+## Configuration
 
-Depending on the situation, you may want to specify certain docblock pragmas in your unit test files.
+The test environment can be configured globally with the `testEnvironmentOptions` option inside your Jest config, or on a per-file basis using one of the supported doc block pragmas.
 
-> **@obsidian-api strict**  
-> If specified, the test environment will strictly conform to Obsidian's API.  
-> As a consequence, unit tests will need more boilerplate.
->
-> - Elements will need to be attached to the Window.
+
+### `conformance`
+
+Configures how strictly the test environment tries to conform to Obsidian's implementation of its API.
+
+When set to `strict`, certain functions and behaviours will work as though they were running within the real Obsidian environment. As a consequence, more boilerplate code will be needed for certain unit tests to pass.
+
+**Pragma:** `@obsidian-conformance`  
+**Options:** `"lax"`, `"strict"`  
+**Default:** `"lax"`  
+
+### `ignoreWarnings`
+
+Disables printing of specific [warning messages](#warnings).
+
+**Pragma:** `@obsidian-jest-ignore`  
+**Options:** A string array of warning IDs, or a single string ID if within a pragma comment.  
+**Default:** `[]`  
 
 ## Contributing
 Want to help out? Check out the [contributing guide](./CONTRIBUTING.md)!

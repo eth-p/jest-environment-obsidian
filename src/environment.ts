@@ -1,7 +1,7 @@
 import { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
 import { TestEnvironment as JSDomEnvironment } from 'jest-environment-jsdom';
 
-import EnvironmentOptions from './environment-options';
+import EnvironmentOptions, { applyJestConfig, applyJestPragmas, createDefault } from './environment-options';
 import { patch } from './mock/enhance';
 import { hookResolver } from './resolver-hook';
 import { printWarnings, setupContext as setupWarnings } from './warnings';
@@ -11,23 +11,16 @@ import { printWarnings, setupContext as setupWarnings } from './warnings';
  */
 export default class ObsidianEnvironment extends JSDomEnvironment {
 	private options: EnvironmentOptions;
-	private projectConfig: JestEnvironmentConfig["projectConfig"];
+	private projectConfig: JestEnvironmentConfig['projectConfig'];
 
 	public constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
 		super(config, context);
 		this.customExportConditions.push('obsidian', 'jest-environment-obsidian');
 		this.projectConfig = config.projectConfig;
 
-		this.options = {
-			ignoreWarnings: [],
-			conformance: 'lax',
-
-			...(config.projectConfig.testEnvironmentOptions as unknown as Partial<EnvironmentOptions>),
-		};
-
-		if (context.docblockPragmas['obsidian-conformance']) {
-			this.options.conformance = context.docblockPragmas['obsidian-conformance'].toString() as any;
-		}
+		this.options = createDefault();
+		applyJestConfig(this.options, config);
+		applyJestPragmas(this.options, context.docblockPragmas);
 	}
 
 	/** @override */
