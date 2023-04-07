@@ -19,9 +19,9 @@
 //         findAllSelf(selector: string): HTMLElement[];
 //     }
 //
-import EnvironmentOptions from '../../environment-options';
-import { __UNIMPLEMENTED__, getCallerName } from '../../util';
-import { Warning, __WARNING__ } from '../../warnings';
+import EnvironmentOptions from '../../../environment-options';
+import { __UNIMPLEMENTED__, getCallerName } from '../../../util';
+import { Warning, __WARNING__ } from '../../../warnings';
 import { find, findAll, findAllSelf } from './Element';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {

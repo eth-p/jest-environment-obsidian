@@ -1,10 +1,10 @@
-import('../../src/mock/enhance/Array.test');
-import('../../src/mock/enhance/Math.test');
-import('../../src/mock/enhance/String.test');
-import('../../src/mock/enhance/Number.test');
-import('../../src/mock/enhance/Node.test');
-import('../../src/mock/enhance/Element.test');
-import('../../src/mock/enhance/HTMLElement.test');
-import('../../src/mock/enhance/SVGElement.test');
+import('../../src/mock/enhance/lib-ecmascript/Array.test');
+import('../../src/mock/enhance/lib-ecmascript/Math.test');
+import('../../src/mock/enhance/lib-ecmascript/String.test');
+import('../../src/mock/enhance/lib-ecmascript/Number.test');
+import('../../src/mock/enhance/lib-dom/Node.test');
+import('../../src/mock/enhance/lib-dom/Element.test');
+import('../../src/mock/enhance/lib-dom/HTMLElement.test');
+import('../../src/mock/enhance/lib-dom/SVGElement.test');
 
-import('../../src/mock/enhance/global.test');
+import('../../src/mock/enhance/lib-dom/global.test');

@@ -5,7 +5,7 @@
 //     function fish(selector: string): HTMLElement | null;
 //     function fishAll(selector: string): HTMLElement[];
 //
-import EnvironmentOptions from '../../environment-options';
+import EnvironmentOptions from '../../../environment-options';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	const global = function(){} as unknown as {new():any};

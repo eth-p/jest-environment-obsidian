@@ -10,7 +10,7 @@ import 'obsidian';
 
 import { beforeEach, describe, expect, test } from '@jest/globals';
 
-import { withElementInDocument } from '../../testutil/utils';
+import { withElementInDocument } from '../../../testutil/utils';
 
 describe('hide', () => {
 	let el!: HTMLDivElement;

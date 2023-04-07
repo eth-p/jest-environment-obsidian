@@ -6,7 +6,7 @@
 //     }
 //
 
-import EnvironmentOptions from "../../environment-options";
+import EnvironmentOptions from "../../../environment-options";
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends Number {

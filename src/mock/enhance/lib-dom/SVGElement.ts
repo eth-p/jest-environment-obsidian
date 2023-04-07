@@ -6,9 +6,9 @@
 //         setCssProps(props: Record<string, string>): void;
 //     }
 //
-import EnvironmentOptions from '../../environment-options';
-import { __UNIMPLEMENTED__ } from '../../util';
-import { __WARNING__ } from '../../warnings';
+import EnvironmentOptions from '../../../environment-options';
+import { __UNIMPLEMENTED__ } from '../../../util';
+import { __WARNING__ } from '../../../warnings';
 
 import { setCssProps, setCssStyles } from './HTMLElement';
 

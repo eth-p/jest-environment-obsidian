@@ -16,8 +16,8 @@
 //         constructorWin: Window;
 //     }
 //
-import EnvironmentOptions from '../../environment-options';
-import { __UNIMPLEMENTED__ } from '../../util';
+import EnvironmentOptions from '../../../environment-options';
+import { __UNIMPLEMENTED__ } from '../../../util';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.Node {
