@@ -2,6 +2,7 @@ import('../../src/mock/enhance/lib-ecmascript/Array.test');
 import('../../src/mock/enhance/lib-ecmascript/Math.test');
 import('../../src/mock/enhance/lib-ecmascript/String.test');
 import('../../src/mock/enhance/lib-ecmascript/Number.test');
+import('../../src/mock/enhance/lib-ecmascript/Object.test');
 import('../../src/mock/enhance/lib-ecmascript/global.test');
 
 import('../../src/mock/enhance/lib-dom/Node.test');
