@@ -28,7 +28,7 @@ export function __UNIMPLEMENTED__(): never {
 export function extendType<T extends { new (...args: any[]): any; prototype: Record<string, any> }, E extends T>(
 	target: T,
 	extensions: E,
-): asserts target is E {
+): void {
 	// Extend the constructor.
 	class Empty {}
 	for (const [prop, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(extensions))) {
