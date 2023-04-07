@@ -2,9 +2,6 @@
  * @jest-environment <rootDir>/src/environment.ts
  *
  * @obsidian-conformance strict
- * @obsidian-jest-ignore node-must-be-within-document
- * @obsidian-jest-ignore set-css-styles-does-not-set-unknown-properties
- * @obsidian-jest-ignore set-css-styles-does-not-set-variables
  */
 import 'obsidian';
 
