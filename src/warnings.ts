@@ -6,12 +6,6 @@ import { formatStackTrace, indentAllLines } from 'jest-message-util';
 
 import EnvironmentOptions from './environment-options';
 
-// export const Warnings = {
-// 	'node-must-be-within-document'(problem: string) {
-// 		return `an element not attached to the document was provided.\n\n${problem}`;
-// 	},
-// };
-
 const WARNINGS = Symbol('jest-environment-obsidian warnings');
 const ENABLE_COLOR = argv.includes('--color') ? true : !argv.includes('--no-color');
 
@@ -60,6 +54,15 @@ export function setupContext(context: any) {
 }
 
 /**
+ * Gets the warnings within an environment context.
+ * @param context The context of the test environment.
+ * @returns The warnings.
+ */
+export function getWarnings(context: any): Set<AbstractWarning> {
+	return (context as { [WARNINGS]: Set<AbstractWarning> })[WARNINGS];
+}
+
+/**
  * Prints warnings collected during test execution.
  *
  * @param context The context of the test environment.
@@ -71,7 +74,7 @@ export function printWarnings(
 	options: EnvironmentOptions,
 	config: JestEnvironmentConfig['projectConfig'],
 ) {
-	const warnings = (context as { [WARNINGS]: Set<AbstractWarning> })[WARNINGS];
+	const warnings = getWarnings(context);
 	const seenWarnings = new Set<string>();
 
 	for (const warning of warnings) {
@@ -118,9 +121,9 @@ function formatWarningMessageWithColor(
 	const suiteBasename = `\x1B[1m${basename(suite)}\x1B[m`;
 
 	const message = indentAllLines(warning.toString())
-		.split("\n")
-		.map(line => `\x1B[33m${line}\x1B[m`)
-		.join("\n");
+		.split('\n')
+		.map((line) => `\x1B[33m${line}\x1B[m`)
+		.join('\n');
 
 	return `${badge} ${suiteDirname}${suiteBasename}\n${id}\n\n${message}`;
 }
@@ -177,10 +180,10 @@ export namespace Warning {
 		toString() {
 			return [
 				`${this.caller} will always return false unless the node is attached to the document.`,
-				"In this test, the node was not attached to the document.",
-				"",
-				"To remove this behavior from unit tests, use the `@obsidian-api lax` test pragma."
-			].join("\n");
+				'In this test, the node was not attached to the document.',
+				'',
+				'To remove this behavior from unit tests, use the `@obsidian-api lax` test pragma.',
+			].join('\n');
 		}
 	}
 	export class SetCssStylesDoesNotSetVariables extends AbstractWarning {
@@ -195,9 +198,9 @@ export namespace Warning {
 			return [
 				`${this.caller} does not change CSS variables.`,
 				`To actually set \`${this.property}\` within the DOM, use \`setCssProperty\` instead.`,
-				"",
-				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`
-			].join("\n");
+				'',
+				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`,
+			].join('\n');
 		}
 	}
 	export class SetCssStylesDoesNotSetUnknownProperties extends AbstractWarning {
@@ -212,9 +215,26 @@ export namespace Warning {
 			return [
 				`${this.caller} does not set unknown style properties.`,
 				`To actually set \`${this.property}\` within the DOM, use \`setCssProperty\` instead.`,
-				"",
-				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`
-			].join("\n");
+				'',
+				`If this in intentional, use the \`@obsidian-jest-ignore ${this.id}\` test pragma.`,
+			].join('\n');
+		}
+	}
+	export class IllegalCssClassName extends AbstractWarning {
+		public readonly property: string;
+		public readonly value: string;
+
+		constructor(context: string, property: string, value: string) {
+			super(context);
+			this.property = property;
+			this.value = value;
+		}
+
+		toString() {
+			return [
+				`Property \`${this.property}\` provided to ${this.caller} contains an invalid CSS class, "${this.value}".`,
+				`This will throw an error both within tests and Obsidian.`,
+			].join('\n');
 		}
 	}
 }

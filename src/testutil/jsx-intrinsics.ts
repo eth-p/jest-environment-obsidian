@@ -28,6 +28,13 @@ export interface Elements {
 	button: (props: ElementAttributes) => HTMLButtonElement;
 	body: (props: ElementAttributes) => HTMLBodyElement;
 	html: (props: ElementAttributes) => HTMLHtmlElement;
+	input: (props: ElementAttributes) => HTMLInputElement;
+	select: (props: ElementAttributes) => HTMLSelectElement;
+	option: (props: ElementAttributes & { value?: string }) => HTMLOptionElement;
+	style: (props: ElementAttributes) => HTMLStyleElement;
+	a: (props: ElementAttributes) => HTMLAnchorElement;
+	base: (props: ElementAttributes) => HTMLBaseElement;
+	link: (props: ElementAttributes) => HTMLLinkElement;
 }
 
 export type WithChildren<T> = T & {
