@@ -20,6 +20,12 @@
 //         isActiveElement(): boolean;
 //     }
 //
+//     interface Element extends Node {
+//         find(selector: string): Element | null;
+//         findAll(selector: string): HTMLElement[];
+//         findAllSelf(selector: string): HTMLElement[];
+//     }
+//
 import EnvironmentOptions from '../../environment-options';
 import { __UNIMPLEMENTED__ } from '../../util';
 
@@ -100,5 +106,34 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		isActiveElement(): boolean {
 			__UNIMPLEMENTED__();
 		}
+
+		find(selector: string): Element | null {
+			return find(this, selector);
+		}
+
+		findAll(selector: string): HTMLElement[] {
+			return findAll(this, selector) as HTMLElement[];
+		}
+
+		findAllSelf(selector: string): HTMLElement[] {
+			return findAllSelf(this, selector) as HTMLElement[];
+		}
 	};
+}
+
+type HasQuerySelector = Element | HTMLElement | Document | DocumentFragment;
+type HasMatches = Extract<HasQuerySelector, {matches(selector: string): any}>;
+
+export function find(target: HasQuerySelector, selector: string): Element | null {
+	return target.querySelector(selector);
+}
+
+export function findAll(target: HasQuerySelector, selector: string): Element[] {
+	return Array.from(target.querySelectorAll(selector));
+}
+
+export function findAllSelf(target: HasMatches, selector: string): Element[] {
+	const selfMatches: Element[] = target.matches(selector) ? [target] : [];
+	const childrenMatches: Element[] = Array.from(target.querySelectorAll(selector));
+	return selfMatches.concat(childrenMatches);
 }
