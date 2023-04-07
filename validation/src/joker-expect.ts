@@ -89,6 +89,14 @@ export class Expect<T> {
 		}
 	}
 
+	public toBeDefined(): void {
+		this.not.toBe(undefined);
+	}
+
+	public toBeUndefined(): void {
+		this.toBe(undefined);
+	}
+
 	public toBeNull(): void {
 		this.toBe(null);
 	}
