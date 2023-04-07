@@ -22,7 +22,23 @@
 		}
 	},
 	"imports": {
-		"#jsx/jsx-runtime": "./src/testutil/jsx-runtime.ts"
+		"#jsx/jsx-runtime": "./src/testutil/jsx-runtime.ts",
+		"#testutil/*": "./src/testutil/*",
+		"#options": {
+			"typescript": "./src/environment-options.ts",
+			"import": "./dist/esm/environment-options.js",
+			"require": "./dist/cjs/environment-options.js"
+		},
+		"#warnings": {
+			"typescript": "./src/warnings.ts",
+			"import": "./dist/esm/warnings.js",
+			"require": "./dist/cjs/warnings.js"
+		},
+		"#util": {
+			"typescript": "./src/util.ts",
+			"import": "./dist/esm/util.js",
+			"require": "./dist/cjs/util.js"
+		}
 	},
 	"repository": {
 		"type": "git",

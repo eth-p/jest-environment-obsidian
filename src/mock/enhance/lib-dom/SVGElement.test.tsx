@@ -9,7 +9,6 @@ import 'obsidian';
 
 import { beforeEach, describe, expect, test } from '@jest/globals';
 
-import { withElementInDocument } from '../../../testutil/utils';
 
 
 describe('setCssStyles', () => {

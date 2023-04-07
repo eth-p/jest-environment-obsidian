@@ -14,8 +14,8 @@
 //         combine<T>(arrays: T[][]): T[];
 //     }
 //
-import EnvironmentOptions from '../../../environment-options';
-import { __UNIMPLEMENTED__ } from '../../../util';
+import EnvironmentOptions from '#options';
+import { __UNIMPLEMENTED__ } from '#util';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class<T> extends Array<T> {

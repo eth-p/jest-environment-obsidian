@@ -13,6 +13,10 @@
 		"noEmit": true,
 		"paths": {
 			"#jsx/jsx-runtime": ["./src/testutil/jsx-runtime.ts"],
+			"#testutil/*": ["./src/testutil/*"],
+			"#options": ["./src/environment-options.ts"],
+			"#warnings": ["./src/warnings.ts"],
+			"#util": ["./src/util.ts"],
 		},
 
 		// For running tests

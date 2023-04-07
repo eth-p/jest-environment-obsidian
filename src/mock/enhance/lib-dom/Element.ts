@@ -26,8 +26,8 @@
 //         findAllSelf(selector: string): HTMLElement[];
 //     }
 //
-import EnvironmentOptions from '../../../environment-options';
-import { __UNIMPLEMENTED__ } from '../../../util';
+import type EnvironmentOptions from '#options';
+import { __UNIMPLEMENTED__ } from '#util';
 
 import { empty } from './Node';
 
