@@ -5,6 +5,7 @@ import Element from './lib-dom/Element';
 import HTMLElement from './lib-dom/HTMLElement';
 import Node from './lib-dom/Node';
 import SVGElement from './lib-dom/SVGElement';
+import DocumentFragment from './lib-dom/DocumentFragment';
 import domGlobal from './lib-dom/global';
 import Array from './lib-ecmascript/Array';
 import Math from './lib-ecmascript/Math';
@@ -22,6 +23,7 @@ export function patch(globals: any, options: EnvironmentOptions) {
 
 	// DOM Extensions
 	extendType(globals.Node, Node(globals, options));
+	extendType(globals.DocumentFragment, DocumentFragment(globals, options));
 	extendType(globals.Element, Element(globals, options));
 	extendType(globals.HTMLElement, HTMLElement(globals, options));
 	extendType(globals.SVGElement, SVGElement(globals, options));

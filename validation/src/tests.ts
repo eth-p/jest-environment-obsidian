@@ -8,4 +8,5 @@ import('../../src/mock/enhance/lib-dom/Node.test');
 import('../../src/mock/enhance/lib-dom/Element.test');
 import('../../src/mock/enhance/lib-dom/HTMLElement.test');
 import('../../src/mock/enhance/lib-dom/SVGElement.test');
+import('../../src/mock/enhance/lib-dom/DocumentFragment.test');
 import('../../src/mock/enhance/lib-dom/global.test');
