@@ -144,7 +144,7 @@ describe('addClasses', () => {
 	});
 });
 
-describe('removeClass', () => {
+describe('removeClasses', () => {
 	let el!: HTMLDivElement;
 	beforeEach(() => {
 		el = <div className="foo bar baz" />;
@@ -206,7 +206,7 @@ describe('toggleClass', () => {
 		expect(el.classList.contains('cat')).toBe(false);
 	});
 
-	test('true, with string array', () => {
+	test('false, with string array', () => {
 		expect(el.classList.contains('foo')).toBe(true);
 		expect(el.classList.contains('bar')).toBe(true);
 
