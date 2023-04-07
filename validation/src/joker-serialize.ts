@@ -41,8 +41,8 @@ class Serializer {
 	}
 
 	public serialize(value: any, depth: number = 0): string {
-		if (value == null) return this.serializeNull(value, depth + 1);
-		if (value == undefined) return this.serializeUndefined(value, depth + 1);
+		if (value === null) return this.serializeNull(value, depth + 1);
+		if (value === undefined) return this.serializeUndefined(value, depth + 1);
 		if (typeof value === 'boolean') return this.serializeBoolean(value, depth + 1);
 		if (typeof value === 'number') return this.serializeNumber(value, depth + 1);
 		if (typeof value === 'string') return this.serializeString(value, depth + 1);
