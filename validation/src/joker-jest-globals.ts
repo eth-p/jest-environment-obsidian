@@ -1,4 +1,5 @@
 import { Expect } from './joker-expect';
+import { createMockFunction } from './joker-mock-function';
 import { context } from './joker-registry';
 import { type TestFunction } from './joker-test';
 
@@ -16,4 +17,10 @@ export function test(name: string, fn: TestFunction): void {
 
 export function beforeEach(setupFn: TestFunction): void {
 	context().addLifecycleBeforeEach(setupFn);
+}
+
+export namespace jest {
+	export function fn(fn?: (this: any, ...args: any[]) => any) {
+		return createMockFunction(fn);
+	}
 }

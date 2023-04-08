@@ -1,3 +1,4 @@
+import { getArgumentsCalledWith } from './joker-mock-function';
 import { serialize } from './joker-serialize';
 
 /**
@@ -52,7 +53,7 @@ export class ExpectationUnimplemenetedError extends Error {
 export class Expect<T> {
 	#value: T;
 	#negated: boolean;
-	#fail: (actually: T, op: string, expected: any) => never;
+	#fail: (actually: any, op: string, expected: any) => never;
 
 	public constructor(value: T) {
 		this.#value = value;
@@ -99,5 +100,14 @@ export class Expect<T> {
 
 	public toBeNull(): void {
 		this.toBe(null);
+	}
+
+	public toBeCalledWith(...args: unknown[]): void {
+		const actual = getArgumentsCalledWith(this.#value);
+		const expected = args;
+
+		if ((serialize(actual) === serialize(expected)) === this.#negated) {
+			this.#fail(actual, 'to be called with', expected);
+		}
 	}
 }
