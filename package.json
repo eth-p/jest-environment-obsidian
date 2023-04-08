@@ -4,7 +4,8 @@
 	"description": "Undocumented/private API definitions for Obsidian.md",
 	"scripts": {
 		"test": "node ./scripts/test.mjs",
-		"build": "tsc -p tsconfig-dist-cjs.json && tsc -p tsconfig-dist-esm.json"
+		"build": "tsc -p tsconfig-dist-cjs.json && tsc -p tsconfig-dist-esm.json",
+		"format": "prettier -w -- \"src/**/*.{ts,tsx}\" \"validation/src/**/*.ts\""
 	},
 	"type": "module",
 	"exports": {
