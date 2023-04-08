@@ -1,12 +1,13 @@
 /**
  * @jest-environment <rootDir>/src/environment.ts
  */
-import { expect, test } from '@jest/globals';
 import 'obsidian';
 
+import { expect, test, jest } from '@jest/globals';
+
 test('isInstanceOf', () => {
-	const textNode = document.createTextNode("text");
-	const divNode = document.createElement("div");
+	const textNode = document.createTextNode('text');
+	const divNode = document.createElement('div');
 
 	expect(textNode.instanceOf(Text)).toBe(true);
 	expect(textNode.instanceOf(Element)).toBe(false);
@@ -17,14 +18,14 @@ test('isInstanceOf', () => {
 });
 
 test('empty', () => {
-	const container = document.createElement("div");
+	const container = document.createElement('div');
 
 	// Sanity check.
 	expect(container.hasChildNodes()).toBe(false);
 
 	// Add something.
-	container.appendChild(document.createTextNode("text"));
-	container.appendChild(document.createElement("button"));
+	container.appendChild(document.createTextNode('text'));
+	container.appendChild(document.createElement('button'));
 	expect(container.hasChildNodes()).toBe(true);
 
 	// Call empty().
@@ -33,8 +34,8 @@ test('empty', () => {
 });
 
 test('detach', () => {
-	const container = document.createElement("div");
-	const target = document.createElement("div");
+	const container = document.createElement('div');
+	const target = document.createElement('div');
 
 	container.appendChild(target);
 
@@ -49,10 +50,10 @@ test('detach', () => {
 });
 
 test('insertAfter', () => {
-	const container = document.createElement("div");
-	const anchor = document.createElement("a");
-	const afterAnchor = document.createElement("a");
-	const target = document.createElement("div");
+	const container = document.createElement('div');
+	const anchor = document.createElement('a');
+	const afterAnchor = document.createElement('a');
+	const target = document.createElement('div');
 
 	container.appendChild(anchor);
 	container.appendChild(afterAnchor);
@@ -77,10 +78,10 @@ test('insertAfter', () => {
 });
 
 test('indexOf', () => {
-	const container = document.createElement("div");
-	const child1 = document.createElement("a");
-	const child2 = document.createElement("a");
-	const notChild = document.createElement("span");
+	const container = document.createElement('div');
+	const child1 = document.createElement('a');
+	const child2 = document.createElement('a');
+	const notChild = document.createElement('span');
 
 	container.appendChild(child1);
 	container.appendChild(child2);
@@ -91,41 +92,78 @@ test('indexOf', () => {
 });
 
 test('appendText', () => {
-	const container = document.createElement("div");
-	const child1 = document.createElement("a");
+	const container = document.createElement('div');
+	const child1 = document.createElement('a');
 	child1.textContent = ' bar';
 
-	container.appendChild(document.createTextNode("foo"));
+	container.appendChild(document.createTextNode('foo'));
 	container.appendChild(child1);
 
 	// Sanity.
 	expect(container.childNodes.length).toBe(2);
-	expect(container.textContent).toBe("foo bar");
+	expect(container.textContent).toBe('foo bar');
 
 	// Append text.
-	container.appendText(" baz");
+	container.appendText(' baz');
 	expect(container.childNodes.length).toBe(3);
-	expect(container.textContent).toBe("foo bar baz");
+	expect(container.textContent).toBe('foo bar baz');
 
 	// Append text again.
-	container.appendText("!");
+	container.appendText('!');
 	expect(container.childNodes.length).toBe(4);
-	expect(container.textContent).toBe("foo bar baz!");
+	expect(container.textContent).toBe('foo bar baz!');
 });
 
 test('win', () => {
-	const container = document.createElement("div");
+	const container = document.createElement('div');
 	expect(container.win).toBe(window);
 });
 
 test('doc', () => {
-	const container = document.createElement("div");
+	const container = document.createElement('div');
 	expect(container.doc).toBe(document);
 });
 
 test('constructorWin', () => {
-	const container = document.createElement("div");
+	const container = document.createElement('div');
 	expect(container.constructorWin).toBe(window);
 });
 
+test('createEl', () => {
+	const parent: HTMLDivElement = <div />;
+	const opts: DomElementInfo = {
+		cls: 'test-class',
+	};
+
+	const el = parent.createEl('div', opts);
+	expect(el.parentElement).toBe(parent);
+	expect(opts.parent).toBe(parent); // Obsidian mutates the input.
+});
+
+test('createSvg', () => {
+	const parent: HTMLDivElement = <div />;
+	const opts: DomElementInfo = {
+		cls: 'test-class',
+	};
+
+	const el = parent.createSvg('svg', opts);
+	expect(el.parentElement).toBe(parent);
+	expect(opts.parent).toBe(parent); // Obsidian mutates the input.
+});
+
+test('createDiv', () => {
+	const parent: HTMLDivElement = <div />;
+	const createEl = parent.createEl = jest.fn(parent.createEl);
+
+	parent.createDiv({}, undefined);
+	expect(createEl).toBeCalledWith("div", {parent}, undefined)
+});
+
+test('createSpan', () => {
+	const parent: HTMLDivElement = <div />;
+	const createEl = parent.createEl = jest.fn(parent.createEl);
+
+	parent.createSpan({}, undefined);
+	expect(createEl).toBeCalledWith("span", {parent}, undefined)
+});
 

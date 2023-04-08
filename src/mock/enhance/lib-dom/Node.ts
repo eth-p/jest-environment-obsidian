@@ -16,8 +16,17 @@
 //         constructorWin: Window;
 //     }
 //
+//     interface Node {
+//         createEl<K extends keyof HTMLElementTagNameMap>(tag: K, o?: DomElementInfo | string, callback?: (el: HTMLElementTagNameMap[K]) => void): HTMLElementTagNameMap[K];
+//         createDiv(o?: DomElementInfo | string, callback?: (el: HTMLDivElement) => void): HTMLDivElement;
+//         createSpan(o?: DomElementInfo | string, callback?: (el: HTMLSpanElement) => void): HTMLSpanElement;
+//         createSvg<K extends keyof SVGElementTagNameMap>(tag: K, o?: SvgElementInfo | string, callback?: (el: SVGElementTagNameMap[K]) => void): SVGElementTagNameMap[K];
+//     }
+//
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
+
+import { createEl, createSvg, infoFrom } from './_createEl';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends globalThis.Node {
@@ -72,6 +81,36 @@ export default function createExtension(globalThis: typeof global, options: Envi
 
 		get constructorWin(): Window {
 			return this.win;
+		}
+
+		createEl<K extends keyof HTMLElementTagNameMap>(
+			tag: K,
+			o?: DomElementInfo | string,
+			callback?: (el: HTMLElementTagNameMap[K]) => void,
+		): HTMLElementTagNameMap[K] {
+			const info = infoFrom(o);
+			info.parent = this;
+
+			return createEl(globalThis, tag, info, callback);
+		}
+
+		createDiv(o?: DomElementInfo | string, callback?: (el: HTMLDivElement) => void): HTMLDivElement {
+			return this.createEl('div', o, callback);
+		}
+
+		createSpan(o?: DomElementInfo | string, callback?: (el: HTMLSpanElement) => void): HTMLSpanElement {
+			return this.createEl('span', o, callback);
+		}
+
+		createSvg<K extends keyof SVGElementTagNameMap>(
+			tag: K,
+			o?: SvgElementInfo | string,
+			callback?: (el: SVGElementTagNameMap[K]) => void,
+		): SVGElementTagNameMap[K] {
+			const info = infoFrom(o);
+			info.parent = this;
+
+			return createSvg(globalThis, tag, info, callback);
 		}
 	};
 }
