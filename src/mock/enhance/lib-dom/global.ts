@@ -10,8 +10,18 @@
 //     function createSvg<K extends keyof SVGElementTagNameMap>(tag: K, o?: SvgElementInfo | string, callback?: (el: SVGElementTagNameMap[K]) => void): SVGElementTagNameMap[K];
 //     function createFragment(callback?: (el: DocumentFragment) => void): DocumentFragment;
 //
+//     function ajax(options: AjaxOptions): void;
+//     function ajaxPromise(options: AjaxOptions): Promise<any>;
+//     function ready(fn: () => any): void;
+//     function sleep(ms: number): Promise<void>;
+//     function nextFrame(): Promise<void>;
+//     let activeWindow: Window;
+//     let activeDocument: Document;
+//
 import type EnvironmentOptions from '#options';
+import { __UNIMPLEMENTED__ } from '#util';
 
+import { nextFrame, sleep } from './Window';
 import { createEl, createSvg } from './_createEl';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
@@ -55,6 +65,38 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			const frag = document.createDocumentFragment();
 			if (callback) callback(frag);
 			return frag;
+		}
+
+		static ajax(options: AjaxOptions): void {
+			__UNIMPLEMENTED__();
+		}
+
+		static ajaxPromise(options: AjaxOptions): Promise<any> {
+			__UNIMPLEMENTED__();
+		}
+
+		static ready(fn: () => any): void {
+			// Normally this would call if document.readyState is not "loading", or
+			// add it as event listener to "DOMContentReady". For tests, call it after a short delay.
+			//
+			// We use a delay so to user doesn't rely on it being called immediately.
+			globalThis.setTimeout(() => fn(), 1);
+		}
+
+		static sleep(ms: number): Promise<void> {
+			return sleep(globalThis, ms);
+		}
+
+		static nextFrame(): Promise<void> {
+			return nextFrame(globalThis);
+		}
+
+		static get activeWindow(): Window {
+			return globalThis.window;
+		}
+
+		static get activeDocument(): Document {
+			return globalThis.document;
 		}
 	};
 }

@@ -6,7 +6,7 @@
 import { withElementInDocument } from '#testutil/utils';
 import 'obsidian';
 
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, jest, test } from '@jest/globals';
 
 describe('fish', () => {
 	test('returns selection', () => {
@@ -294,3 +294,37 @@ describe('createEl', () => {
 		expect(el.getAttribute('href')).toBe('about:blank');
 	});
 });
+
+test('activeWindow', () => {
+	expect(window.activeWindow).toBe(window);
+});
+
+test('activeDocument', () => {
+	expect(window.activeDocument).toBe(document);
+});
+
+test('sleep', async () => {
+	let waited = false;
+	await sleep(2).then(() => (waited = true));
+	expect(waited).toBe(true);
+});
+
+test('nextFrame', async () => {
+	let waited = false;
+	// @ts-expect-error -- TypeScript doesn't pick up on this type definition for some reason.
+	await nextFrame().then(() => (waited = true));
+	expect(waited).toBe(true);
+});
+
+test('ready', async () => {
+	let called = false;
+
+	await new Promise<void>((resolve) => {
+		ready(() => {
+			called = true;
+			resolve();
+		});
+	});
+
+	expect(called).toBe(true);
+}, 10);
