@@ -12,8 +12,7 @@
 //         isString(obj: any): obj is string;
 //     }
 //
-
-import EnvironmentOptions from "#options";
+import EnvironmentOptions from '#options';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
 	return class extends String {

@@ -122,7 +122,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 }
 
 type HasQuerySelector = Element | HTMLElement | Document | DocumentFragment;
-type HasMatches = Extract<HasQuerySelector, {matches(selector: string): any}>;
+type HasMatches = Extract<HasQuerySelector, { matches(selector: string): any }>;
 
 export function find(target: HasQuerySelector, selector: string): Element | null {
 	return target.querySelector(selector);

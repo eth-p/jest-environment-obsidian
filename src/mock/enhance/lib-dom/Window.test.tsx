@@ -15,13 +15,13 @@ test('activeDocument', () => {
 
 test('sleep', async () => {
 	let waited = false;
-	await window.sleep(2).then(() => waited = true);
+	await window.sleep(2).then(() => (waited = true));
 	expect(waited).toBe(true);
 });
 
 test('nextFrame', async () => {
 	let waited = false;
 	// @ts-expect-error -- TypeScript doesn't pick up on this type definition for some reason.
-	await window.nextFrame().then(() => waited = true);
+	await window.nextFrame().then(() => (waited = true));
 	expect(waited).toBe(true);
 });

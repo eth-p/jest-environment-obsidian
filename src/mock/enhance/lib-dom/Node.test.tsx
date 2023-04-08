@@ -3,7 +3,7 @@
  */
 import 'obsidian';
 
-import { expect, test, jest } from '@jest/globals';
+import { expect, jest, test } from '@jest/globals';
 
 test('isInstanceOf', () => {
 	const textNode = document.createTextNode('text');
@@ -153,17 +153,16 @@ test('createSvg', () => {
 
 test('createDiv', () => {
 	const parent: HTMLDivElement = <div />;
-	const createEl = parent.createEl = jest.fn(parent.createEl);
+	const createEl = (parent.createEl = jest.fn(parent.createEl));
 
 	parent.createDiv({}, undefined);
-	expect(createEl).toBeCalledWith("div", {parent}, undefined)
+	expect(createEl).toBeCalledWith('div', { parent }, undefined);
 });
 
 test('createSpan', () => {
 	const parent: HTMLDivElement = <div />;
-	const createEl = parent.createEl = jest.fn(parent.createEl);
+	const createEl = (parent.createEl = jest.fn(parent.createEl));
 
 	parent.createSpan({}, undefined);
-	expect(createEl).toBeCalledWith("span", {parent}, undefined)
+	expect(createEl).toBeCalledWith('span', { parent }, undefined);
 });
-

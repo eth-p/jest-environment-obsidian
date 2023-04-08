@@ -388,10 +388,7 @@ describe('find', () => {
 	});
 
 	test('no matches', () => {
-		const el: HTMLDivElement = (
-			<div>
-			</div>
-		);
+		const el: HTMLDivElement = <div></div>;
 
 		expect(el.find('#target')).toBeNull();
 	});
@@ -417,7 +414,7 @@ describe('findAll', () => {
 			</div>
 		);
 
-		expect(el.findAll('#target')).toStrictEqual([el.querySelector("#target")]);
+		expect(el.findAll('#target')).toStrictEqual([el.querySelector('#target')]);
 	});
 
 	test('no matches', () => {
@@ -480,10 +477,10 @@ describe('findAllSelf', () => {
 
 	test('complicated selector', () => {
 		const el: HTMLDivElement = (
-				<div id="parent">
-					<div id="foo" className="class"></div>
-					<div id="bar" className="class"></div>
-				</div>
+			<div id="parent">
+				<div id="foo" className="class"></div>
+				<div id="bar" className="class"></div>
+			</div>
 		);
 
 		const target = [el, ...el.querySelectorAll('.class')];

@@ -338,7 +338,7 @@ describe('internal: finalize', () => {
 
 	test('calls callback', () => {
 		const el: HTMLElement = <div />;
-		const parent = <div/>;
+		const parent = <div />;
 
 		const cb = jest.fn();
 		finalize(el, { parent, prepend: true }, cb);
@@ -347,7 +347,7 @@ describe('internal: finalize', () => {
 
 	test('calls callback before appending', () => {
 		const el: HTMLElement = <div />;
-		const parent = <div/>;
+		const parent = <div />;
 
 		const cb = jest.fn(() => {
 			expect(el.parentNode).toBeNull();

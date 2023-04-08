@@ -6,11 +6,10 @@
  * @obsidian-jest-ignore set-css-styles-does-not-set-unknown-properties
  * @obsidian-jest-ignore set-css-styles-does-not-set-variables
  */
+import { withElementInDocument } from '#testutil/utils';
 import 'obsidian';
 
 import { beforeEach, describe, expect, test } from '@jest/globals';
-
-import { withElementInDocument } from '#testutil/utils';
 
 describe('hide', () => {
 	let el!: HTMLDivElement;
@@ -298,10 +297,7 @@ describe('find', () => {
 	});
 
 	test('no matches', () => {
-		const el: HTMLDivElement = (
-			<div>
-			</div>
-		);
+		const el: HTMLDivElement = <div></div>;
 
 		expect(el.find('#target')).toBeNull();
 	});
@@ -327,7 +323,7 @@ describe('findAll', () => {
 			</div>
 		);
 
-		expect(el.findAll('#target')).toStrictEqual([el.querySelector("#target")]);
+		expect(el.findAll('#target')).toStrictEqual([el.querySelector('#target')]);
 	});
 
 	test('no matches', () => {
@@ -390,10 +386,10 @@ describe('findAllSelf', () => {
 
 	test('complicated selector', () => {
 		const el: HTMLDivElement = (
-				<div id="parent">
-					<div id="foo" className="class"></div>
-					<div id="bar" className="class"></div>
-				</div>
+			<div id="parent">
+				<div id="foo" className="class"></div>
+				<div id="bar" className="class"></div>
+			</div>
 		);
 
 		const target = [el, ...el.querySelectorAll('.class')];

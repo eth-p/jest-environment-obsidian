@@ -71,27 +71,27 @@ describe('each', () => {
 	});
 
 	test('returns true', () => {
-		expect(Object.each({foo: "bar"}, () => {})).toBe(true);
+		expect(Object.each({ foo: 'bar' }, () => {})).toBe(true);
 	});
 
 	test('returns false if predicate returns false', () => {
-		expect(Object.each({foo: "bar"}, () => false)).toBe(false);
+		expect(Object.each({ foo: 'bar' }, () => false)).toBe(false);
 	});
 
 	test('predicate returning falsey value is not treated as false', () => {
-		expect(Object.each({foo: "bar"}, () => 0 as any)).toBe(true);
-		expect(Object.each({foo: "bar"}, () => null as any)).toBe(true);
-		expect(Object.each({foo: "bar"}, () => '' as any)).toBe(true);
+		expect(Object.each({ foo: 'bar' }, () => 0 as any)).toBe(true);
+		expect(Object.each({ foo: 'bar' }, () => null as any)).toBe(true);
+		expect(Object.each({ foo: 'bar' }, () => '' as any)).toBe(true);
 	});
 
 	test('predicate returning false stops iteration', () => {
 		const reconstructed: Record<string, unknown> = {};
 
-		Object.each({foo: true, bar: false, baz: true}, (v, k) => {
+		Object.each({ foo: true, bar: false, baz: true }, (v, k) => {
 			reconstructed[k!] = v;
 			return v;
 		});
 
-		expect(reconstructed).toStrictEqual({foo: true, bar: false});
+		expect(reconstructed).toStrictEqual({ foo: true, bar: false });
 	});
 });

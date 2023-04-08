@@ -9,12 +9,10 @@ import 'obsidian';
 
 import { beforeEach, describe, expect, test } from '@jest/globals';
 
-
-
 describe('setCssStyles', () => {
 	let el!: SVGElement;
 	beforeEach(() => {
-		el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+		el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	});
 
 	test('not a string', () => {
@@ -42,8 +40,8 @@ describe('setCssStyles', () => {
 			widthy: 3,
 		});
 
-		expect((el.style as unknown as Record<string, string>)["widthy"]).toBe(3);
-		expect(el.style.getPropertyValue("widthy")).toBe('');
+		expect((el.style as unknown as Record<string, string>)['widthy']).toBe(3);
+		expect(el.style.getPropertyValue('widthy')).toBe('');
 	});
 
 	test('is a css variable property', () => {
@@ -71,7 +69,7 @@ describe('setCssStyles', () => {
 describe('setCssProps', () => {
 	let el!: SVGElement;
 	beforeEach(() => {
-		el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+		el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	});
 
 	test('not a string', () => {
@@ -99,8 +97,8 @@ describe('setCssProps', () => {
 			widthy: 3,
 		});
 
-		expect((el.style as unknown as Record<string, string>)["widthy"]).toBe(undefined);
-		expect(el.style.getPropertyValue("widthy")).toBe('');
+		expect((el.style as unknown as Record<string, string>)['widthy']).toBe(undefined);
+		expect(el.style.getPropertyValue('widthy')).toBe('');
 	});
 
 	test('valid properties', () => {

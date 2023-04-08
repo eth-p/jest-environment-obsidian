@@ -8,7 +8,7 @@
 import type EnvironmentOptions from '#options';
 
 export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	const global = function(){} as unknown as {new():any};
+	const global = function () {} as unknown as { new (): any };
 	global.prototype = globalThis;
 
 	return class extends global {

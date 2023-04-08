@@ -1,8 +1,9 @@
 /**
  * @jest-environment <rootDir>/src/environment.ts
  */
-import { expect, test } from '@jest/globals';
 import 'obsidian';
+
+import { expect, test } from '@jest/globals';
 
 test('first', async () => {
 	expect([].first()).toBe(undefined);

@@ -33,10 +33,7 @@ describe('find', () => {
 	});
 
 	test('no matches', () => {
-		const el: HTMLDivElement = (
-			<div>
-			</div>
-		);
+		const el: HTMLDivElement = <div></div>;
 
 		expect(el.find('#target')).toBeNull();
 	});
@@ -62,7 +59,7 @@ describe('findAll', () => {
 			</div>
 		);
 
-		expect(el.findAll('#target')).toStrictEqual([el.querySelector("#target")]);
+		expect(el.findAll('#target')).toStrictEqual([el.querySelector('#target')]);
 	});
 
 	test('no matches', () => {
