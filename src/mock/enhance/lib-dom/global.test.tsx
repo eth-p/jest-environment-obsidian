@@ -1,5 +1,6 @@
 /**
  * @jest-environment <rootDir>/src/environment.ts
+ * @validation-test
  *
  * @obsidian-conformance strict
  */

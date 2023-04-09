@@ -1,5 +1,6 @@
 /**
  * @jest-environment <rootDir>/src/environment.ts
+ * @validation-test
  *
  * @obsidian-conformance strict
  * @obsidian-jest-ignore set-css-styles-does-not-set-unknown-properties
