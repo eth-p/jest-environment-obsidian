@@ -1,7 +1,5 @@
 import { dirname, extname, join } from 'path';
 
-export const PACKAGE_ID = 'jest-environment-obsidian';
-
 /**
  * The root directory for `jest-environment-obsidian` scripts.
  */

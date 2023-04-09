@@ -1,4 +1,4 @@
-import { PACKAGE_ID } from './constants';
+import { PACKAGE_ID } from './self-constants';
 
 /**
  * Applys a monkey-patch to a function on an object.

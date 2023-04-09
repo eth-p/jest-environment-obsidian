@@ -1,10 +1,9 @@
 import { accessSync } from 'fs';
-import { access } from 'fs/promises';
 import { join } from 'path';
 
 import { type FindNodeModuleConfig, default as JestResolve } from 'jest-resolve';
 
-import { MOCKED_MODULE_ROOT, SOURCE_EXTENSION } from './constants';
+import { MOCKED_MODULE_ROOT, SOURCE_EXTENSION } from './self-paths';
 import monkeypatch from './monkeypatch';
 
 // Get the real resolver class.
