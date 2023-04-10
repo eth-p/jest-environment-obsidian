@@ -6,7 +6,7 @@
  */
 import { getWarnings, setupContext as setupWarnings } from '#warnings';
 
-import { beforeEach, describe, expect, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, jest } from '@jest/globals';
 
 import {
 	doSetAttributes,
