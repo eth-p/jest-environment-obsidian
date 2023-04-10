@@ -25,10 +25,10 @@ export function __UNIMPLEMENTED__(): never {
  * @param target The constructor function of the type to extend.
  * @param extensions The extensions to add to the type.
  */
-export function extendType<T extends { new (...args: any[]): any; prototype: Record<string, any> }, E extends T>(
-	target: T,
-	extensions: E,
-): void {
+export function extendType<
+	T extends {} | { new (...args: any[]): any; prototype: Record<string, any> },
+	E extends object,
+>(target: T, extensions: E): void {
 	// Extend the constructor.
 	class Empty {}
 	for (const [prop, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(extensions))) {
@@ -39,7 +39,7 @@ export function extendType<T extends { new (...args: any[]): any; prototype: Rec
 	}
 
 	// Extend the prototype.
-	if ('prototype' in target) {
+	if ('prototype' in target && 'prototype' in extensions) {
 		Object.defineProperties(target.prototype, Object.getOwnPropertyDescriptors(extensions.prototype));
 	}
 }

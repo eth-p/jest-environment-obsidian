@@ -23,13 +23,14 @@
 //         createSvg<K extends keyof SVGElementTagNameMap>(tag: K, o?: SvgElementInfo | string, callback?: (el: SVGElementTagNameMap[K]) => void): SVGElementTagNameMap[K];
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
 
 import { createEl, createSvg, infoFrom } from './_createEl';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.Node {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.Node {
 		instanceOf<T>(type: { new (): T }): boolean {
 			return this instanceof type;
 		}
@@ -67,16 +68,16 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		}
 
 		appendText(val: string): void {
-			const node = globalThis.document.createTextNode(val);
+			const node = context.document.createTextNode(val);
 			this.appendChild(node);
 		}
 
 		get doc(): Document {
-			return globalThis.document;
+			return context.document;
 		}
 
 		get win(): Window {
-			return globalThis.window;
+			return context.window;
 		}
 
 		get constructorWin(): Window {
@@ -91,7 +92,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			const info = infoFrom(o);
 			info.parent = this;
 
-			return createEl(globalThis, tag, info, callback);
+			return createEl(context, tag, info, callback);
 		}
 
 		createDiv(o?: DomElementInfo | string, callback?: (el: HTMLDivElement) => void): HTMLDivElement {
@@ -110,7 +111,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			const info = infoFrom(o);
 			info.parent = this;
 
-			return createSvg(globalThis, tag, info, callback);
+			return createSvg(context, tag, info, callback);
 		}
 	};
 }

@@ -8,10 +8,11 @@
 //         }, callback: (value: T, key?: string) => boolean | void, context?: any): boolean;
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.Object {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.Object {
 		static isEmpty(obj: Record<string, any>): boolean {
 			return Object.entries(obj).length === 0;
 		}

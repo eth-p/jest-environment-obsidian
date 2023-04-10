@@ -6,18 +6,19 @@
 //         setCssProps(props: Record<string, string>): void;
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
 import { __WARNING__ } from '#warnings';
 
 import { setCssProps, setCssStyles } from './HTMLElement';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.HTMLElement {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.HTMLElement {
 		setCssStyles(styles: Partial<CSSStyleDeclaration>): void {
 			const modifiedStyles: Record<string, any> = { ...styles };
 			assignUnits(this.style, modifiedStyles);
-			setCssStyles(globalThis, this, modifiedStyles);
+			setCssStyles(context, this, modifiedStyles);
 		}
 
 		setCssProps(props: Record<string, string>): void {

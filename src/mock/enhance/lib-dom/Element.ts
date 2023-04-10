@@ -26,13 +26,14 @@
 //         findAllSelf(selector: string): HTMLElement[];
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
 
 import { empty } from './Node';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.Element {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.Element {
 		getText(): string {
 			return this.textContent ?? '';
 		}

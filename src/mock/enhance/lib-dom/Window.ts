@@ -8,37 +8,38 @@
 //         nextFrame(): Promise<void>;
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.Window {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.Window {
 		sleep(ms: number): Promise<void> {
-			return sleep(globalThis, ms);
+			return sleep(context, ms);
 		}
 
 		nextFrame(): Promise<void> {
-			return nextFrame(globalThis);
+			return nextFrame(context);
 		}
 
 		get activeWindow(): Window {
-			return globalThis.window;
+			return context.window;
 		}
 
 		get activeDocument(): Document {
-			return globalThis.document;
+			return context.document;
 		}
 	};
 }
 
-export function sleep(context: typeof global, ms: number): Promise<void> {
+export function sleep(context: Globals, ms: number): Promise<void> {
 	// Do not actually wait for that amount of time.
 	return new context.Promise((resolve) => {
 		context.setTimeout(resolve, 0);
 	});
 }
 
-export function nextFrame(context: typeof global): Promise<void> {
+export function nextFrame(context: Globals): Promise<void> {
 	return new context.Promise((resolve) => {
 		context.requestAnimationFrame(() => resolve());
 	});

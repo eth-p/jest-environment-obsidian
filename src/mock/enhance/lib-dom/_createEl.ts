@@ -1,3 +1,4 @@
+import type { Globals } from '#context';
 import { getCallerName } from '#util';
 import { Warning, __WARNING__ } from '#warnings';
 
@@ -11,7 +12,7 @@ import { Warning, __WARNING__ } from '#warnings';
  * @returns The created element.
  */
 export function createEl<K extends keyof HTMLElementTagNameMap>(
-	context: typeof global,
+	context: Globals,
 	tag: K,
 	info?: DomElementInfo | string,
 	callback?: (el: HTMLElementTagNameMap[K]) => void,
@@ -41,7 +42,7 @@ export function createEl<K extends keyof HTMLElementTagNameMap>(
  * @returns The created element.
  */
 export function createSvg<K extends keyof SVGElementTagNameMap>(
-	context: typeof global,
+	context: Globals,
 	tag: K,
 	info?: SvgElementInfo | string,
 	callback?: (el: SVGElementTagNameMap[K]) => void,
@@ -62,7 +63,7 @@ export function infoFrom<I extends DomElementInfo | SvgElementInfo>(info: I | st
 }
 
 export function doSetClass(
-	context: typeof global,
+	context: Globals,
 	el: HTMLElement | SVGElement,
 	cls: (DomElementInfo | SvgElementInfo)['cls'],
 ): void {
@@ -78,13 +79,13 @@ export function doSetClass(
 	el.classList.add(...classes);
 }
 
-export function doSetText(context: typeof global, el: HTMLElement, text: DomElementInfo['text']): void {
+export function doSetText(context: Globals, el: HTMLElement, text: DomElementInfo['text']): void {
 	if (text == null) return;
 	el.setText(text);
 }
 
 export function doSetAttributes(
-	context: typeof global,
+	context: Globals,
 	el: HTMLElement | SVGElement,
 	attr: (DomElementInfo | SvgElementInfo)['attr'],
 ): void {
@@ -92,12 +93,12 @@ export function doSetAttributes(
 	el.setAttrs(attr);
 }
 
-export function doSetTitle(context: typeof global, el: HTMLElement, title: DomElementInfo['title']): void {
+export function doSetTitle(context: Globals, el: HTMLElement, title: DomElementInfo['title']): void {
 	if (title == null) return;
 	el.title = title;
 }
 
-export function doSetValue(context: typeof global, el: HTMLElement, value: DomElementInfo['value']): boolean {
+export function doSetValue(context: Globals, el: HTMLElement, value: DomElementInfo['value']): boolean {
 	if (value == null) return false;
 
 	if (
@@ -112,7 +113,7 @@ export function doSetValue(context: typeof global, el: HTMLElement, value: DomEl
 	return false;
 }
 
-export function doSetType(context: typeof global, el: HTMLElement, type: DomElementInfo['type']): boolean {
+export function doSetType(context: Globals, el: HTMLElement, type: DomElementInfo['type']): boolean {
 	if (type == null) return false;
 
 	if (el instanceof context.HTMLInputElement) {
@@ -129,7 +130,7 @@ export function doSetType(context: typeof global, el: HTMLElement, type: DomElem
 }
 
 export function doSetPlaceholder(
-	context: typeof global,
+	context: Globals,
 	el: HTMLElement,
 	placeholder: DomElementInfo['placeholder'],
 ): boolean {
@@ -143,7 +144,7 @@ export function doSetPlaceholder(
 	return false;
 }
 
-export function doSetHref(context: typeof global, el: HTMLElement, href: DomElementInfo['href']): boolean {
+export function doSetHref(context: Globals, el: HTMLElement, href: DomElementInfo['href']): boolean {
 	if (href == null) return false;
 
 	if (

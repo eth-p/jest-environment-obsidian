@@ -50,12 +50,5 @@ export default class ObsidianEnvironment extends JSDomEnvironment {
 	// }
 }
 
-/**
- * Global variables under `jest-environment-obsidian`.
- */
-export interface Globals extends Window {
-	app: unknown;
-}
-
 // Enable automatic shims for obsidian modules.
 hookResolver();

@@ -15,6 +15,7 @@
 			"#jsx/jsx-runtime": ["./src/testutil/jsx-runtime.ts"],
 			"#testutil/*": ["./src/testutil/*"],
 			"#options": ["./src/environment-options.ts"],
+			"#context": ["./src/environment-context.ts"],
 			"#warnings": ["./src/warnings.ts"],
 			"#util": ["./src/util.ts"],
 		},

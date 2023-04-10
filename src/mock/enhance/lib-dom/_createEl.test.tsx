@@ -4,9 +4,10 @@
  *
  * @jest-environment <rootDir>/src/environment.ts
  */
+import type { Globals } from '#context';
 import { getWarnings, setupContext as setupWarnings } from '#warnings';
 
-import { beforeEach, describe, expect, test, jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 import {
 	doSetAttributes,
@@ -21,8 +22,10 @@ import {
 	infoFrom,
 } from './_createEl';
 
+const context = globalThis as unknown as Globals;
+
 beforeEach(() => {
-	setupWarnings(globalThis);
+	setupWarnings(context);
 });
 
 describe('internal: infoFrom', () => {
@@ -47,31 +50,31 @@ describe('internal: doSetClass', () => {
 	});
 
 	test('string', () => {
-		expect(() => doSetClass(globalThis, el, 'foo')).not.toThrow();
+		expect(() => doSetClass(context, el, 'foo')).not.toThrow();
 		expect(el.classList.contains('foo')).toBe(true);
 		expect(el.classList.length).toBe(1);
 	});
 
 	test('array', () => {
-		expect(() => doSetClass(globalThis, el, ['foo', 'bar'])).not.toThrow();
+		expect(() => doSetClass(context, el, ['foo', 'bar'])).not.toThrow();
 		expect(el.classList.contains('foo')).toBe(true);
 		expect(el.classList.contains('bar')).toBe(true);
 		expect(el.classList.length).toBe(2);
 	});
 
 	test('undefined', () => {
-		expect(() => doSetClass(globalThis, el, undefined)).not.toThrow();
+		expect(() => doSetClass(context, el, undefined)).not.toThrow();
 		expect(el.classList.length).toBe(0);
 	});
 
 	test('string, invalid class name', () => {
-		expect(() => doSetClass(globalThis, el, 'foo bar')).toThrow();
-		expect(getWarnings(globalThis).size).toBe(1);
+		expect(() => doSetClass(context, el, 'foo bar')).toThrow();
+		expect(getWarnings(context).size).toBe(1);
 	});
 
 	test('array, invalid class name', () => {
-		expect(() => doSetClass(globalThis, el, ['foo', 'foo bar'])).toThrow();
-		expect(getWarnings(globalThis).size).toBe(1);
+		expect(() => doSetClass(context, el, ['foo', 'foo bar'])).toThrow();
+		expect(getWarnings(context).size).toBe(1);
 	});
 });
 
@@ -82,7 +85,7 @@ describe('internal: doSetText', () => {
 	});
 
 	test('string', () => {
-		expect(() => doSetText(globalThis, el, 'foo')).not.toThrow();
+		expect(() => doSetText(context, el, 'foo')).not.toThrow();
 		expect(el.textContent).toBe('foo');
 	});
 
@@ -93,12 +96,12 @@ describe('internal: doSetText', () => {
 				<div>bar</div>
 			</>
 		);
-		expect(() => doSetText(globalThis, el, fragment)).not.toThrow();
+		expect(() => doSetText(context, el, fragment)).not.toThrow();
 		expect(el.textContent).toBe('foobar');
 	});
 
 	test('undefined', () => {
-		expect(() => doSetText(globalThis, el, undefined)).not.toThrow();
+		expect(() => doSetText(context, el, undefined)).not.toThrow();
 		expect(el.textContent).toBe('');
 	});
 });
@@ -110,18 +113,18 @@ describe('internal: doSetAttributes', () => {
 	});
 
 	test('empty', () => {
-		expect(() => doSetAttributes(globalThis, el, {})).not.toThrow();
+		expect(() => doSetAttributes(context, el, {})).not.toThrow();
 		expect(el.getAttributeNames()).toStrictEqual([]);
 	});
 
 	test('undefined', () => {
-		expect(() => doSetAttributes(globalThis, el, undefined)).not.toThrow();
+		expect(() => doSetAttributes(context, el, undefined)).not.toThrow();
 		expect(el.getAttributeNames()).toStrictEqual([]);
 	});
 
 	test('attributes', () => {
 		expect(() =>
-			doSetAttributes(globalThis, el, {
+			doSetAttributes(context, el, {
 				'data-foo': 'bar',
 				'data-bar': 'baz',
 			}),
@@ -140,17 +143,17 @@ describe('internal: doSetTitle', () => {
 	});
 
 	test('empty', () => {
-		expect(() => doSetTitle(globalThis, el, '')).not.toThrow();
+		expect(() => doSetTitle(context, el, '')).not.toThrow();
 		expect(el.getAttribute('title')).toBe('');
 	});
 
 	test('undefined', () => {
-		expect(() => doSetTitle(globalThis, el, undefined)).not.toThrow();
+		expect(() => doSetTitle(context, el, undefined)).not.toThrow();
 		expect(el.getAttribute('title')).toBeNull();
 	});
 
 	test('string', () => {
-		expect(() => doSetTitle(globalThis, el, 'foo')).not.toThrow();
+		expect(() => doSetTitle(context, el, 'foo')).not.toThrow();
 		expect(el.getAttribute('title')).toBe('foo');
 	});
 });
@@ -158,27 +161,27 @@ describe('internal: doSetTitle', () => {
 describe('internal: doSetValue', () => {
 	test('ignores most tags', () => {
 		const el = <div />;
-		expect(doSetValue(globalThis, el, 'foo')).toBe(false);
+		expect(doSetValue(context, el, 'foo')).toBe(false);
 		expect(el.value).toBe(undefined);
 		expect(el.getAttribute('value')).toBe(null);
 	});
 
 	test('empty', () => {
 		const el = <input />;
-		expect(doSetValue(globalThis, el, '')).toBe(true);
+		expect(doSetValue(context, el, '')).toBe(true);
 		expect(el.value).toBe('');
 	});
 
 	test('undefined', () => {
 		const el = <input />;
 		el.value = 'bar';
-		expect(doSetValue(globalThis, el, undefined)).toBe(false);
+		expect(doSetValue(context, el, undefined)).toBe(false);
 		expect(el.value).toBe('bar');
 	});
 
 	test('accepts HTMLInputElement', () => {
 		const el = <input />;
-		expect(doSetValue(globalThis, el, 'foo')).toBe(true);
+		expect(doSetValue(context, el, 'foo')).toBe(true);
 		expect(el.value).toBe('foo');
 	});
 
@@ -189,13 +192,13 @@ describe('internal: doSetValue', () => {
 			</select>
 		);
 
-		expect(doSetValue(globalThis, el, 'foo')).toBe(true);
+		expect(doSetValue(context, el, 'foo')).toBe(true);
 		expect(el.value).toBe('foo');
 	});
 
 	test('accepts HTMLOptionElement', () => {
 		const el = <option />;
-		expect(doSetValue(globalThis, el, 'foo')).toBe(true);
+		expect(doSetValue(context, el, 'foo')).toBe(true);
 		expect(el.value).toBe('foo');
 	});
 });
@@ -203,31 +206,31 @@ describe('internal: doSetValue', () => {
 describe('internal: doSetType', () => {
 	test('ignores most tags', () => {
 		const el = <div />;
-		expect(doSetType(globalThis, el, 'foo')).toBe(false);
+		expect(doSetType(context, el, 'foo')).toBe(false);
 		expect(el.getAttribute('type')).toBe(null);
 	});
 
 	test('empty', () => {
 		const el = <input />;
-		expect(doSetType(globalThis, el, '')).toBe(true);
+		expect(doSetType(context, el, '')).toBe(true);
 		expect(el.getAttribute('type')).toBe('');
 	});
 
 	test('undefined', () => {
 		const el = <input />;
-		expect(doSetType(globalThis, el, undefined)).toBe(false);
+		expect(doSetType(context, el, undefined)).toBe(false);
 		expect(el.getAttribute('type')).toBeNull();
 	});
 
 	test('accepts HTMLInputElement', () => {
 		const el = <input />;
-		expect(doSetType(globalThis, el, 'text')).toBe(true);
+		expect(doSetType(context, el, 'text')).toBe(true);
 		expect(el.getAttribute('type')).toBe('text');
 	});
 
 	test('accepts HTMLStyleElement', () => {
 		const el = <style />;
-		expect(doSetType(globalThis, el, 'text/css')).toBe(true);
+		expect(doSetType(context, el, 'text/css')).toBe(true);
 		expect(el.getAttribute('type')).toBe('text/css');
 	});
 });
@@ -235,25 +238,25 @@ describe('internal: doSetType', () => {
 describe('internal: doSetPlaceholder', () => {
 	test('ignores most tags', () => {
 		const el = <div />;
-		expect(doSetPlaceholder(globalThis, el, 'foo')).toBe(false);
+		expect(doSetPlaceholder(context, el, 'foo')).toBe(false);
 		expect(el.getAttribute('placeholder')).toBe(null);
 	});
 
 	test('empty', () => {
 		const el = <input />;
-		expect(doSetPlaceholder(globalThis, el, '')).toBe(true);
+		expect(doSetPlaceholder(context, el, '')).toBe(true);
 		expect(el.getAttribute('placeholder')).toBe('');
 	});
 
 	test('undefined', () => {
 		const el = <input />;
-		expect(doSetPlaceholder(globalThis, el, undefined)).toBe(false);
+		expect(doSetPlaceholder(context, el, undefined)).toBe(false);
 		expect(el.getAttribute('placeholder')).toBeNull();
 	});
 
 	test('accepts HTMLInputElement', () => {
 		const el = <input />;
-		expect(doSetPlaceholder(globalThis, el, 'text')).toBe(true);
+		expect(doSetPlaceholder(context, el, 'text')).toBe(true);
 		expect(el.getAttribute('placeholder')).toBe('text');
 	});
 });
@@ -261,37 +264,37 @@ describe('internal: doSetPlaceholder', () => {
 describe('internal: doSetHref', () => {
 	test('ignores most tags', () => {
 		const el = <div />;
-		expect(doSetHref(globalThis, el, 'foo')).toBe(false);
+		expect(doSetHref(context, el, 'foo')).toBe(false);
 		expect(el.getAttribute('href')).toBe(null);
 	});
 
 	test('empty', () => {
 		const el = <a />;
-		expect(doSetHref(globalThis, el, '')).toBe(true);
+		expect(doSetHref(context, el, '')).toBe(true);
 		expect(el.getAttribute('href')).toBe('');
 	});
 
 	test('undefined', () => {
 		const el = <a />;
-		expect(doSetHref(globalThis, el, undefined)).toBe(false);
+		expect(doSetHref(context, el, undefined)).toBe(false);
 		expect(el.getAttribute('href')).toBeNull();
 	});
 
 	test('accepts HTMLInputElement', () => {
 		const el = <a />;
-		expect(doSetHref(globalThis, el, 'about:blank')).toBe(true);
+		expect(doSetHref(context, el, 'about:blank')).toBe(true);
 		expect(el.getAttribute('href')).toBe('about:blank');
 	});
 
 	test('accepts HTMLLinkElement', () => {
 		const el = <link />;
-		expect(doSetHref(globalThis, el, 'about:blank')).toBe(true);
+		expect(doSetHref(context, el, 'about:blank')).toBe(true);
 		expect(el.getAttribute('href')).toBe('about:blank');
 	});
 
 	test('accepts HTMLBaseElement', () => {
 		const el = <base />;
-		expect(doSetHref(globalThis, el, 'about:blank')).toBe(true);
+		expect(doSetHref(context, el, 'about:blank')).toBe(true);
 		expect(el.getAttribute('href')).toBe('about:blank');
 	});
 });

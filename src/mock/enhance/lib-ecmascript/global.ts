@@ -5,11 +5,12 @@
 //     function fish(selector: string): HTMLElement | null;
 //     function fishAll(selector: string): HTMLElement[];
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
 	const global = function () {} as unknown as { new (): any };
-	global.prototype = globalThis;
+	global.prototype = context;
 
 	return class extends global {
 		static isBoolean(obj: any): obj is boolean {
@@ -17,11 +18,11 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		}
 
 		static fish(selector: string): HTMLElement | null {
-			return globalThis.document.querySelector(selector);
+			return context.document.querySelector(selector);
 		}
 
 		static fishAll(selector: string): HTMLElement[] {
-			return Array.from(globalThis.document.querySelectorAll(selector));
+			return Array.from(context.document.querySelectorAll(selector));
 		}
 	};
 }

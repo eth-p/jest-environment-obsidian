@@ -1,3 +1,4 @@
+import type { Globals } from '#context';
 import { argv, cwd, stderr } from 'node:process';
 import { basename, dirname, join, relative, sep } from 'path';
 
@@ -26,12 +27,12 @@ const pendingWarnings = new Set<AbstractWarning>();
  * @param params The warning parameters.
  */
 export function __WARNING__<T extends WarningType>(
-	context: typeof globalThis,
+	context: Globals,
 	type: T,
 	caller: string | null,
 	...params: WarningParameters<T>
 ) {
-	const warnings = (context as typeof globalThis & { [WARNINGS]: Set<AbstractWarning> })[WARNINGS];
+	const warnings = (context as Globals & { [WARNINGS]: Set<AbstractWarning> })[WARNINGS];
 	const warningCaller =
 		caller ??
 		(() => {

@@ -1,3 +1,4 @@
+import { Globals } from '#context';
 import EnvironmentOptions from '../../environment-options';
 import { extendType } from '../../util';
 
@@ -15,7 +16,7 @@ import Object from './lib-ecmascript/Object';
 import String from './lib-ecmascript/String';
 import esGlobal from './lib-ecmascript/global';
 
-export function patch(globals: any, options: EnvironmentOptions) {
+export function patch(globals: Globals, options: EnvironmentOptions) {
 	// EMCAScript Extensions
 	extendType(globals.Array, Array(globals, options));
 	extendType(globals.Math, Math(globals, options));

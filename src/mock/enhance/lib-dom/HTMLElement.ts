@@ -19,14 +19,15 @@
 //         findAllSelf(selector: string): HTMLElement[];
 //     }
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__, getCallerName } from '#util';
 import { Warning, __WARNING__ } from '#warnings';
 
 import { find, findAll, findAllSelf } from './Element';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
-	return class extends globalThis.HTMLElement {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
+	return class extends context.HTMLElement {
 		show(): void {
 			if (this.style.getPropertyValue('display') !== 'none') {
 				return;
@@ -72,26 +73,26 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		isShown(): boolean {
 			// Strict conformance.
 			if (options.conformance === 'strict') {
-				if (!globalThis.document.contains(this)) {
-					__WARNING__(globalThis, Warning.NodeMustBeWithinDocument, null);
+				if (!context.document.contains(this)) {
+					__WARNING__(context, Warning.NodeMustBeWithinDocument, null);
 					return false;
 				}
 			}
 
 			// Special cases.
-			if (this instanceof globalThis.HTMLHtmlElement) return false;
-			if (this instanceof globalThis.HTMLBodyElement) return false;
+			if (this instanceof context.HTMLHtmlElement) return false;
+			if (this instanceof context.HTMLBodyElement) return false;
 
-			const styles = globalThis.window.getComputedStyle(this);
+			const styles = context.window.getComputedStyle(this);
 			let position = styles.getPropertyValue('position');
 			if (position === '') position = this.style.getPropertyValue('position');
 			if (position === 'fixed') return false;
 
 			// Walk upwards, checking.
 			for (let target: Element | null = this; target != null; target = target.parentElement) {
-				if (!(target instanceof globalThis.HTMLElement)) continue;
+				if (!(target instanceof context.HTMLElement)) continue;
 
-				const styles = globalThis.window.getComputedStyle(target);
+				const styles = context.window.getComputedStyle(target);
 				let display = styles.getPropertyValue('display');
 				if (display === '') display = this.style.getPropertyValue('display');
 				if (display === 'none') return false;
@@ -101,7 +102,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 		}
 
 		setCssStyles(styles: Partial<CSSStyleDeclaration>): void {
-			setCssStyles(globalThis, this, styles);
+			setCssStyles(context, this, styles);
 		}
 
 		setCssProps(props: Record<string, string>): void {
@@ -135,14 +136,14 @@ export default function createExtension(globalThis: typeof global, options: Envi
 }
 
 export function setCssStyles(
-	globalThis: typeof global,
+	context: Globals,
 	target: HTMLElement | SVGElement,
 	styles: Partial<CSSStyleDeclaration>,
 ): void {
 	for (const [key, value] of Object.entries(styles)) {
 		if (!(key in target.style)) {
 			__WARNING__(
-				globalThis,
+				context,
 				key.startsWith('--')
 					? Warning.SetCssStylesDoesNotSetVariables
 					: Warning.SetCssStylesDoesNotSetUnknownProperties,

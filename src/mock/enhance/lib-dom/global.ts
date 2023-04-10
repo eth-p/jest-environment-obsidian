@@ -18,23 +18,24 @@
 //     let activeWindow: Window;
 //     let activeDocument: Document;
 //
+import type { Globals } from '#context';
 import type EnvironmentOptions from '#options';
 import { __UNIMPLEMENTED__ } from '#util';
 
 import { nextFrame, sleep } from './Window';
 import { createEl, createSvg } from './_createEl';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
 	const global = function () {} as unknown as { new (): any };
-	global.prototype = globalThis;
+	global.prototype = context;
 
 	return class extends global {
 		static fish(selector: string): HTMLElement | null {
-			return globalThis.document.querySelector(selector);
+			return context.document.querySelector(selector);
 		}
 
 		static fishAll(selector: string): HTMLElement[] {
-			return Array.from(globalThis.document.querySelectorAll(selector));
+			return Array.from(context.document.querySelectorAll(selector));
 		}
 
 		static createEl<K extends keyof HTMLElementTagNameMap>(
@@ -42,15 +43,15 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			o?: DomElementInfo | string,
 			callback?: (el: HTMLElementTagNameMap[K]) => void,
 		): HTMLElementTagNameMap[K] {
-			return createEl(globalThis, tag, o, callback);
+			return createEl(context, tag, o, callback);
 		}
 
 		static createDiv(o?: DomElementInfo | string, callback?: (el: HTMLDivElement) => void): HTMLDivElement {
-			return createEl(globalThis, 'div', o, callback);
+			return createEl(context, 'div', o, callback);
 		}
 
 		static createSpan(o?: DomElementInfo | string, callback?: (el: HTMLSpanElement) => void): HTMLSpanElement {
-			return createEl(globalThis, 'span', o, callback);
+			return createEl(context, 'span', o, callback);
 		}
 
 		static createSvg<K extends keyof SVGElementTagNameMap>(
@@ -58,7 +59,7 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			o?: SvgElementInfo | string,
 			callback?: (el: SVGElementTagNameMap[K]) => void,
 		): SVGElementTagNameMap[K] {
-			return createSvg(globalThis, tag, o, callback);
+			return createSvg(context, tag, o, callback);
 		}
 
 		static createFragment(callback?: (el: DocumentFragment) => void): DocumentFragment {
@@ -80,23 +81,23 @@ export default function createExtension(globalThis: typeof global, options: Envi
 			// add it as event listener to "DOMContentReady". For tests, call it after a short delay.
 			//
 			// We use a delay so to user doesn't rely on it being called immediately.
-			globalThis.setTimeout(() => fn(), 1);
+			context.setTimeout(() => fn(), 1);
 		}
 
 		static sleep(ms: number): Promise<void> {
-			return sleep(globalThis, ms);
+			return sleep(context, ms);
 		}
 
 		static nextFrame(): Promise<void> {
-			return nextFrame(globalThis);
+			return nextFrame(context);
 		}
 
 		static get activeWindow(): Window {
-			return globalThis.window;
+			return context.window;
 		}
 
 		static get activeDocument(): Document {
-			return globalThis.document;
+			return context.document;
 		}
 	};
 }

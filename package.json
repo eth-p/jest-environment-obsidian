@@ -36,6 +36,11 @@
 			"import": "./dist/esm/environment-options.js",
 			"require": "./dist/cjs/environment-options.js"
 		},
+		"#context": {
+			"typescript": "./src/environment-context.ts",
+			"import": "./dist/esm/environment-context.js",
+			"require": "./dist/cjs/environment-context.js"
+		},
 		"#warnings": {
 			"typescript": "./src/warnings.ts",
 			"import": "./dist/esm/warnings.js",

@@ -12,9 +12,10 @@
 //         isString(obj: any): obj is string;
 //     }
 //
-import EnvironmentOptions from '#options';
+import type { Globals } from '#context';
+import type EnvironmentOptions from '#options';
 
-export default function createExtension(globalThis: typeof global, options: EnvironmentOptions) {
+export default function createExtension(context: Globals, options: EnvironmentOptions) {
 	return class extends String {
 		static isString(obj: any): obj is string {
 			return typeof obj === 'string';
