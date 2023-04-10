@@ -1,4 +1,5 @@
 import { Globals } from '#context';
+
 import EnvironmentOptions from '../../environment-options';
 import { extendType } from '../../util';
 

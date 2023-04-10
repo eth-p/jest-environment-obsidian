@@ -3,8 +3,8 @@ import { join } from 'path';
 
 import { type FindNodeModuleConfig, default as JestResolve } from 'jest-resolve';
 
-import { MOCKED_MODULE_ROOT, SOURCE_EXTENSION } from './self-paths';
 import monkeypatch from './monkeypatch';
+import { MOCKED_MODULE_ROOT, SOURCE_EXTENSION } from './self-paths';
 
 // Get the real resolver class.
 // For whatever reason, the types exported for jest-resolve aren't correct.
