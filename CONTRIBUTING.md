@@ -85,6 +85,13 @@ Inside the `src` folder, there are a number of source files along with the `mock
 
     > **[!]** Anything not exposed to the testing environment, but is meant to be shared among multiple modules should be in its own file prefixed with a single underscore (`_`) character. Example: `_createEl.ts`
 
+-   `src/mock/functions`:  
+    Implementations for the functions exported under the `obsidian` module.
+
+    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ function in the `obsidian` module.
+
+    > **[!]** Anything not exposed to the testing environment but is meant to be shared among shim modules should go inside the `src/mockutil` directory.
+
 -   `src/mock/module`:  
     Shimmed/mocked Obsidian modules.
 
@@ -94,6 +101,13 @@ Inside the `src` folder, there are a number of source files along with the `mock
     >
     > -   There is not a `__mocks__/module.{ts,js}` in the project.
     > -   There is not a `node_modules/module` in the project.
+
+-   `src/mock/variables`:  
+    Implementations for the variables exported under the `obsidian` module.
+
+    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ variable in the `obsidian` module.
+
+    > **[!]** Anything not exposed to the testing environment but is meant to be shared among shim modules should go inside the `src/mockutil` directory.
 
 -   `src/testutil`:  
     Utilities intended to be used only within tests.
