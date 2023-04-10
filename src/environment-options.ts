@@ -1,10 +1,13 @@
 import { JestEnvironmentConfig } from '@jest/environment';
 
+import { LATEST_OBSIDIAN_VERSION } from './self-constants';
+
 /**
  * Options for the `jest-environment-obsidian` environment.
  */
 export default interface EnvironmentOptions {
 	conformance: 'lax' | 'strict';
+	version: string;
 
 	ignoreWarnings: string[];
 }
@@ -12,6 +15,7 @@ export default interface EnvironmentOptions {
 export function createDefault(): EnvironmentOptions {
 	return {
 		conformance: 'lax',
+		version: LATEST_OBSIDIAN_VERSION,
 		ignoreWarnings: [],
 	};
 }
@@ -98,6 +102,19 @@ const Appliers: EnvironmentOptionAppliers = {
 		},
 
 		pragma: 'obsidian-conformance',
+		pragmaToConfig(value) {
+			if (value.length > 1) throw new Error(`can only be specified once`);
+			return value[0];
+		},
+	},
+
+	version: {
+		assign(target, value) {
+			if (typeof value !== 'string') throw new Error('must be a string');
+			target.version = value;
+		},
+
+		pragma: 'obsidian-version',
 		pragmaToConfig(value) {
 			if (value.length > 1) throw new Error(`can only be specified once`);
 			return value[0];

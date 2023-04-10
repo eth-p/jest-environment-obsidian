@@ -102,13 +102,6 @@ export {};
 // export function addIcon(iconId: string, svgContent: string): void;
 
 // /**
-//  * This is the API version of the app, which follows the release cycle of the desktop app.
-//  * Example: "0.13.21"
-//  * @public
-//  */
-// export let apiVersion: string;
-
-// /**
 //  * @public
 //  */
 // export class App {

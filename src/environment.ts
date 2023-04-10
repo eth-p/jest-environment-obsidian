@@ -1,3 +1,5 @@
+import { Globals, setOptions } from '#context';
+
 import { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
 import { TestEnvironment as JSDomEnvironment } from 'jest-environment-jsdom';
 
@@ -26,9 +28,11 @@ export default class ObsidianEnvironment extends JSDomEnvironment {
 	/** @override */
 	public async setup() {
 		await super.setup();
+		const context = this.global as Globals;
+		setOptions(context, this.options);
 
-		setupWarnings(this.global);
-		patch(this.global, this.options);
+		setupWarnings(context);
+		patch(context, this.options);
 	}
 
 	/** @override */

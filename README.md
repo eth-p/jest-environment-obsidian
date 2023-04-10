@@ -68,6 +68,14 @@ When set to `strict`, certain functions and behaviours will work as though they 
 **Options:** `"lax"`, `"strict"`  
 **Default:** `"lax"`  
 
+### `version`
+
+Configures the reported `apiVersion` inside the `obsidian` module.
+
+**Pragma:** `@obsidian-version`  
+**Options:** `string`  
+**Default:** `1.1.16`  
+
 ### `ignoreWarnings`
 
 Disables printing of specific [warning messages](#warnings).
