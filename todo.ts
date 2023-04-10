@@ -93,13 +93,6 @@ export {};
 //     onChange(callback: (value: string) => any): this;
 // }
 
-// /**
-//  * Adds an icon to the library
-//  * @param iconId - the icon ID
-//  * @param svgContent - the content of the SVG.
-//  * @public
-//  */
-// export function addIcon(iconId: string, svgContent: string): void;
 
 // /**
 //  * @public
@@ -1192,12 +1185,6 @@ export {};
 // }
 
 // /**
-//  * Flush the MathJax stylesheet.
-//  * @public
-//  */
-// export function finishRenderMath(): Promise<void>;
-
-// /**
 //  * @public
 //  */
 // export interface FrontMatterCache extends CacheItem {
@@ -1252,31 +1239,6 @@ export {};
 //     abstract onChooseItem(item: T, evt: MouseEvent | KeyboardEvent): void;
 // }
 
-// /**
-//  * @public
-//  */
-// export function getAllTags(cache: CachedMetadata): string[] | null;
-
-// /** @public */
-// export function getBlobArrayBuffer(blob: Blob): Promise<ArrayBuffer>;
-
-// /**
-//  * Create an SVG from an iconId. Returns null if no icon associated with the iconId.
-//  * @param iconId - the icon ID
-//  * @public
-//  */
-// export function getIcon(iconId: string): SVGSVGElement | null;
-
-// /**
-//  * Get the list of registered icons
-//  * @public
-//  */
-// export function getIconIds(): IconName[];
-
-// /**
-//  * @public
-//  */
-// export function getLinkpath(linktext: string): string;
 
 // /**
 //  * @public
@@ -1316,9 +1278,6 @@ export {};
 //  * @public
 //  */
 // export type HexString = string;
-
-// /** @public */
-// export function hexToArrayBuffer(hex: string): ArrayBuffer;
 
 // /**
 //  * @public
@@ -1398,12 +1357,6 @@ export {};
 // }
 
 // /**
-//  * Converts HTML to Markdown using Turndown Service.
-//  * @public
-//  */
-// export function htmlToMarkdown(html: string): string;
-
-// /**
 //  * @public
 //  */
 // export interface Instruction {
@@ -1456,12 +1409,6 @@ export {};
 //  * @public
 //  */
 // export function iterateCacheRefs(cache: CachedMetadata, cb: (ref: ReferenceCache) => boolean | void): boolean;
-
-// /**
-//  * @returns true if callback ever returns true, false otherwise.
-//  * @public
-//  */
-// export function iterateRefs(refs: ReferenceCache[], cb: (ref: ReferenceCache) => boolean | void): boolean;
 
 // /** @public */
 // export class Keymap {
@@ -1577,37 +1524,6 @@ export {};
 //     mousedown: boolean;
 // }
 
-// /**
-//  * @public
-//  */
-// export const livePreviewState: ViewPlugin<LivePreviewState>;
-
-// /**
-//  * Load MathJax.
-//  * @public
-//  */
-// export function loadMathJax(): Promise<void>;
-
-// /**
-//  * Load Mermaid and return a promise to the global mermaid object.
-//  * Can also use `mermaid` after this promise resolves to get the same reference.
-//  * @public
-//  */
-// export function loadMermaid(): Promise<any>;
-
-// /**
-//  * Load PDF.js and return a promise to the global pdfjsLib object.
-//  * Can also use `window.pdfjsLib` after this promise resolves to get the same reference.
-//  * @public
-//  */
-// export function loadPdfJs(): Promise<any>;
-
-// /**
-//  * Load Prism.js and return a promise to the global Prism object.
-//  * Can also use `Prism` after this promise resolves to get the same reference.
-//  * @public
-//  */
-// export function loadPrism(): Promise<any>;
 
 // /**
 //  * @public
@@ -2268,9 +2184,6 @@ export {};
 //  */
 // export type Modifier = 'Mod' | 'Ctrl' | 'Meta' | 'Shift' | 'Alt';
 
-// /** @public */
-// export const moment_2: typeof Moment;
-// export { moment_2 as moment }
 
 // /**
 //  * @public
@@ -2304,10 +2217,6 @@ export {};
 //     updateSample(): void;
 // }
 
-// /**
-//  * @public
-//  */
-// export function normalizePath(path: string): string;
 
 // /**
 //  * @public
@@ -2363,91 +2272,6 @@ export {};
 //  */
 // export type PaneType = 'tab' | 'split' | 'window';
 
-// /**
-//  * @public
-//  */
-// export function parseFrontMatterAliases(frontmatter: any | null): string[] | null;
-
-// /**
-//  * @public
-//  */
-// export function parseFrontMatterEntry(frontmatter: any | null, key: string | RegExp): any | null;
-
-// /**
-//  * @public
-//  */
-// export function parseFrontMatterStringArray(frontmatter: any | null, key: string | RegExp, nospaces?: boolean): string[] | null;
-
-// /**
-//  * @public
-//  */
-// export function parseFrontMatterTags(frontmatter: any | null): string[] | null;
-
-// /**
-//  * @public
-//  */
-// export function parseLinktext(linktext: string): {
-//     /**
-//      * @public
-//      */
-//     path: string;
-//     /**
-//      * @public
-//      */
-//     subpath: string;
-// };
-
-// /** @public */
-// export function parseYaml(yaml: string): any;
-
-// /** @public */
-// export const Platform: {
-//     /**
-//      * The UI is in desktop mode.
-//      * @public
-//      */
-//     isDesktop: boolean;
-//     /**
-//      * The UI is in mobile mode.
-//      * @public
-//      */
-//     isMobile: boolean;
-//     /**
-//      * We're running the electron-based desktop app.
-//      * @public
-//      */
-//     isDesktopApp: boolean;
-//     /**
-//      * We're running the capacitor-js mobile app.
-//      * @public
-//      */
-//     isMobileApp: boolean;
-//     /**
-//      * We're running the iOS app.
-//      * @public
-//      */
-//     isIosApp: boolean;
-//     /**
-//      * We're running the Android app.
-//      * @public
-//      */
-//     isAndroidApp: boolean;
-
-//     /**
-//      * We're on a macOS device, or a device that pretends to be one (like iPhones and iPads).
-//      * Typically used to detect whether to use command-based hotkeys vs ctrl-based hotkeys.
-//      * @public
-//      */
-//     isMacOS: boolean;
-
-//     /**
-//      * We're running in Safari.
-//      * Typically used to provide workarounds for Safari bugs.
-//      * @public
-//      */
-//     isSafari: boolean;
-
-// };
 
 // /**
 //  * @public
@@ -2673,29 +2497,6 @@ export {};
 // }
 
 // /**
-//  * Construct a fuzzy search callback that runs on a target string.
-//  * Performance may be an issue if you are running the search for more than a few thousand times.
-//  * If performance is a problem, consider using `prepareSimpleSearch` instead.
-//  * @param query - the fuzzy query.
-//  * @return fn - the callback function to apply the search on.
-//  * @public
-//  */
-// export function prepareFuzzySearch(query: string): (text: string) => SearchResult | null;
-
-// /**
-//  * @public
-//  */
-// export function prepareQuery(query: string): PreparedQuery;
-
-// /**
-//  * Construct a simple search callback that runs on a target string.
-//  * @param query - the space-separated words
-//  * @return fn - the callback function to apply the search on
-//  * @public
-//  */
-// export function prepareSimpleSearch(query: string): (text: string) => SearchResult | null;
-
-// /**
 //  * @public
 //  */
 // export interface ReferenceCache extends CacheItem {
@@ -2713,43 +2514,6 @@ export {};
 //      */
 //     displayText?: string;
 // }
-
-// /**
-//  * Remove a custom icon from the library
-//  * @param iconId - the icon ID
-//  * @public
-//  */
-// export function removeIcon(iconId: string): void;
-
-// /**
-//  * @public
-//  */
-// export function renderMatches(el: HTMLElement | DocumentFragment, text: string, matches: SearchMatches | null, offset?: number): void;
-
-// /**
-//  * Render some LaTeX math using the MathJax engine. Returns an HTMLElement.
-//  * Requires calling `finishRenderMath` when rendering is all done to flush the MathJax stylesheet.
-//  * @public
-//  */
-// export function renderMath(source: string, display: boolean): HTMLElement;
-
-// /**
-//  * @public
-//  */
-// export function renderResults(el: HTMLElement, text: string, result: SearchResult, offset?: number): void;
-
-// /**
-//  * Similar to `fetch()`, request a URL using HTTP/HTTPS, without any CORS restrictions.
-//  * Returns the text value of the response.
-//  * @public
-//  */
-// export function request(request: RequestUrlParam | string): Promise<string>;
-
-// /**
-//  * Similar to `fetch()`, request a URL using HTTP/HTTPS, without any CORS restrictions.
-//  * @public
-//  */
-// export function requestUrl(request: RequestUrlParam | string): RequestUrlResponsePromise;
 
 // /** @public */
 // export interface RequestUrlParam {
@@ -2806,11 +2570,6 @@ export {};
 // /**
 //  * @public
 //  */
-// export function resolveSubpath(cache: CachedMetadata, subpath: string): HeadingSubpathResult | BlockSubpathResult;
-
-// /**
-//  * @public
-//  */
 // export interface RGB {
 //     /**
 //      * Red integer value between 0 and 255
@@ -2828,9 +2587,6 @@ export {};
 //      */
 //     b: number;
 // }
-
-// /** @public */
-// export function sanitizeHTMLToDom(html: string): DocumentFragment;
 
 // /**
 //  * @public
@@ -2919,14 +2675,6 @@ export {};
 //      */
 //     type: string;
 // }
-
-// /**
-//  * Insert an SVG into the element from an iconId. Does nothing if no icon associated with the iconId.
-//  * @param parent - the HTML element to insert the icon
-//  * @param iconId - the icon ID
-//  * @public
-//  */
-// export function setIcon(parent: HTMLElement, iconId: IconName): void;
 
 // /**
 //  * @public
@@ -3100,11 +2848,6 @@ export {};
 // /**
 //  * @public
 //  */
-// export function sortSearchResults(results: SearchResultContainer[]): void;
-
-// /**
-//  * @public
-//  */
 // export type SplitDirection = 'vertical' | 'horizontal';
 
 // /** @public */
@@ -3118,21 +2861,6 @@ export {};
 //     /** @public */
 //     size: number;
 // }
-
-// /** @public */
-// export function stringifyYaml(obj: any): string;
-
-// /**
-//  * This function normalizes headings for link matching by stripping out special characters and shrinking consecutive spaces.
-//  * @public
-//  */
-// export function stripHeading(heading: string): string;
-
-// /**
-//  * This function prepares headings for linking. It strips out some bad combinations of special characters that could break links.
-//  * @public
-//  */
-// export function stripHeadingForLink(heading: string): string;
 
 // /**
 //  * @public
