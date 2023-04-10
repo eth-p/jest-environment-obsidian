@@ -21,6 +21,12 @@
 			"require": "./dist/cjs/environment.js",
 			"types": "./dist/types/index.d.ts"
 		},
+		"./hooks": {
+			"typescript": "./src/hooks.ts",
+			"import": "./dist/esm/hooks.js",
+			"require": "./dist/cjs/hooks.js",
+			"types": "./dist/types/hooks.d.ts"
+		},
 		"./mocks/*": {
 			"typescript": "./src/mock/module/*.ts",
 			"import": "./dist/esm/mock/module/*.js",

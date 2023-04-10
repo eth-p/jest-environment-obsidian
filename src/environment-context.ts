@@ -7,9 +7,11 @@ import type JSDOMEnvironment from 'jest-environment-jsdom';
  */
 export type Globals = JSDOMEnvironment['global'] & {
 	[Options]: Readonly<EnvironmentOptions>;
+	[State]: Map<string, unknown>;
 };
 
 const Options = `__JEST_ENVIRONMENT_OBSIDIAN_OPTIONS__`;
+const State = `__JEST_ENVIRONMENT_OBSIDIAN_STATE__`;
 
 /**
  * Adds the `jest-environment-obsidian` options to the context.
@@ -57,4 +59,39 @@ export function getOptions(context: Globals): Readonly<EnvironmentOptions> {
  */
 export function getOptionsWithinContext(): Readonly<EnvironmentOptions> {
 	return (globalThis as unknown as Globals)[Options];
+}
+
+/**
+ * Resets all the state for `jest-environment-obsidian`.
+ * This is expected to be called from within the context.
+ */
+export function resetStateWithinContext(): void {
+	(globalThis as unknown as Globals)[State] = new Map();
+}
+
+/**
+ * Gets the some state for `jest-environment-obsidian`.
+ * This is expected to be called from within the context.
+ *
+ * @param key The key of the state to get.
+ * @param factory A factory for building the state if it doesn't exist.
+ *
+ * @returns The state.
+ */
+export function getStateWithinContext<R>(key: string, factory: () => R): R {
+	if (!(State in globalThis)) {
+		(globalThis as unknown as Globals)[State] = new Map();
+	}
+
+	const stateMap = (globalThis as unknown as Globals)[State];
+	let state: R;
+
+	if (stateMap.has(key)) {
+		state = stateMap.get(key) as R;
+	} else {
+		state = factory();
+		stateMap.set(key, state);
+	}
+
+	return state;
 }
