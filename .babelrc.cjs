@@ -10,7 +10,7 @@ module.exports = {
 			{
 				throwIfNamespace: false,
 				runtime: 'automatic',
-				importSource: '#jsx',
+				importSource: '#testutil/jsx',
 			},
 		],
 	],

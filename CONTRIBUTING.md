@@ -4,14 +4,16 @@ Thank you for taking an interest in contributing to `jest-environment-obsidian`!
 
 **Table of Contents:**
 
--   1.0 [Repository Structure](#10-repository-structure)
+-   1.0 [Project Structure](#10-project-structure)
 
-    -   1.1 [Source Folders](#11-source-folders)
-    -   1.2 [Validation Plugin](#12-validation-plugin)
+    -   1.1 [Interaction with Jest](#11-interaction-with-jest)
+    -   1.2 [Repository Structure](#12-repository-structure)
+    -   1.3 [Validation Plugin](#13-validation-plugin)
 
 -   2.0 [Setup](#20-setup)
 
 -   3.0 [Development](#30-development)
+
     -   3.1 [Code Consistency](#31-code-consistency)
     -   3.2 [Commit Consistency](#32-commit-consistency)
 
@@ -20,14 +22,27 @@ Thank you for taking an interest in contributing to `jest-environment-obsidian`!
     -   4.2 [Writing Tests](#42-writing-tests)
     -   4.3 [Writing Validation Tests](#43-writing-validation-tests)
 
-
 &nbsp;
 
 ---
 
 &nbsp;
 
-## (1.0) Repository Structure
+## (1.0) Project Structure
+
+This section will describe how `jest-environment-obsidian` works and how the repository is structured.
+
+### (1.1) Interaction with Jest
+
+`jest` environments are used to create the V8 context (global scope) that the unit tests run under. Typically, this involves creating a self-contained "globals" object and using that as the context.
+
+To work around limitations with the APIs available to custom environments, this project has to take a slightly different approach, however. The W3C DOM API is implemented as usual, but the `obsidian` module shims and prototype extensions must be loaded _within_ the unit test context.
+
+During the environment setup phase, `jest-environment-obsidian` adds a global instance of the [RuntimeGateway](./src/gateway.ts) class to the unit test context. This instance exists under the NodeJS context (and thus has access to NodeJS modules), and acts as both a bridge between the two contexts and as a container for storing stateful data (e.g. Obsidian singletons) that may need to be cleared before each test.
+
+![Diagram of how jest-environment-obsidian interacts with jest.](./diagrams/interaction-with-jest.svg)
+
+`jest-environment-obsidian` is slightly unconventional in how it interacts with `jest`
 
 The repository contains two important folders, `src`, and `validation`.
 
@@ -35,86 +50,24 @@ The `src` folder contains the [project source code and unit tests](#11-source-fo
 
 The `validation` folder contains an Obsidian plugin that is used to validate our unit tests against Obsidian's implementation. This works by added a lightweight Jest test runner to the plugin bundle, and then running the tests within the Obsidian application itself.
 
-### (1.1) Source Folders
+### (1.2) Repository Structure
 
-Inside the `src` folder, there are a number of source files along with the `mock` and `testutil` directories. The purpose of each file and directory is as follows:
+The repository structure tries to be as straightforward as possible:
 
-**Files:**
+-   `src` contains the source code and tests for the project;
+-   `scripts` contains scripts used for testing and building the project;
+-   `testutil` contains utilities used inside tests (which are not published); and
+-   `validation` contains a [plugin for validating tests against Obsidian's API implementation](#13-validation-plugin).
 
--   `src/environment-options.ts`:  
-    Environment option validator and type definitions.
+Inside the `src` directory, code is further split up in to three different locations:
 
--   `src/environment.ts`:  
-    Implementation of the Jest environment.
+-   `src/runtime/` contains code that will only be run within the unit test context;
+-   `src/setup/` contains code that is only used for setting up the environment; and
+-   `src/*.ts` contains common code that either may be loaded multiple times and used in both contexts (such as utility functions or type definitions), or loaded in the default NodeJS context and exposed to the unit test context (such as the `RuntimeGateway`).
 
-    Mostly relies on `jest-environment-jsdom`, but adds some things.
+The `testutil` directory contains a barebones implementation of a JSX factory along with some functions to make writing tests for `jest-environment-obsidian` easier.
 
--   `src/resolver-hook.ts`:  
-    A hook for Jest's resolver.
-
-    This is what allows `jest` to load the `obsidian` module shims from this project.
-
--   `src/util.ts`:  
-    Utility functions used by the shim implementations.
-
--   `src/warnings.ts`:  
-    Implementation of [test-time warnings](./README.md#warnings).
-
-**Directories:**
-
--   `src/mock/classes`:  
-    Shims for Obsidian's classes.
-
-    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ class in the Obsidian API.
-
-    > **[!]** Anything not exposed to the testing environment but is meant to be shared among multiple modules should go inside the `src/mockutil` directory.
-
--   `src/mock/component`:  
-    Shims for Obsidian's UI components.
-
-    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ component in the Obsidian API.
-
-    > **[!]** Anything not exposed to the testing environment but is meant to be shared among shim modules should go inside the `src/mockutil` directory.
-
--   `src/mock/enhance`:  
-    Prototype extensions to DOM or ECMAScript objects.
-
-    This encompasses functions like `Node.createEl` and the global functions/vars.
-
-    > **[!]** Code should be split up into modules that are named after the DOM or ECMAScript type that is being extended. If the extension applies to the `globalThis` variable (i.e. `window`), it should go inside the `global.ts` module instead.
-
-    > **[!]** Anything not exposed to the testing environment, but is meant to be shared among multiple modules should be in its own file prefixed with a single underscore (`_`) character. Example: `_createEl.ts`
-
--   `src/mock/functions`:  
-    Implementations for the functions exported under the `obsidian` module.
-
-    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ function in the `obsidian` module.
-
-    > **[!]** Anything not exposed to the testing environment but is meant to be shared among shim modules should go inside the `src/mockutil` directory.
-
--   `src/mock/module`:  
-    Shimmed/mocked Obsidian modules.
-
-    > **[!]** Each file corresponds to exactly one module that can be `import`ed or `require`d.
-
-    > **[!]** These modules will only be used if:
-    >
-    > -   There is not a `__mocks__/module.{ts,js}` in the project.
-    > -   There is not a `node_modules/module` in the project.
-
--   `src/mock/variables`:  
-    Implementations for the variables exported under the `obsidian` module.
-
-    > **[!]** Code should be split up into modules that are named after and relate to _exactly one_ variable in the `obsidian` module.
-
-    > **[!]** Anything not exposed to the testing environment but is meant to be shared among shim modules should go inside the `src/mockutil` directory.
-
--   `src/testutil`:  
-    Utilities intended to be used only within tests.
-
-    > **[!]** These _will not_ be published. Relying on anything inside these modules outside of meta-tests will cause a broken build.
-
-### (1.2) Validation Plugin
+### (1.3) Validation Plugin
 
 The `validation` folder contains a full Obsidian plugin and a custom-made, lightweight, in-browser Jest runtime called `joker`. It is organized similarly to the Obsidian plugin template, with the only change being that it has source files located inside the `validation/src` directory.
 
@@ -122,18 +75,16 @@ For more info on the validation plugin, see [Section 4.3](#43-writing-validation
 
 &nbsp;
 
-
 ## (2.0) Setup
 
 To set up your local copy of `jest-environment-obsidian`, you need:
 
-- NodeJS version `19.8.0` or newer.
-- NPM version `9.5.0` or newer
+-   NodeJS version `19.8.0` or newer.
+-   NPM version `9.5.0` or newer
 
 If you meet these requirements (or are willing to try risking it with older versions), `cd` in to the repository directory and run `npm ci`. This will download the project dependencies and build tools.
 
 &nbsp;
-
 
 ## (3.0) Development
 
@@ -246,10 +197,7 @@ const myDiv = (() => {
 
 When creating validation tests, there are a couple of extra steps you need to take:
 
-1. Add `@validation-test` to the multi-line docblock comment at the top of the file.  
-   This helps other developers know that it's a validation test.
-
-2. Ensure that the test is running under the `<rootDir>/src/environment.ts` environment.
+1. Ensure that the test is running under the `#meta-test/validation` environment.
 
     You should have a multi-line docblock comment that looks like this:
 
@@ -261,7 +209,7 @@ When creating validation tests, there are a couple of extra steps you need to ta
     import {...} from "./my-file.ts";
     ```
 
-3. Add the unit test file to the [validation/src/tests.ts](./validation/src/tests.ts) file. This lets the bundler know to include it for testing inside the validation plugin.
+2. Add the unit test file to the [validation/src/tests.ts](./validation/src/tests.ts) file. This lets the bundler know to include it for testing inside the validation plugin.
 
     > **[!]** The test _must_ be imported using the `import()` function, and not the `import` keyword. If the keyword is used, the test will not be identified by the in-browser test runner.
 

@@ -1,27 +1,30 @@
 {
-	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"include": ["src/**/*.ts", "src/**/*.tsx", "testutil/**/*.ts", "./*.d.ts"],
 	"compilerOptions": {
 		"lib": ["ES5", "ES6", "ES7"],
 		"target": "ES2020",
-		"module": "ESNext",
+		"module": "CommonJS",
+
+		"outDir": "./dist",
+		"declarationDir": "./dist",
+		"declaration": true,
+
 		"noImplicitAny": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		"isolatedModules": true,
+		// "isolatedModules": true, // FIXME: Re-enable me
 		"strictNullChecks": true,
 		"strict": true,
-		"noEmit": true,
+		"skipLibCheck": true,
 		"paths": {
-			"#jsx/jsx-runtime": ["./src/testutil/jsx-runtime.ts"],
-			"#testutil/*": ["./src/testutil/*"],
-			"#options": ["./src/environment-options.ts"],
-			"#context": ["./src/environment-context.ts"],
-			"#warnings": ["./src/warnings.ts"],
-			"#util": ["./src/util.ts"],
+			"#testutil/jsx/jsx-runtime": ["./testutil/jsx-runtime.ts"],
+			"#testutil/*": ["./testutil/*"],
+			"#runtime": ["./src/runtime/util.ts"],
+			"#util": ["./src/util.ts"]
 		},
 
 		// For running tests
-		"jsxImportSource": "#jsx",
+		"jsxImportSource": "#testutil/jsx",
 		"jsx": "react-jsx"
 	}
 }

@@ -1,14 +1,17 @@
 # Examples
-examples
+/examples
 
 # Development
+/scripts
+/testutil
+/validation
+
 node_modules
 .*
 *.config.js
 *.config.mjs
 *.config.cjs
 
-/scripts
 tsconfig*.json
 *.test.ts
 *.spec.ts
