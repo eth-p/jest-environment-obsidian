@@ -2,7 +2,7 @@ import { JestEnvironmentConfig } from '@jest/environment';
 
 import EnvironmentOptions from './options';
 import { AbstractWarning, printWarnings } from './warning';
-import * as Warning from './warning-types';
+import * as WarningTypesModule from './warning-types';
 
 const REGEX_STACK_TRACE_AT_WARNING = /^\s*at __WARNING__/;
 const REGEX_STACK_TRACE_EXTRACT_FUNCTION = /\s*at ((?:.(?! \())+.)/;
@@ -21,12 +21,12 @@ export class WarningCollection {
 	 * @param caller The calling function.
 	 * @param params The warning parameters.
 	 */
-	public add<T extends keyof typeof Warning>(
-		type: keyof typeof Warning,
+	public add<T extends keyof WarningTypes>(
+		type: T,
 		caller: string | null,
-		...params: WarningParameters<WarningFromName<T>>
+		...params: WarningParameters<WarningTypeByName<T>>
 	) {
-		const warningClass = Warning[type];
+		const warningClass = WarningTypesModule[type];
 		const warningCaller =
 			caller ??
 			(() => {
@@ -69,20 +69,22 @@ export class WarningCollection {
 }
 
 /**
- * A type for all valid warning types.
+ * A type representing a map of warning types.
  */
-export type WarningType = {
-	[K in keyof typeof Warning]: (typeof Warning)[K] extends typeof AbstractWarning ? (typeof Warning)[K] : never;
-}[keyof typeof Warning];
+export type WarningTypes = {
+	[K in keyof typeof WarningTypesModule]: typeof WarningTypesModule[K]
+};
+
+/**
+ * A type lookup table for getting the type of a warning by its class name.
+ * 
+ * ```ts
+ * WarningTypeByName<"MyWarning"> = typeof Resolved<import("warning-types.ts")>.MyWarning;
+ * ```
+ */
+export type WarningTypeByName<K extends keyof WarningTypes> = WarningTypes[K];
 
 /**
  * Parameter types for constructing a warning.
  */
 export type WarningParameters<T> = T extends { new (arg0: any, ...rest: infer R): any } ? R : never;
-
-/**
- * A type mapping a warning class name to a warning class type.
- */
-export type WarningFromName<K extends keyof typeof Warning> = (typeof Warning)[K] extends WarningType
-	? (typeof Warning)[K]
-	: never;

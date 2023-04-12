@@ -1,6 +1,6 @@
 import { PACKAGE_NAME, RUNTIME_STATE_GLOBAL_NAME } from '../constants';
 import type RuntimeGateway from '../gateway';
-import { WarningFromName, WarningParameters } from '../warning-collection';
+import { WarningParameters, WarningTypeByName, WarningTypes } from '../warning-collection';
 import type * as Warning from '../warning-types';
 
 export type Environment = RuntimeGateway;
@@ -49,10 +49,10 @@ export function __UNIMPLEMENTED__(): never {
  * @param caller The calling function.
  * @param params The warning parameters.
  */
-export function __WARNING__<T extends keyof typeof Warning>(
-	type: keyof typeof Warning,
+export function __WARNING__<T extends keyof WarningTypes>(
+	type: T,
 	caller: string | null,
-	...params: WarningParameters<WarningFromName<T>>
+	...params: WarningParameters<WarningTypeByName<T>>
 ): void {
 	const env = getEnvironment();
 	env.warnings.add(type, caller, ...params);
