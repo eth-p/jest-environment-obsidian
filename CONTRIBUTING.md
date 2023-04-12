@@ -84,6 +84,10 @@ To set up your local copy of `jest-environment-obsidian`, you need:
 
 If you meet these requirements (or are willing to try risking it with older versions), `cd` in to the repository directory and run `npm ci`. This will download the project dependencies and build tools.
 
+### (2.1) Building
+
+The project is bundled with `
+
 &nbsp;
 
 ## (3.0) Development
@@ -224,7 +228,3 @@ When writing validation meta-tests, there are also a few limitations:
     If it's possible to do within the browser, you can add an implementation of the `expect` function to [validation/src/joker-expect.ts](./validation/src/joker-expect.ts).
 
 -   The only test hooks that are available inside the browser are `beforeEach` and `afterEach`.
-
-## Releases
-
-(TODO)
