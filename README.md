@@ -15,24 +15,40 @@ This package is available on the `npm` registry. You can install it using `npm` 
 npm install --save-dev jest-environment-obsidian
 ```
 
+### Requirements
+
+These are the minimum requirements that we test for. You may have luck with earlier versions of the required software, but we won't be able to provide support for it.
+
+-   `NodeJS` >= 15.0.0
+-   `Jest` >= 29.0.0
+
 ## Usage
 
-You can either specify the environment for all tests it to your `jest.config.js` file, or at the top of a test file as a doc block pragma comment.
+There are two ways to use `jest-environment-obsidian` in your project: for all unit tests, or for specific unit test files. If you're not sure about what you want to do, you can see [our examples](./examples/) for inspiration.
 
 ### For All Tests
 
-Inside of `jest.config.js`, add the `testEnvironment` option with a value of `"jest-environment-obsidian"`.
+If you want to use `jest-environment-obsidian` for all your unit tests, you can use `jest-environment-obsidian` as a preset. This will add the required setup files and module resolver.
 
 ```js
 module.exports = {
 	// ...
-	testEnvironment: "jest-environment-obsidian"
-}
+	preset: 'jest-environment-obsidian',
+};
+```
+
+If you want to provide your own configuration on top of `jest-environment-obsidian`'s preset, we recommend using the `extend` function provided in our preset:
+
+```js
+const { extend } = require('jest-environment-obsidian/jest-preset');
+module.exports = extend({
+	setupFiles: ['...'],
+});
 ```
 
 ### For Individual Tests
 
-At the top of your `(something).test.ts` file, add the following multi-line comment:
+If you only want to test a specific files under the `jest-environment-obsidian` environment, you can add a multi-line pragma comment at the top your unit test file:
 
 ```js
 /**
@@ -66,7 +82,7 @@ When set to `strict`, certain functions and behaviours will work as though they 
 
 **Pragma:** `@obsidian-conformance`  
 **Options:** `"lax"`, `"strict"`  
-**Default:** `"lax"`  
+**Default:** `"lax"`
 
 ### `version`
 
@@ -74,7 +90,7 @@ Configures the reported `apiVersion` inside the `obsidian` module.
 
 **Pragma:** `@obsidian-version`  
 **Options:** `string`  
-**Default:** `1.1.16`  
+**Default:** `1.1.16`
 
 ### `ignoreWarnings`
 
@@ -82,9 +98,8 @@ Disables printing of specific [warning messages](#warnings).
 
 **Pragma:** `@obsidian-jest-ignore`  
 **Options:** A string array of warning IDs, or a single string ID if within a pragma comment.  
-**Default:** `[]`  
-
-
+**Default:** `[]`
 
 ## Contributing
+
 Want to help out? Check out the [contributing guide](./CONTRIBUTING.md)!
