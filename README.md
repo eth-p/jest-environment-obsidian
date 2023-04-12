@@ -70,6 +70,8 @@ The Obsidian module is automatically shimmed for you. While it's still good prac
 
 As a way to help with test-driven-development and identify why certain unit tests may be failing, `jest-environment-obsidian` creates and prints warning messages after running tests.
 
+Individual warnings can be disabled by adding a `@obsidian-jest-ignore node-must-be-within-document <warningName>` pragma comment in a file. Multiple comments can be added to disable different warnings.
+
 ## Configuration
 
 The test environment can be configured globally with the `testEnvironmentOptions` option inside your Jest config, or on a per-file basis using one of the supported doc block pragmas.
