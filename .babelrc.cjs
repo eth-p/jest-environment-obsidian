@@ -5,6 +5,7 @@ module.exports = {
 	],
 
 	plugins: [
+		['babel-plugin-replace-ts-export-assignment'],
 		[
 			'@babel/plugin-transform-react-jsx',
 			{

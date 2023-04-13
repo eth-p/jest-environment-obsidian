@@ -43,6 +43,7 @@ function exportConditionsAsEntryPoints(condition: string): Array<{ in: string; o
 		external: [
 			...builtins,
 			...Object.keys(packageJson.dependencies),
+			'jest-environment-obsidian/test-runtime/extensions',
 			'./node_modules/*',
 		],
 		plugins: [

@@ -1,7 +1,6 @@
 import { PACKAGE_NAME, RUNTIME_STATE_GLOBAL_NAME } from '../constants';
 import type RuntimeGateway from '../gateway';
 import { WarningParameters, WarningTypeByName, WarningTypes } from '../warning-collection';
-import type * as Warning from '../warning-types';
 
 export type Environment = RuntimeGateway;
 export { getCallerName } from '../util';
