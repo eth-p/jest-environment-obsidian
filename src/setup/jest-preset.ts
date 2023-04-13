@@ -2,6 +2,8 @@ import { Config } from 'jest';
 
 import { PACKAGE_NAME, RUNTIME_PACKAGE } from '../constants';
 
+import MappedModules from './mapped-modules';
+
 /**
  * The necessary configuration values for `jest-environment-obsidian` to work.
  */
@@ -32,6 +34,18 @@ export function extend<T extends Partial<Config>>(config: T): T {
 	config.testEnvironment = preset.testEnvironment;
 	Object.assign(config.moduleNameMapper, preset.moduleNameMapper);
 	Object.assign(config.testEnvironmentOptions, preset.testEnvironmentOptions);
+
+	// Add the resolver.
+	if (!('resolver' in config)) {
+		config.resolver = 'jest-environment-obsidian/resolver';
+	} else {
+		// There is already a resolver.
+		// Fall back to using the module name mapper.
+		for (const moduleName of Object.keys(MappedModules)) {
+			if (moduleName in config.moduleNameMapper) continue;
+			config.moduleNameMapper[moduleName] = MappedModules[moduleName];
+		}
+	}
 
 	return config;
 }

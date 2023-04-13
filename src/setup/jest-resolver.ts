@@ -1,15 +1,7 @@
 import type { JestResolver, ResolverOptions, SyncResolver } from 'jest-resolve';
 import { AsyncResolver } from 'jest-resolve';
 
-import { RUNTIME_PACKAGE } from '../constants';
-
-/**
- * A list of modules which have shims provided.
- * @internal
- */
-const mappedModules: Record<string, string> = {
-	obsidian: require.resolve(`${RUNTIME_PACKAGE}/modules/obsidian`),
-};
+import MappedModules from './mapped-modules';
 
 /**
  * Creates a resolver that resolves the `obsidian` package into a stub.
@@ -25,7 +17,7 @@ function createResolver(parent?: JestResolver): JestResolver {
 	let asyncResolve: AsyncResolver | null = null;
 	if (parentAsync != null) {
 		asyncResolve = async function async(path: string, options: ResolverOptions): Promise<string> {
-			if (path in mappedModules) return mappedModules[path];
+			if (path in MappedModules) return MappedModules[path];
 			if (parentSync != null) return (parentAsync ?? parentSync)(path, options);
 			return options.defaultResolver(path, options);
 		};
@@ -33,7 +25,7 @@ function createResolver(parent?: JestResolver): JestResolver {
 
 	return {
 		sync(path: string, options: ResolverOptions): string {
-			if (path in mappedModules) return mappedModules[path];
+			if (path in MappedModules) return MappedModules[path];
 			if (parentSync != null) return parentSync(path, options);
 			return options.defaultResolver(path, options);
 		},
@@ -47,11 +39,11 @@ export = Object.assign(
 	defaultResolver as typeof defaultResolver & {
 		default: ReturnType<typeof createResolver>;
 		createResolver: typeof createResolver;
-		mappedModules: typeof mappedModules;
+		mappedModules: typeof MappedModules;
 	},
 	{
 		default: defaultResolver,
 		createResolver,
-		mappedModules,
+		mappedModules: MappedModules,
 	},
 );
