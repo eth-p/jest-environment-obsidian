@@ -1,12 +1,22 @@
 {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "useTabs": true,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "semi": true,
+	"printWidth": 120,
+	"tabWidth": 4,
+	"useTabs": true,
+	"trailingComma": "all",
+	"singleQuote": true,
+	"semi": true,
 
-    "importOrder": ["^((@jest/)|jest)", "^\\.\\./", "^\\./"],
-    "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true
+	"importOrder": ["^((@jest/)|jest)", "^\\.\\./", "^\\./"],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+
+	"overrides": [
+		{
+			"files": "**/*.{yml,yaml}",
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	]
 }
