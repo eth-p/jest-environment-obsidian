@@ -57,7 +57,11 @@
 		"type": "git",
 		"url": "git+https://github.com/eth-p/obsidian-undocumented.git"
 	},
-	"author": "eth-p",
+	"author": {
+		"email": "me+npm@eth-p.dev",
+		"name": "eth-p",
+		"url": "https://eth-p.dev/"
+	},
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/eth-p/obsidian-undocumented/issues"
