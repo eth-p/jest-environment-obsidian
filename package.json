@@ -31,7 +31,7 @@
 			"require": "./dist/jest-preset.js"
 		},
 		"./test-runtime/setup": {
-			"typescript": "./src/runtime/setup-entrypoint.ts",
+			"typescript": "./src/runtime/setup.ts",
 			"require": "./dist/runtime/setup.js"
 		},
 		"./test-runtime/extensions": {
