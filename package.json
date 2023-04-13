@@ -4,6 +4,7 @@
 	"description": "Undocumented/private API definitions for Obsidian.md",
 	"scripts": {
 		"test": "node ./scripts/test.mjs",
+		"typecheck": "tsc -p . --noEmit",
 		"build": "ts-node-esm ./scripts/build.ts",
 		"format": "prettier -w -- \"src/**/*.{ts,tsx}\" \"validation/src/**/*.ts\"",
 		"commit": "cz"
