@@ -1,0 +1,20 @@
+{
+	"name": "with-esmodule",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"description": "",
+	"main": "index.js",
+	"author": "eth-p",
+	"license": "MIT",
+	"scripts": {
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.21.4",
+		"@babel/preset-typescript": "^7.21.4",
+		"jest": "^29.5.0",
+		"jest-environment-obsidian": "file:../../",
+		"obsidian": "^1.1.1"
+	}
+}
