@@ -2,8 +2,8 @@
 
 ![Obsidian Version Supported: v1.1.16](https://img.shields.io/badge/Obsidian-v1.1.16-blueviolet)
 [![NPM Downloads](https://img.shields.io/npm/dm/jest-environment-obsidian?label=Downloads)](https://www.npmjs.com/package/jest-environment-obsidian)
-[![MIT License](https://img.shields.io/github/license/eth-p/jest-environment-obsidian?label=License&style=flat)](https://github.com/eth-p/jest-environment-obsidian/blob/main/LICENSE)
-[![Checks](https://github.com/eth-p/jest-environment-obsidian/actions/workflows/commit-checks.yml/badge.svg?event=push)](https://github.com/eth-p/jest-environment-obsidian/actions/workflows/commit-checks.yml)
+[![MIT License](https://img.shields.io/github/license/obsidian-community/jest-environment-obsidian?label=License&style=flat)](https://github.com/obsidian-community/jest-environment-obsidian/blob/main/LICENSE)
+[![Checks](https://github.com/obsidian-community/jest-environment-obsidian/actions/workflows/commit-checks.yml/badge.svg?event=push)](https://github.com/obsidian-community/jest-environment-obsidian/actions/workflows/commit-checks.yml)
 
 A [Jest](https://jestjs.io/) environment to facilitate unit testing for [Obsidian](https://obsidian.md/) plugins.
 
