@@ -31,10 +31,16 @@ export function __UNIMPLEMENTED__(): never {
 	const [_, space, name, loc] = /^(\s*)at (.*?) \((.*)\)/.exec(source)!;
 
 	const err = new Error(
-		`The \`${name}\` function is unimplemented in ${PACKAGE_NAME}.\n\n` +
-			`If your tests rely on this function, please consider opening a pull request at ` +
-			`https://github.com/obsidian-resources/jest-environment-obsidian ` +
+		[
+			`The \`${name}\` function is unimplemented in ${PACKAGE_NAME}.`,
+			'',
+			`If your tests rely on this function, please consider opening a pull request at`,
+			`https://github.com/obsidian-community/jest-environment-obsidian/ `,
 			`to add an implementation.`,
+			'',
+			'If you would like to bring attention to this function, please leave a comment at',
+			'https://github.com/obsidian-community/jest-environment-obsidian/issues/1',
+		].join('\n'),
 	);
 
 	err.stack = `${err.toString()}\n${space}at ${name} (${loc})`;
