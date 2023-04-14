@@ -41,3 +41,6 @@ export { sortSearchResults } from './functions/sortSearchResults';
 export { stringifyYaml } from './functions/stringifyYaml';
 export { stripHeading } from './functions/stripHeading';
 export { stripHeadingForLink } from './functions/stripHeadingForLink';
+
+// Components.
+export { BaseComponent } from './components/BaseComponent';

@@ -135,23 +135,6 @@ export {};
 // /**
 //  * @public
 //  */
-// export abstract class BaseComponent {
-//     /** @public */
-//     disabled: boolean;
-//     /**
-//      * Facilitates chaining
-//      * @public
-//      */
-//     then(cb: (component: this) => any): this;
-//     /**
-//      * @public
-//      */
-//     setDisabled(disabled: boolean): this;
-// }
-
-// /**
-//  * @public
-//  */
 // export interface BlockCache extends CacheItem {
 //     /** @public */
 //     id: string;
