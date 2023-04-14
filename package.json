@@ -1,6 +1,6 @@
 {
 	"name": "jest-environment-obsidian",
-	"version": "0.0.0-alpha0",
+	"version": "0.0.1",
 	"description": "A Jest environment to facilitate unit testing for Obsidian plugins.",
 	"scripts": {
 		"test": "node ./scripts/test.mjs",
