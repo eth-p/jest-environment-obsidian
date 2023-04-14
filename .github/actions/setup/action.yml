@@ -1,0 +1,61 @@
+name: 'Setup'
+description: 'Sets up the tools and environment of the current worker.'
+inputs:
+  node-version:
+    description: 'The version of NodeJS to install.'
+    required: false
+    default: ''
+    type: string
+  jest-version:
+    description: 'The version of Jest to install.'
+    required: false
+    default: ''
+    type: string
+  cache:
+    description: 'Use caches?'
+    required: false
+    default: true
+    type: boolean
+
+runs:
+  using: 'composite'
+  steps:
+    # Install node.
+    - name: 'Install node'
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        node-version-file: '.nvmrc'
+        cache: '' # Empty string to explicitly disable automatic caching.
+
+    # Restore cache.
+    - name: Restore dependencies from cache
+      if: inputs.cache != false
+      id: cache-dependencies-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          node_modules
+        key: ${{ runner.os }}-lock-${{ hashFiles('package-lock.json') }}-node-${{ inputs.node-version }}-jest-${{ inputs.jest-version }}-dependencies
+
+    # Install project and developer dependencies.
+    - name: 'Install dependencies'
+      if: steps.cache-dependencies-restore.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash
+
+    # Install a specific Jest version.
+    - name: 'Install jest ${{ inputs.jest-version }}'
+      if: inputs.jest-version != '' && steps.cache-dependencies-restore.outputs.cache-hit != 'true'
+      run: npm uninstall jest && npm install --save-dev "jest@${{ inputs.jest-version }}"
+      shell: bash
+
+    # Save cache.
+    - name: 'Save cache'
+      if: inputs.cache != false && steps.cache-dependencies-restore.outputs.cache-hit != 'true'
+      id: cache-dependencies-save
+      uses: actions/cache/save@v3
+      with:
+        key: ${{ steps.cache-dependencies-restore.outputs.cache-primary-key }}
+        path: |
+          node_modules

@@ -1,0 +1,37 @@
+name: 'Build'
+description: 'Builds the project.'
+inputs:
+  cache:
+    description: 'Use caches?'
+    required: false
+    default: true
+    type: boolean
+
+runs:
+  using: 'composite'
+  steps:
+    # Restore cache.
+    - name: Restore build from cache
+      if: inputs.cache != false
+      id: cache-build-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          dist
+        key: ${{ runner.os }}-lock-${{ hashFiles('package-lock.json') }}-node-${{ inputs.node-version }}-jest-${{ inputs.jest-version }}-build-${{ github.sha }}
+
+    # Build.
+    - name: 'Run build script'
+      if: steps.cache-build-restore.outputs.cache-hit != 'true'
+      run: npm run build
+      shell: bash
+
+    # Save cache.
+    - name: 'Save cache'
+      if: inputs.cache != false && steps.cache-build-restore.outputs.cache-hit != 'true'
+      id: cache-build-save
+      uses: actions/cache/save@v3
+      with:
+        key: ${{ steps.cache-build-restore.outputs.cache-primary-key }}
+        path: |
+          dist

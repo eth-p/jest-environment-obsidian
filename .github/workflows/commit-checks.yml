@@ -1,0 +1,92 @@
+name: 'Check Commits'
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Phase 1: Build
+  # Linting, typechecking, and tests can happen in parallel after this.
+  build:
+    name: 'Build'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+
+  # Phase 2: Check Types
+  typecheck:
+    name: 'Type Check'
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/run-typechecking
+
+  # Phase 2: Run Tests
+  test:
+    name: 'Test'
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/run-tests
+
+  # Phase 3: Run Examples
+  examples:
+    name: 'Run Examples'
+    uses: ./.github/workflows/run-examples.yml
+    needs: [build, test]
+    permissions:
+      contents: read
+
+  # Phase 3: NodeJS Compatibility
+  node-compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['16', '18', 'latest']
+
+    name: 'Compatibility: Node ${{ matrix.node }}'
+    needs: [build, test]
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/run-tests
+
+  # Phase 3: Jest Compatibility
+  jest-compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jest: ['29', 'latest']
+
+    name: 'Compatibility: Jest ${{ matrix.jest }}'
+    needs: [build, test]
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+        with:
+          jest-version: ${{ matrix.jest }}
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/run-tests

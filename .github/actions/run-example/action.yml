@@ -1,0 +1,33 @@
+name: 'Run Example'
+description: 'Runs an example.'
+
+inputs:
+  example:
+    type: string
+    description: 'The directory name for the example.'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Ensure Example Exists
+      shell: bash
+      run: |
+        test -d "examples/${{ inputs.example}}" || {
+            printf "::error::Could not find example named '%s'" "${{ inputs.example }}"
+            exit 1
+        }
+
+    # Run the example.
+    - name: 'Install ${{ inputs.example }} Dependencies'
+      shell: bash
+      run: |
+        cd "examples/${{ inputs.example }}"
+        npm install
+
+    # Run the example.
+    - name: 'Run ${{ inputs.example }} Example'
+      shell: bash
+      run: |
+        cd "examples/${{ inputs.example }}"
+        npm run test

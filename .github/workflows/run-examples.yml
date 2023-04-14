@@ -1,0 +1,25 @@
+name: 'Run Examples'
+
+on:
+  workflow_call:
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example:
+          - all-files
+          - all-files-with-config
+          - specific-files
+          - with-commonjs
+          - with-esmodule
+
+    name: "Example ${{ matrix.example }}"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/run-example
+        with:
+          example: '${{ matrix.example }}'

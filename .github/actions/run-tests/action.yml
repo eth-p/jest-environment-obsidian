@@ -1,0 +1,8 @@
+name: 'Test'
+description: 'Runs project unit tests.'
+
+runs:
+  using: 'composite'
+  steps:
+    - run: npm test
+      shell: bash
