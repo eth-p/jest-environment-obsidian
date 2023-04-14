@@ -56,3 +56,55 @@ export function __WARNING__<T extends keyof WarningTypes>(
 	const env = getEnvironment();
 	env.warnings.add(type, caller, ...params);
 }
+
+/**
+ * Wraps the module exports to either create a warning or throw an error when missing exports are accessed.
+ *
+ * @param name The module name.
+ * @param exports The module exports.
+ * @returns The wrapped exports object.
+ */
+export function createCheckedExporter<T extends Record<string, any>>(name: string, exports: T): T {
+	const behavior = getEnvironment().options.missingExports;
+	if (behavior === 'undef') return exports;
+	return new Proxy(exports, {
+		get(target: T, p: PropertyKey, _receiver) {
+			if (p in target) {
+				return target[p as keyof T];
+			}
+
+			// Special case: `then`
+			// This commonly accessed to check if something is a promise.
+			// We'll ignore it to prevent false positives.
+			if (p === 'then') return undefined;
+
+			// Get the stack and remove this function from it.
+			const stack = new Error().stack!;
+			const strippedStack = stack.split('\n').splice(1, 1).join('\n');
+			const prop = p.toString();
+
+			// If the property does not exist and we want a warning:
+			if (behavior === 'warning') {
+				__WARNING__('MissingExportStub', null, name, prop);
+				return;
+			}
+
+			// If it should be an error:
+			const error = new Error(
+				[
+					'jest-environment-obsidian does not have a stub for',
+					`'${prop}' in the '${module}' module.`,
+					'Please consider opening an issue or creating a pull request for this stub at',
+					'',
+					'https://github.com/obsidian-community/jest-environment-obsidian',
+					'',
+					'Alternatively, you can emit an undefined value or a warning by changing',
+					'the `missingExports` environment option to either "undef" or "warning"',
+				].join('\n'),
+			);
+
+			error.stack = strippedStack;
+			throw error;
+		},
+	});
+}

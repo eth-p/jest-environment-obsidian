@@ -64,3 +64,32 @@ export class IllegalCssClassName extends AbstractWarning {
 		].join('\n');
 	}
 }
+
+export class MissingExportStub extends AbstractWarning {
+	public readonly module: string;
+	public readonly prop: string;
+
+	constructor(context: string, module: string, prop: string) {
+		super(context);
+		this.module = module;
+		this.prop = prop;
+	}
+
+	toString() {
+		return [
+			'jest-environment-obsidian does not have a stub for',
+			`'${this.prop}' in the '${this.module}' module.`,
+			'',
+			`Import for '${this.prop}' will return \`undefined\`,`,
+			'which may cause unexpected behaviors in your tests.',
+			'',
+			'Please consider opening an issue or creating a pull request for this stub at',
+			'',
+			'https://github.com/obsidian-community/jest-environment-obsidian',
+			'',
+			'Alternatively, you can emit an undefined variable without this warning',
+			'(or turn it into an error) by changing the `missingExports` environment',
+			'option to either "undef" or "error"',
+		].join('\n');
+	}
+}

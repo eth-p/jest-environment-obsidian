@@ -10,6 +10,7 @@ export default interface EnvironmentOptions {
 	version: string;
 
 	ignoreWarnings: string[];
+	missingExports: 'error' | 'warning' | 'undef';
 
 	$$JEST_ENVIRONMENT_OBSIDIAN_NO_PATCH$$?: boolean;
 }
@@ -22,6 +23,7 @@ export function createDefault(): EnvironmentOptions {
 	return {
 		conformance: 'lax',
 		version: LATEST_OBSIDIAN_VERSION,
+		missingExports: 'warning',
 		ignoreWarnings: [],
 	};
 }
@@ -151,6 +153,17 @@ const Appliers: EnvironmentOptionAppliers = {
 		pragma: 'obsidian-jest-ignore',
 		pragmaToConfig(value) {
 			return value;
+		},
+	},
+
+	missingExports: {
+		assign(target, value) {
+			if (typeof value !== 'string') throw new Error(`must be either "error", "warning", or "undef"`);
+			if (!['error', 'warning', 'undef'].includes(value)) {
+				throw new Error(`must be either "error", "warning", or "undef"`);
+			}
+
+			target.missingExports = value as EnvironmentOptions['missingExports'];
 		},
 	},
 

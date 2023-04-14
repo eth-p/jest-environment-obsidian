@@ -107,6 +107,15 @@ Disables printing of specific [warning messages](#warnings).
 **Options:** A string array of warning IDs, or a single string ID if within a pragma comment.  
 **Default:** `[]`
 
+### `missingExports`
+
+Changes how `jest-environment-obsidian` handles missing exports from shimmed modules.
+By default, a warning will be emitted to let you know that your tests may behave unexpectedly.
+
+**Options:** `"warning", "error", "undef"`  
+**Default:** `"warning"`
+
+
 ## Contributing
 
 Want to help out? Check out the [contributing guide](./CONTRIBUTING.md)!
