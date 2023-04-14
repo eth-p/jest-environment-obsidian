@@ -1,4 +1,4 @@
-name: 'Check Commits'
+name: 'Checks'
 
 on:
   pull_request:
