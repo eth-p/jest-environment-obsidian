@@ -1,0 +1,48 @@
+name: Missing Export
+description: One of the modules implemented by jest-environment-obsidian is missing an export.
+title: '[Needs Stub]: '
+labels: ['needs-stub']
+assignees:
+  - '@obsidian-community/jest-environment-obsidian'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Are you unable to run your unit tests because of a missing import from the `obsidian` module?**  
+        If you saw a message along the lines of,
+
+        > jest-environment-obsidian does not have a stub for '<some property>' in the 'obsidian' module.
+
+        Then please continue.
+
+  # Version.
+  - type: input
+    id: version
+    attributes:
+      label: Affected Version
+      description: What version of jest-environment-obsidian are you using?
+      placeholder: '1.0.0'
+    validations:
+      required: true
+
+  # Affected module.
+  - type: dropdown
+    id: affected-module
+    attributes:
+      label: Affected Modules
+      description: Which modules are missing stubs?
+      multiple: false
+      options:
+        - 'obsidian'
+        - 'other (please specify)'
+    validations:
+      required: true
+
+  # More info.
+  - type: textarea
+    id: info
+    attributes:
+      label: Info
+      description: Is there anything else you would like to mention?
+    validations:
+      required: false

@@ -1,0 +1,23 @@
+name: Unimplemented Function
+description: You encountered an error about an unimplemented function.
+title: 'Unimplemented Function'
+labels: ['invalid']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If you encountered an error saying "the &lt;name&gt; function is unimplemented in jest-environment-obsidian," please do not open an issue.
+
+        We are aware of all the functions that don't have implementations, and we are working on adding them as the project matures.
+        If you would like help us figure out which functions to prioritize, you may leave a comment on [this issue](https://github.com/obsidian-community/jest-environment-obsidian/issues/1).
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  # We need at least one input.
+  - type: input
+    id: donotuseme
+    attributes:
+      label: Keep Me Blank
+      description: This is here because GitHub requires it.
+    validations:
+      required: false

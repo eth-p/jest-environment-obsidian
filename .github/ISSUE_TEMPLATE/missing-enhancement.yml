@@ -1,0 +1,45 @@
+name: Missing Global or Function
+description: A global variable or function available in Obsidian is missing from jest-environment-obsidian.
+title: '[Needs Stub]: '
+labels: ['needs-stub', 'rel:enhance']
+assignees:
+  - '@obsidian-community/jest-environment-obsidian'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Is there a global variable/function or prototype variable/function missing?**  
+        This might be the issue if you encounter a test failure along the lines of:
+
+        > TypeError: containerEl.createDiv is not a function
+
+        If you suspect this is the issue, please continue.
+
+  # Version.
+  - type: input
+    id: version
+    attributes:
+      label: Affected Version
+      description: What version of jest-environment-obsidian are you using?
+      placeholder: '1.0.0'
+    validations:
+      required: true
+
+  # Affected module.
+  - type: input
+    id: affected-type
+    attributes:
+      label: Affected Object
+      description: What object is missing the function/variable?
+      placeholder: 'HTMLElement, window, global, etc.'
+    validations:
+      required: true
+
+  # More info.
+  - type: textarea
+    id: info
+    attributes:
+      label: Info
+      description: Is there anything else you would like to mention?
+    validations:
+      required: false

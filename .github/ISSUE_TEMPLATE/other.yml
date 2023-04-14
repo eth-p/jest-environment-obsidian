@@ -1,0 +1,22 @@
+name: Other
+description: Do you have a different issue?
+title: '[Other]: '
+body:
+  # Version.
+  - type: input
+    id: version
+    attributes:
+      label: Affected Version
+      description: What version of jest-environment-obsidian are you using?
+      placeholder: '1.0.0'
+    validations:
+      required: true
+
+  # Info.
+  - type: textarea
+    id: info
+    attributes:
+      label: Info
+      description: Please describe your issue.
+    validations:
+      required: false

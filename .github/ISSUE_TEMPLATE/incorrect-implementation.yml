@@ -1,0 +1,54 @@
+name: Incorrect Implementation
+description: A function is implemented incorrectly in jest-environment-obsidian.
+title: '[Impl. Bug]: '
+labels: ['wrong-implementation', 'rel:implementation']
+assignees:
+  - '@obsidian-community/jest-environment-obsidian'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Does a function in `jest-environment-obsidian` behave differently than it does while running under Obsidian?
+
+  # Version.
+  - type: input
+    id: version
+    attributes:
+      label: Affected Version
+      description: What version of jest-environment-obsidian are you using?
+      placeholder: '1.0.0'
+    validations:
+      required: true
+
+  # Affected function.
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Which function or behavior is wrong, and why?
+      placeholder: 'The ... function does not ...'
+    validations:
+      required: false
+
+  # Example.
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: If possible, please provide an example of how the function is used in your Obsidian plugin.
+      render: 'typescript'
+      placeholder: |
+        const el = window.createEl("my-class");
+        el.setAttrs({name: "value"});
+        console.log(el.getAttr("name"));
+    validations:
+      required: false
+
+  # More info.
+  - type: textarea
+    id: info
+    attributes:
+      label: Info
+      description: Is there anything else you would like to mention?
+    validations:
+      required: false
