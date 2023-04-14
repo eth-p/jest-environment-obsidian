@@ -1,0 +1,99 @@
+name: 'Release'
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # Phase 1: Check Version
+  # Ensure the version number matches the tag number.
+  check-version:
+    name: 'Check Version'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.extract.outputs.prerelease }}
+      version: ${{ steps.extract.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      # Extract the current version from package.json.
+      - id: extract
+        name: Extract Version Info
+        shell: bash
+        run: |
+          vers="$(jq '.version' package.json)"
+          printf "version=%s\n" "$vers" >> "$GITHUB_OUTPUT"
+          if [[ "${{ github.ref_name }}" =~ ^[^-]+-.+$ ]]; then
+            printf "prerelease=true\n" >> "$GITHUB_OUTPUT"
+          else
+            printf "prerelease=false\n" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Ensure the tag matches the current version.
+      - name: Check Version
+        shell: bash
+        run: |
+          if ! test "${{ github.ref_name }}" = "v${{ steps.extract.outputs.version }}"; then
+            printf "::error file=package.json::Version does not match git tag.\n"
+            {
+              printf "# Failed\n"
+              printf 'Could not create release, since the tag `%s` does not match the package version, `%s`.' \
+              "${{ github.ref_name }}" \
+              "$vers"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # Phase 2: Run Checks
+  # Ensure that all the checks pass.
+  run-checks:
+    needs: [check-version]
+    name: 'Run Checks'
+    uses: ./.github/workflows/commit-checks.yml
+    permissions:
+      contents: read
+
+  # Phase 3: Create Release
+  # Create a release on GitHub.
+  create-draft-release:
+    name: 'Create Release'
+    runs-on: ubuntu-latest
+    needs: [check-version, run-checks]
+    permissions:
+      contents: write
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: '${{ github.ref_name }}'
+          generateReleaseNotes: true
+          prerelease: '${{ needs.check-version.outputs.prerelease }}'
+      - name: Add Workflow Summary
+        shell: bash
+        run: |
+          {
+            printf "# Released!\n"
+            printf 'A release for version `%s` was created [here](%s).\n' \
+              "${{ needs.check-version.outputs.version }}" \
+              "$(sed 's#/releases/tag/#/releases/edit/#' <<< "${{ steps.create-release.outputs.html_url }}")"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # Phase 4: Publish on NPM
+  publish-npm:
+    name: 'Publish on NPM'
+    runs-on: ubuntu-latest
+    needs: [check-version, run-checks]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+      - name: Publish
+        shell: bash
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

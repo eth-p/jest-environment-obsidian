@@ -24,6 +24,7 @@ runs:
     - name: 'Install node'
       uses: actions/setup-node@v3
       with:
+        registry-url: 'https://registry.npmjs.org'
         node-version: ${{ inputs.node-version }}
         node-version-file: '.nvmrc'
         cache: '' # Empty string to explicitly disable automatic caching.

@@ -1,0 +1,63 @@
+# ----------------------------------------------------------------------------------------------------------------------
+# DISABLED UNTIL THERE IS A SOLUTION TO:
+# https://github.com/orgs/community/discussions/25305
+# ----------------------------------------------------------------------------------------------------------------------
+
+# name: 'Publish Release'
+
+# on:
+#   release:
+#     types: [published]
+
+# jobs:
+#   # Phase 1: Merge to main.
+#   merge:
+#     name: 'Merge Version Bump into Main'
+#     permissions:
+#       contents: write
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: 2
+
+#       # Try to merge the tag into main.
+#       - name: Merge
+#         shell: bash
+#         run: |
+#           printf "==> CURRENT HISTORY:\n"
+#           PAGER=cat git log --oneline | head -n5
+#           printf "\n"
+
+#           git fetch origin main
+#           git checkout origin/main
+
+#           printf "\n==> REMOTE HISTORY:\n"
+#           PAGER=cat git log --oneline | head -n5
+#           printf "\n"
+
+#           printf "Merging...\n"
+#           git merge --ff-only "${{ github.ref_name }}"
+
+#       - name: Push
+#         shell: bash
+#         run: git push --force origin HEAD:main
+
+#   # Phase 2: Build & Publish
+#   build:
+#     name: 'Build & Publish'
+#     needs: merge
+#     permissions:
+#       contents: read
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: ./.github/actions/setup
+#       - uses: ./.github/actions/build
+#       - uses: ./.github/actions/run-tests
+#       - name: Publish
+#         shell: bash
+#         run: |
+#           npm publish
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
