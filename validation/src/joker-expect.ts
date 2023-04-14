@@ -1,4 +1,4 @@
-import { getArgumentsCalledWith, getTimesCalled } from './joker-mock-function';
+import { assertMock } from './joker-mock-function';
 import { serialize } from './joker-serialize';
 
 /**
@@ -109,7 +109,8 @@ export class Expect<T> {
 	}
 
 	public toBeCalledWith(...args: unknown[]): void {
-		const actual = getArgumentsCalledWith(this.#value);
+		const mock = assertMock(this.#value as any);
+		const actual = mock.mock.lastCall;
 		const expected = args;
 
 		if ((serialize(actual) === serialize(expected)) === this.#negated) {
@@ -118,7 +119,8 @@ export class Expect<T> {
 	}
 
 	public toBeCalled(): void {
-		const actual = getTimesCalled(this.#value)
+		const mock = assertMock(this.#value as any);
+		const actual = mock.mock.calls.length;
 
 		if ((actual > 0) === this.#negated) {
 			this.#fail(actual, 'to be called at least', 'once');
@@ -126,7 +128,8 @@ export class Expect<T> {
 	}
 
 	public toBeCalledTimes(times: number): void {
-		const actual = getTimesCalled(this.#value)
+		const mock = assertMock(this.#value as any);
+		const actual = mock.mock.calls.length;
 		const expected = times;
 
 		if ((actual === expected) === this.#negated) {

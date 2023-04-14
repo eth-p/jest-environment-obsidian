@@ -1,13 +1,27 @@
-const MOCK_METADATA = Symbol('mocked');
+const IS_MOCKED = Symbol('mocked');
 
-export class MockedFunctionMetadata {
-	public calledTimes: number = 0;
-	public calledArgs: any[] | null = null;
+type Impl = undefined | ((this: any, ...args: any[]) => any);
+type ImplParameters<F extends Impl> = F extends (...args: infer A) => any ? A : any[];
+type ImplReturn<F extends Impl> = F extends (...args: any[]) => infer R ? R : any;
+type ImplContext<F extends Impl> = F extends (this: infer T, ...args: any[]) => any ? T : any;
+
+interface MockedFunction<F extends Impl> {
+	(this: ImplContext<F>, ...args: ImplParameters<F>): ImplReturn<F>;
+	[IS_MOCKED]: true;
+
+	mock: MockedFunctionMetadata<F>;
+	mockClear(): void;
 }
 
-type MockedFunction<F extends undefined | ((this: any, ...args: any[]) => any)> = F extends undefined
-	? (...args: any[]) => any
-	: F;
+interface MockedFunctionMetadata<F extends Impl> {
+	calls: Array<ImplParameters<F>>;
+	contexts: Array<ImplContext<F>>;
+	lastCall: ImplParameters<F> | undefined;
+	results: Array<{
+		type: 'return' | 'throw';
+		value: ImplReturn<F> | any;
+	}>;
+}
 
 /**
  * Creates a mock function.
@@ -18,29 +32,41 @@ type MockedFunction<F extends undefined | ((this: any, ...args: any[]) => any)> 
 export function createMockFunction<F extends undefined | ((this: any, ...args: any[]) => any)>(
 	impl?: F,
 ): MockedFunction<F> {
-	const meta = new MockedFunctionMetadata();
-	const fn = function (...args: any[]) {
-		meta.calledTimes++;
-		meta.calledArgs = args.slice(0);
+	const fn = function (this: ImplReturn<F>, ...args: ImplParameters<F>) {
+		const { mock } = fn;
+		mock.contexts.push(this);
+		mock.calls.push(args);
+		mock.lastCall = args;
 
 		if (impl != null) {
-			return Reflect.apply(impl, this, args);
+			try {
+				const returned = Reflect.apply(impl, this, args);
+				mock.results.push({ type: 'return', value: returned });
+			} catch (ex) {
+				mock.results.push({ type: 'throw', value: ex });
+				throw ex;
+			}
 		}
+
+		mock.results.push({ type: 'return', value: undefined });
+	} as MockedFunction<F>;
+
+	fn.mockClear = () => {
+		fn.mock = {
+			calls: [],
+			contexts: [],
+			results: [],
+			lastCall: undefined,
+		};
 	};
 
-	fn[MOCK_METADATA] = meta;
-	return fn as any;
+	// Initialize and return.
+	fn[IS_MOCKED] = true;
+	fn.mockClear();
+	return fn as MockedFunction<F>;
 }
 
-function getMockMetadata(fn: MockedFunction<any>): MockedFunctionMetadata {
-	if (!(MOCK_METADATA in fn)) throw new Error('Function is not mocked.');
-	return fn[MOCK_METADATA];
-}
-
-export function getTimesCalled(fn: MockedFunction<any>): number {
-	return getMockMetadata(fn).calledTimes;
-}
-
-export function getArgumentsCalledWith(fn: MockedFunction<any>): any[] | null {
-	return getMockMetadata(fn).calledArgs;
+export function assertMock<F extends (this: any, ...args: any[]) => any>(fn: F): MockedFunction<F> {
+	if (!(IS_MOCKED in fn)) throw new Error('Function is not mocked.');
+	return fn as unknown as MockedFunction<F>;
 }
