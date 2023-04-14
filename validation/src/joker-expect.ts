@@ -1,4 +1,4 @@
-import { getArgumentsCalledWith } from './joker-mock-function';
+import { getArgumentsCalledWith, getTimesCalled } from './joker-mock-function';
 import { serialize } from './joker-serialize';
 
 /**
@@ -108,6 +108,15 @@ export class Expect<T> {
 
 		if ((serialize(actual) === serialize(expected)) === this.#negated) {
 			this.#fail(actual, 'to be called with', expected);
+		}
+	}
+
+	public toBeCalledTimes(times: number): void {
+		const actual = getTimesCalled(this.#value)
+		const expected = times;
+
+		if ((actual === expected) === this.#negated) {
+			this.#fail(actual, 'to be called times', expected);
 		}
 	}
 }
