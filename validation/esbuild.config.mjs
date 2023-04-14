@@ -2,6 +2,8 @@ import builtins from 'builtin-modules';
 import esbuild from 'esbuild';
 import process from 'process';
 
+import validationTestsPlugin from './esbuild.plugin.validationtests.mjs';
+
 const prod = process.argv[2] === 'production';
 const context = await esbuild.context({
 	entryPoints: ['src/main.ts'],
@@ -33,6 +35,7 @@ const context = await esbuild.context({
 		'@lezer/highlight',
 		'@lezer/lr',
 	],
+	plugins: [validationTestsPlugin()],
 });
 
 if (prod) {

@@ -4,7 +4,7 @@ import { allFiles, allTests } from './joker-registry';
 import { TestRunner } from './joker-runner';
 import { Test, TestResult } from './joker-test';
 import TestComponent from './test-component';
-import './tests';
+import '#validation-tests';
 
 export default class TestPlugin extends Plugin {
 	public runner!: TestRunner;

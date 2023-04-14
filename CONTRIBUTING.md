@@ -225,23 +225,16 @@ const myDiv = (() => {
 
 ### (4.3) Writing Validation Tests
 
-When creating validation tests, there are a couple of extra steps you need to take:
+When creating validation tests, you need to ensure that the test is running under the `#meta-test/validation` environment. You should have a multi-line docblock comment that looks like this:
 
-1. Ensure that the test is running under the `#meta-test/validation` environment.
+```typescript
+/**
+ * @jest-environment #meta-test/validation
+ */
+import {...} from "./my-file.ts";
+```
 
-    You should have a multi-line docblock comment that looks like this:
-
-    ```typescript
-    /**
-     * @jest-environment <rootDir>/src/environment.ts
-     * @validation-test
-     */
-    import {...} from "./my-file.ts";
-    ```
-
-2. Add the unit test file to the [validation/src/tests.ts](./validation/src/tests.ts) file. This lets the bundler know to include it for testing inside the validation plugin.
-
-    > **[!]** The test _must_ be imported using the `import()` function, and not the `import` keyword. If the keyword is used, the test will not be identified by the in-browser test runner.
+Once that is added, the test will automatically be added to the validation plugin.
 
 #### Limitations
 
