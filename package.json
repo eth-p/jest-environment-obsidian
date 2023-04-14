@@ -1,6 +1,6 @@
 {
 	"name": "jest-environment-obsidian",
-	"version": "0.0.0-alpha0",
+	"version": "0.0.1-alpha1",
 	"description": "Undocumented/private API definitions for Obsidian.md",
 	"scripts": {
 		"test": "node ./scripts/test.mjs",
