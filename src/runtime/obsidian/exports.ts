@@ -44,3 +44,4 @@ export { stripHeadingForLink } from './functions/stripHeadingForLink';
 
 // Components.
 export { BaseComponent } from './components/BaseComponent';
+export { ValueComponent } from './components/ValueComponent';

@@ -3145,24 +3145,6 @@ export {};
 // /**
 //  * @public
 //  */
-// export abstract class ValueComponent<T> extends BaseComponent {
-//     /**
-//      * @public
-//      */
-//     registerOptionListener(listeners: Record<string, (value?: T) => T>, key: string): this;
-//     /**
-//      * @public
-//      */
-//     abstract getValue(): T;
-//     /**
-//      * @public
-//      */
-//     abstract setValue(value: T): this;
-// }
-
-// /**
-//  * @public
-//  */
 // export class Vault extends Events {
 //     /**
 //      * @public
