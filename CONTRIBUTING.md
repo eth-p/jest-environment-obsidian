@@ -16,6 +16,7 @@ Thank you for taking an interest in contributing to `jest-environment-obsidian`!
 
     -   3.1 [Code Consistency](#31-code-consistency)
     -   3.2 [Commit Consistency](#32-commit-consistency)
+    -   3.3 [Creating Releases](#33-creating-releases)
 
 -   4.0 [Testing](#40-testing)
     -   4.1 [Running Tests](#41-running-tests)
@@ -117,6 +118,31 @@ If you want to help us out, you can:
 -   Run `npx husky install` to set up automatic linting for `git commit` messages; and
 -   Create small but frequent commits.  
     It's easier for us to squash a commit than it is to break one apart :)
+
+### (3.3) Creating Releases
+
+We use a `tag-to-release` workflow for `jest-environment-obsidian`.
+
+For a maintainer to create a release, a couple things need to be done:
+
+1. Update the `version` in [package.json](./package.json).
+2. Run `npm install --package-lock-only` to update the package lock.
+3. Commit the changes:
+
+    ```bash
+    git add package.json package-lock.json
+    git commit -m "chore: bump version to $(jq .version package.json)"
+    ```
+
+4. Tag the commit and push both the tag and to `main`:
+
+    ```bash
+    git tag v"$(jq .version package.json)"
+    git push origin main
+    git push origin v"$(jq .version package.json)"
+    ```
+
+5. Wait for [the release workflow](https://github.com/obsidian-community/jest-environment-obsidian/actions/workflows/create-release.yml) to finish.
 
 &nbsp;
 
