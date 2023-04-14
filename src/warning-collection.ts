@@ -72,12 +72,12 @@ export class WarningCollection {
  * A type representing a map of warning types.
  */
 export type WarningTypes = {
-	[K in keyof typeof WarningTypesModule]: typeof WarningTypesModule[K]
+	[K in keyof typeof WarningTypesModule]: (typeof WarningTypesModule)[K];
 };
 
 /**
  * A type lookup table for getting the type of a warning by its class name.
- * 
+ *
  * ```ts
  * WarningTypeByName<"MyWarning"> = typeof Resolved<import("warning-types.ts")>.MyWarning;
  * ```

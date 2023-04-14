@@ -15,7 +15,7 @@ jobs:
           - with-commonjs
           - with-esmodule
 
-    name: "Example ${{ matrix.example }}"
+    name: 'Example ${{ matrix.example }}'
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup

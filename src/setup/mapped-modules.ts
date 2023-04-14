@@ -1,4 +1,4 @@
-import { RUNTIME_PACKAGE } from "../constants";
+import { RUNTIME_PACKAGE } from '../constants';
 
 /**
  * A list of modules which have shims provided.
