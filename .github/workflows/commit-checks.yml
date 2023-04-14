@@ -1,8 +1,23 @@
 name: 'Check Commits'
 
 on:
-  push:
   pull_request:
+  push:
+    paths:
+      # Project Dependencies
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
+
+      # Project Sources or Tests
+      - 'src/**'
+      - 'testutil/**'
+      - 'examples/**'
+      - 'scripts/**'
+
+      # CI
+      - '.github/actions/**'
+      - '.github/workflows/**'
 
 jobs:
   # Phase 1: Build
