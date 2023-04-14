@@ -1,7 +1,7 @@
 {
 	"name": "jest-environment-obsidian",
 	"version": "0.0.0-alpha0",
-	"description": "Undocumented/private API definitions for Obsidian.md",
+	"description": "A Jest environment to facilitate unit testing for Obsidian plugins.",
 	"scripts": {
 		"test": "node ./scripts/test.mjs",
 		"typecheck": "tsc -p . --noEmit",
