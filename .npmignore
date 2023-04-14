@@ -2,9 +2,11 @@
 /examples
 
 # Development
+/.github
 /scripts
 /testutil
 /validation
+/todo.ts
 
 node_modules
 .*
