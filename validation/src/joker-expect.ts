@@ -117,6 +117,14 @@ export class Expect<T> {
 		}
 	}
 
+	public toBeCalled(): void {
+		const actual = getTimesCalled(this.#value)
+
+		if ((actual > 0) === this.#negated) {
+			this.#fail(actual, 'to be called at least', 'once');
+		}
+	}
+
 	public toBeCalledTimes(times: number): void {
 		const actual = getTimesCalled(this.#value)
 		const expected = times;
