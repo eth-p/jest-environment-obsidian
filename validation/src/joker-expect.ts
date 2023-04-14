@@ -102,6 +102,12 @@ export class Expect<T> {
 		this.toBe(null);
 	}
 
+	public toBeInstanceOf(type: any): void {
+		if ((this.#value instanceof type) === this.#negated) {
+			this.#fail(this.#value, 'to be instance of', type);
+		}
+	}
+
 	public toBeCalledWith(...args: unknown[]): void {
 		const actual = getArgumentsCalledWith(this.#value);
 		const expected = args;
