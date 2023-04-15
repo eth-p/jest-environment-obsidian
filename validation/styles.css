@@ -1,3 +1,4 @@
+/* Test Component */
 .jest-environment-obsidian-test-component {
 	padding: var(--size-4-2);
 
@@ -22,11 +23,11 @@
 	justify-self: end;
 }
 
-.jest-environment-obsidian-test-component[data-test-result="pass"] .jest-environment-obsidian-test-summary {
+.jest-environment-obsidian-test-component[data-test-result='pass'] .jest-environment-obsidian-test-summary {
 	color: var(--color-green);
 }
 
-.jest-environment-obsidian-test-component[data-test-result="fail"] .jest-environment-obsidian-test-summary {
+.jest-environment-obsidian-test-component[data-test-result='fail'] .jest-environment-obsidian-test-summary {
 	color: var(--color-red);
 }
 
@@ -36,12 +37,10 @@
 }
 
 .jest-environment-obsidian-test-description {
-
 }
 
 .jest-environment-obsidian-error-internal {
 	padding-top: var(--size-4-2);
-
 }
 
 .jest-environment-obsidian-error-internal-title {
@@ -52,4 +51,75 @@
 	overflow: auto;
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
+}
+
+/* Test UI */
+
+.jest-environment-obsidian-testui-container {
+	/* The setting tab container. */
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.jest-environment-obsidian-testui-controls {
+	/* The top half of the UI. */
+	flex: 1 0 auto;
+	overflow: visible;
+	height: auto;
+	padding-bottom: var(--size-4-4);
+}
+
+.jest-environment-obsidian-testui-scrollable {
+	/* The bottom half of the UI. */
+	border-top: var(--background-modifier-border) 1px solid;
+	padding-top: var(--size-4-4);
+	position: relative;
+}
+
+.jest-environment-obsidian-testui-group {
+	/* Components and suites within a test file or suite. */
+	margin-left: var(--size-4-4);
+}
+
+.jest-environment-obsidian-testui-file:not(:first-child) {
+	/* Container for a single file. */
+	border-top: var(--background-modifier-border) 1px solid;
+	margin-top: var(--size-4-4);
+}
+
+.jest-environment-obsidian-testui-filepath-dir,
+.jest-environment-obsidian-testui-filepath-name,
+.jest-environment-obsidian-testui-suite {
+	margin: 0;
+	font-size: var(--font-ui-small);
+}
+
+.jest-environment-obsidian-testui-filepath-dir {
+	color: var(--text-faint);
+}
+
+.jest-environment-obsidian-testui-filepath-name {
+	color: var(--text-normal);
+}
+
+.jest-environment-obsidian-testui-suite {
+	color: var(--text-muted);
+	margin-bottom: 0.5em;
+}
+
+.jest-environment-obsidian-testui-about {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-faint);
+
+	margin: 0;
+	margin-bottom: 0.75em;
+}
+
+.jest-environment-obsidian-testui-about > *:first-child {
+	margin-top: 0;
+}
+
+.jest-environment-obsidian-testui-about > *:last-child {
+	margin-bottom: 0;
 }

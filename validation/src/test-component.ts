@@ -14,6 +14,7 @@ export default class TestComponent extends Component {
 
 	public test: Test;
 	public passed: boolean = true;
+	public run: boolean = false;
 
 	public constructor() {
 		super();
@@ -61,6 +62,7 @@ export default class TestComponent extends Component {
 		this.componentEl.setAttribute('data-test-result', result.passed ? 'pass' : 'fail');
 		this.resultsEl.empty();
 		this.passed = result.passed;
+		this.run = true;
 
 		if (!result.passed && result.error != null) {
 			if ('toHTML' in result.error && typeof result.error.toHTML === 'function') {

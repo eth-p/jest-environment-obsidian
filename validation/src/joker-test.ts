@@ -47,7 +47,21 @@ export class Test {
 	 * Gets a unique path that represents this test.
 	 */
 	public toPath(): string {
-		return this.suite == null ? this.description : `${this.suite.toPath()} -> ${this.description}`;
+		return this.toPathComponents().join(' -> ');
+	}
+
+	/**
+	 * Gets a unique path that represents this test.
+	 */
+	public toPathComponents(): string[] {
+		const components: string[] = [];
+		for (let suite = this.suite; suite != null; suite = suite?.parent) {
+			components.push(suite.description);
+		}
+
+		components.reverse();
+		components.push(this.description);
+		return components;
 	}
 
 	/**
