@@ -4,6 +4,7 @@ import { WarningParameters, WarningTypeByName, WarningTypes } from '../warning-c
 
 export type Environment = RuntimeGateway;
 export { getCallerName } from '../util';
+export { parseVersion, compareVersion } from '../utils-version';
 
 export function getEnvironment(): Environment {
 	const env = (globalThis as typeof globalThis & { [RUNTIME_STATE_GLOBAL_NAME]: Environment })[
