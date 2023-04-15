@@ -102,8 +102,23 @@ export class Expect<T> {
 		this.toBe(null);
 	}
 
+	public toContain(item: T extends Array<infer I> ? I : never): void {
+		let found = false;
+
+		for (const contained of this.#value as Array<unknown>) {
+			if (contained === item) {
+				found = true;
+				break;
+			}
+		}
+
+		if (found === this.#negated) {
+			this.#fail(this.#value, 'to contain', item);
+		}
+	}
+
 	public toBeInstanceOf(type: any): void {
-		if ((this.#value instanceof type) === this.#negated) {
+		if (this.#value instanceof type === this.#negated) {
 			this.#fail(this.#value, 'to be instance of', type);
 		}
 	}
@@ -122,7 +137,7 @@ export class Expect<T> {
 		const mock = assertMock(this.#value as any);
 		const actual = mock.mock.calls.length;
 
-		if ((actual > 0) === this.#negated) {
+		if (actual > 0 === this.#negated) {
 			this.#fail(actual, 'to be called at least', 'once');
 		}
 	}
