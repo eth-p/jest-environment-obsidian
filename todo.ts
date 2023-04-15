@@ -1910,12 +1910,6 @@ export {};
 //     left?: boolean;
 // }
 
-// /**
-//  * @public
-//  */
-// export class MenuSeparator {
-
-// }
 
 // /**
 //  *

@@ -46,6 +46,7 @@ export { stripHeadingForLink } from './functions/stripHeadingForLink';
 export { BaseComponent } from './components/BaseComponent';
 export { ValueComponent } from './components/ValueComponent';
 export { Component } from './components/Component';
+export { MenuSeparator } from './components/MenuSeparator';
 
 // Classes.
 export { Events } from './classes/Events';
