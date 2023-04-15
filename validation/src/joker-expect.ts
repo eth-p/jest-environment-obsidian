@@ -105,6 +105,10 @@ export class Expect<T> {
 	public toContain(item: T extends Array<infer I> ? I : never): void {
 		let found = false;
 
+		if (this.#value[Symbol.iterator] == null) {
+			this.#fail(this.#value, 'to (be iterable and) contain', item);
+		}
+
 		for (const contained of this.#value as Array<unknown>) {
 			if (contained === item) {
 				found = true;
