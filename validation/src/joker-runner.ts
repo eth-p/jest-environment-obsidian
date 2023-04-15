@@ -23,7 +23,7 @@ export class TestRunner {
 	 */
 	public async runTest(test: Test): Promise<TestResult> {
 		// Perform setup.
-		for (const setup of test.suite?.foreachSetup ?? []) {
+		for (const setup of test.getLifecycleSetupFunctions()) {
 			await runTestFunction(setup);
 		}
 
@@ -31,8 +31,8 @@ export class TestRunner {
 		const results = await runTestFunction(test.testMain);
 
 		// Perform teardown.
-		for (const setup of test.suite?.foreachTeardown ?? []) {
-			await runTestFunction(setup);
+		for (const teardown of test.getLifecycleTeardownFunctions()) {
+			await runTestFunction(teardown);
 		}
 
 		// Process results.

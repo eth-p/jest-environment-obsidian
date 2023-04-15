@@ -49,6 +49,46 @@ export class Test {
 	public toPath(): string {
 		return this.suite == null ? this.description : `${this.suite.toPath()} -> ${this.description}`;
 	}
+
+	/**
+	 * Gets the `beforeEach` setup functions, in order from least specific to most specific.
+	 * Basically, file -> suite -> test.
+	 */
+	public getLifecycleSetupFunctions(): TestFunction[] {
+		const fns: TestFunction[] = [];
+
+		for (let suite = this.suite; suite != null; suite = suite?.parent) {
+			for (const setup of suite.foreachSetup ?? []) {
+				fns.push(setup);
+			}
+		}
+
+		if (this.testSetup != null) {
+			fns.push(this.testSetup);
+		}
+
+		return fns.reverse();
+	}
+
+	/**
+	 * Gets the `afterEach` teardown functions, in order from least specific to most specific.
+	 * Basically, file -> suite -> test.
+	 */
+	public getLifecycleTeardownFunctions(): TestFunction[] {
+		const fns: TestFunction[] = [];
+
+		for (let suite = this.suite; suite != null; suite = suite?.parent) {
+			for (const setup of suite.foreachTeardown ?? []) {
+				fns.push(setup);
+			}
+		}
+
+		if (this.testTeardown != null) {
+			fns.push(this.testTeardown);
+		}
+
+		return fns.reverse();
+	}
 }
 
 export class TestSuite {
