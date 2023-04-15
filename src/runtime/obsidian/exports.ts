@@ -51,3 +51,5 @@ export { Modal } from './components/Modal';
 
 // Classes.
 export { Events } from './classes/Events';
+export { Plugin_2 } from './classes/Plugin_2';
+export { Plugin_2 as Plugin } from './classes/Plugin_2';
