@@ -34,6 +34,7 @@ export { renderMatches } from './functions/renderMatches';
 export { renderMath } from './functions/renderMath';
 export { renderResults } from './functions/renderResults';
 export { request } from './functions/request';
+export { requireApiVersion } from './functions/requireApiVersion';
 export { resolveSubpath } from './functions/resolveSubpath';
 export { sanitizeHTMLToDom } from './functions/sanitizeHTMLToDom';
 export { setIcon } from './functions/setIcon';
