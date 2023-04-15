@@ -1,16 +1,27 @@
 const IS_MOCKED = Symbol('mocked');
+const MOCK_IMPL = Symbol('mock implementation');
 
 type Impl = undefined | ((this: any, ...args: any[]) => any);
 type ImplParameters<F extends Impl> = F extends (...args: infer A) => any ? A : any[];
 type ImplReturn<F extends Impl> = F extends (...args: any[]) => infer R ? R : any;
 type ImplContext<F extends Impl> = F extends (this: infer T, ...args: any[]) => any ? T : any;
+type ImplAsFunction<F extends Impl> = (this: ImplContext<F>, ...args: ImplParameters<F>) => ImplReturn<F>;
 
 interface MockedFunction<F extends Impl> {
 	(this: ImplContext<F>, ...args: ImplParameters<F>): ImplReturn<F>;
 	[IS_MOCKED]: true;
+	[MOCK_IMPL]: MockedFunctionImplementation<F>;
 
 	mock: MockedFunctionMetadata<F>;
-	mockClear(): void;
+	mockClear(): MockedFunction<F>;
+
+	mockImplementation(fn: ImplAsFunction<F>): MockedFunction<F>;
+	mockImplementationOnce(fn: ImplAsFunction<F>): MockedFunction<F>;
+}
+
+interface MockedFunctionImplementation<F extends Impl> {
+	nextImpls: ImplAsFunction<F>[];
+	defaultImpl: ImplAsFunction<F>;
 }
 
 interface MockedFunctionMetadata<F extends Impl> {
@@ -38,17 +49,16 @@ export function createMockFunction<F extends undefined | ((this: any, ...args: a
 		mock.calls.push(args);
 		mock.lastCall = args;
 
-		if (impl != null) {
-			try {
-				const returned = Reflect.apply(impl, this, args);
-				mock.results.push({ type: 'return', value: returned });
-			} catch (ex) {
-				mock.results.push({ type: 'throw', value: ex });
-				throw ex;
-			}
-		}
+		const impls = fn[MOCK_IMPL];
+		const impl = impls.nextImpls.shift() ?? impls.defaultImpl ?? (() => undefined);
 
-		mock.results.push({ type: 'return', value: undefined });
+		try {
+			const returned = Reflect.apply(impl, this, args);
+			mock.results.push({ type: 'return', value: returned });
+		} catch (ex) {
+			mock.results.push({ type: 'throw', value: ex });
+			throw ex;
+		}
 	} as MockedFunction<F>;
 
 	fn.mockClear = () => {
@@ -58,10 +68,27 @@ export function createMockFunction<F extends undefined | ((this: any, ...args: a
 			results: [],
 			lastCall: undefined,
 		};
+
+		return this;
+	};
+
+	fn.mockImplementation = (impl) => {
+		fn[MOCK_IMPL].defaultImpl = impl;
+		return this;
+	};
+
+	fn.mockImplementationOnce = (impl) => {
+		fn[MOCK_IMPL].nextImpls.push(impl);
+		return this;
 	};
 
 	// Initialize and return.
 	fn[IS_MOCKED] = true;
+	fn[MOCK_IMPL] = {
+		defaultImpl: impl ?? (() => undefined),
+		nextImpls: [],
+	};
+
 	fn.mockClear();
 	return fn as MockedFunction<F>;
 }
