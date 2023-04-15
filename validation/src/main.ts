@@ -1,5 +1,5 @@
 import '#validation-tests';
-import { ButtonComponent, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { ButtonComponent, Plugin, PluginSettingTab, Setting, prepareSimpleSearch } from 'obsidian';
 
 import { allFiles, allTests } from './joker-registry';
 import { TestRunner } from './joker-runner';
@@ -69,6 +69,19 @@ class TestPluginSettingTab extends PluginSettingTab {
 			.then((s) => s.descEl.setAttr('style', 'color: var(--text-error)'));
 	}
 
+	protected _updateSearch(query: string) {
+		if (query === '') {
+			for (const component of this.components.values()) component.componentEl.show();
+			return;
+		}
+
+		const search = prepareSimpleSearch(query);
+		for (const component of this.components.values()) {
+			const matches = search(component.test.toPath()) != null;
+			component.componentEl.toggle(matches);
+		}
+	}
+
 	/** @override */
 	public display() {
 		this._init();
@@ -101,7 +114,9 @@ class TestPluginSettingTab extends PluginSettingTab {
 			});
 
 		this.summarySetting = new Setting(containerEl)
+			.setName('No Tests Run')
 			.setDesc('Press the button above to run tests.')
+			.addSearch((search) => search.onChange(this._updateSearch.bind(this)))
 			.addExtraButton((btn) => {
 				const components = this.components;
 				let filtered = false;
