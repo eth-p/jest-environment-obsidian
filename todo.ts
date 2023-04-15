@@ -801,40 +801,6 @@ export {};
 // /**
 //  * @public
 //  */
-// export interface EventRef {
-
-// }
-
-// /**
-//  * @public
-//  */
-// export class Events {
-
-//     /**
-//      * @public
-//      */
-//     on(name: string, callback: (...data: any) => any, ctx?: any): EventRef;
-//     /**
-//      * @public
-//      */
-//     off(name: string, callback: (...data: any) => any): void;
-//     /**
-//      * @public
-//      */
-//     offref(ref: EventRef): void;
-//     /**
-//      * @public
-//      */
-//     trigger(name: string, ...data: any[]): void;
-//     /**
-//      * @public
-//      */
-//     tryTrigger(evt: EventRef, args: any[]): void;
-// }
-
-// /**
-//  * @public
-//  */
 // export class ExtraButtonComponent extends BaseComponent {
 //     /**
 //      * @public
