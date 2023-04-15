@@ -16,6 +16,7 @@ import TestComponent from './test-component';
 
 export default class TestPlugin extends Plugin {
 	public runner!: TestRunner;
+	public shouldRunTests: boolean;
 	public config: {
 		lastSearch: string;
 		lastFiltered: boolean;
@@ -35,6 +36,26 @@ export default class TestPlugin extends Plugin {
 	public updateConfig<F extends keyof TestPlugin['config']>(k: F, value: this['config'][F]) {
 		this.config[k] = value;
 		this.saveData(this.config);
+	}
+
+	public async reloadPlugin(runTests?: boolean) {
+		const plugins = (this.app as any).plugins as {
+			unloadPlugin(id: string): Promise<void>;
+			loadPlugin(id: string): Promise<void>;
+			getPlugin(id: string): Plugin;
+		};
+
+		await plugins.unloadPlugin(this.manifest.id);
+		await plugins.loadPlugin(this.manifest.id);
+
+		if (runTests) {
+			const settings = (this.app as any).setting as {
+				openTabById(id: string);
+			};
+
+			(plugins.getPlugin(this.manifest.id) as TestPlugin).shouldRunTests = true;
+			settings.openTabById(this.manifest.id);
+		}
 	}
 }
 
@@ -209,13 +230,16 @@ class TestPluginSettingTab extends PluginSettingTab {
 		});
 	}
 
-	public runTests(): void {
-		this.isRunning = true;
-		this.runner.runTests(allTests(), this._updateProgress.bind(this)).then((results) => {
-			this.runButton.setDisabled(false);
-			this.isRunning = false;
-			this._updateProgress(Array.from(results.entries()));
-			this._updateResults(results);
+	public runTests(): Promise<void> {
+		return new Promise((resolve) => {
+			this.isRunning = true;
+			this.runner.runTests(allTests(), this._updateProgress.bind(this)).then((results) => {
+				this.runButton.setDisabled(false);
+				this.isRunning = false;
+				this._updateProgress(Array.from(results.entries()));
+				this._updateResults(results);
+				resolve();
+			});
 		});
 	}
 
@@ -254,10 +278,22 @@ class TestPluginSettingTab extends PluginSettingTab {
 		controlsEl.appendChild(desc);
 
 		// The run button.
-		this.runButton = new ButtonComponent(controlsEl).setButtonText('Run Tests').onClick(() => this.runTests());
+		const runButtonHandler = async () => {
+			await this.runTests();
+
+			this.runButton.setButtonText("Reload & Run Tests");
+			this.runButton.onClick(() => this.plugin.reloadPlugin(true));
+		};
+
+		this.runButton = new ButtonComponent(controlsEl).setButtonText('Run Tests').onClick(runButtonHandler);
 
 		// The test results.
 		this.componentsContainer.classList.add('vertical-tab-content');
 		containerEl.appendChild(this.componentsContainer);
+
+		// Automatically run tests?
+		if (this.plugin.shouldRunTests) {
+			runButtonHandler();
+		}
 	}
 }
