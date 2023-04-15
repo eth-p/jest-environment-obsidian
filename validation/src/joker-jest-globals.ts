@@ -19,6 +19,10 @@ export function beforeEach(setupFn: TestFunction): void {
 	context().addLifecycleBeforeEach(setupFn);
 }
 
+export function afterEach(setupFn: TestFunction): void {
+	context().addLifecycleAfterEach(setupFn);
+}
+
 export namespace jest {
 	export function fn(fn?: (this: any, ...args: any[]) => any) {
 		return createMockFunction(fn);

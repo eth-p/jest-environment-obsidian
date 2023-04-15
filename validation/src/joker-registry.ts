@@ -28,6 +28,7 @@ interface RegistryContext {
 	defineTest(description: string, main: TestFunction): void;
 	defineSuite(description: string, main: TestFunction): void;
 	addLifecycleBeforeEach(setup: TestFunction): void;
+	addLifecycleAfterEach(setup: TestFunction): void;
 }
 
 /**
