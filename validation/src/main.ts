@@ -1,10 +1,10 @@
+import '#validation-tests';
 import { ButtonComponent, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 import { allFiles, allTests } from './joker-registry';
 import { TestRunner } from './joker-runner';
 import { Test, TestResult } from './joker-test';
 import TestComponent from './test-component';
-import '#validation-tests';
 
 export default class TestPlugin extends Plugin {
 	public runner!: TestRunner;
@@ -33,12 +33,17 @@ class TestPluginSettingTab extends PluginSettingTab {
 		this.componentsContainer = frag.createDiv();
 
 		for (const test of allTests()) {
+			const path = test.toPath();
 			const testComponent = new TestComponent()
 				.setPath(test.suite?.toPath())
 				.setDesc(test.description)
 				.setTest(test);
 
-			this.components.set(test.toPath(), testComponent);
+			if (this.components.has(path)) {
+				console.warn('Already have a test with path:\n%c%s', 'font-weight:bold', path);
+			}
+
+			this.components.set(path, testComponent);
 			this.componentsContainer.appendChild(testComponent.componentEl);
 		}
 	}
