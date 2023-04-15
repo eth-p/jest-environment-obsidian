@@ -1987,62 +1987,6 @@ export {};
 //     on(name: 'resolved', callback: () => any, ctx?: any): EventRef;
 // }
 
-// /**
-//  * @public
-//  */
-// export class Modal implements CloseableComponent {
-//     /**
-//      * @public
-//      */
-//     app: App;
-//     /**
-//      * @public
-//      */
-//     scope: Scope;
-//     /**
-//      * @public
-//      */
-//     containerEl: HTMLElement;
-//     /**
-//      * @public
-//      */
-//     modalEl: HTMLElement;
-//     /**
-//      * @public
-//      */
-//     titleEl: HTMLElement;
-//     /**
-//      * @public
-//      */
-//     contentEl: HTMLElement;
-
-//     /**
-//      * @public
-//      */
-//     shouldRestoreSelection: boolean;
-
-//     /**
-//      * @public
-//      */
-//     constructor(app: App);
-//     /**
-//      * @public
-//      */
-//     open(): void;
-//     /**
-//      * @public
-//      */
-//     close(): void;
-//     /**
-//      * @public
-//      */
-//     onOpen(): void;
-//     /**
-//      * @public
-//      */
-//     onClose(): void;
-
-// }
 
 // /**
 //  * Mod = Cmd on MacOS and Ctrl on other OS
