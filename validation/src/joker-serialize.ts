@@ -1,3 +1,5 @@
+export const Inspect = Symbol('serializer inspect');
+
 class Serializer {
 	private refcounts: Map<object | symbol, number> = new Map();
 	private reflabels: Map<object | symbol, string> = new Map();
@@ -44,13 +46,18 @@ class Serializer {
 	public serialize(value: any, depth: number = 0): string {
 		if (value === null) return this.serializeNull(value, depth + 1);
 		if (value === undefined) return this.serializeUndefined(value, depth + 1);
-		if (value instanceof Array) return this.serializeArray(value, depth + 1);
 		if (typeof value === 'boolean') return this.serializeBoolean(value, depth + 1);
 		if (typeof value === 'number') return this.serializeNumber(value, depth + 1);
 		if (typeof value === 'string') return this.serializeString(value, depth + 1);
-		if (typeof value === 'function') return this.serializeFunction(value, depth + 1);
 		if (typeof value === 'symbol') return this.serializeSymbol(value, depth + 1);
+
+		// Can contain properties.
+		if (Inspect in value) return value[Inspect](this);
+		if (value instanceof Array) return this.serializeArray(value, depth + 1);
+		if (typeof value === 'function') return this.serializeFunction(value, depth + 1);
 		if (typeof value === 'object') return this.serializeObject(value, depth + 1);
+
+		// Unknown.
 		return JSON.stringify(value);
 	}
 

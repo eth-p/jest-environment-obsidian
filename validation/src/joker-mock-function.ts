@@ -1,3 +1,5 @@
+import { Inspect } from './joker-serialize';
+
 const IS_MOCKED = Symbol('mocked');
 const MOCK_IMPL = Symbol('mock implementation');
 
@@ -80,6 +82,11 @@ export function createMockFunction<F extends undefined | ((this: any, ...args: a
 	fn.mockImplementationOnce = (impl) => {
 		fn[MOCK_IMPL].nextImpls.push(impl);
 		return this;
+	};
+
+	// Add an inspect function so we don't clutter test errors.
+	fn[Inspect] = (serializer) => {
+		return `<mocked function>(...)`;
 	};
 
 	// Initialize and return.
