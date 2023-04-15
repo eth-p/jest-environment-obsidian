@@ -1,7 +1,7 @@
 class Serializer {
 	private refcounts: Map<object | symbol, number> = new Map();
 	private reflabels: Map<object | symbol, string> = new Map();
-	private labelIndex: number;
+	private labelIndex: number = 1;
 
 	public scan(obj: any) {
 		if (obj == null) return;
@@ -32,6 +32,7 @@ class Serializer {
 		}
 
 		const label = `<ref #${this.labelIndex}>`;
+		this.labelIndex++;
 		this.reflabels.set(value, label);
 		return `${label} ${factory()}`;
 	}
