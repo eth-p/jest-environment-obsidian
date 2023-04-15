@@ -70,8 +70,9 @@ class Serializer {
 
 			const entries = Object.entries(value)
 				.map(([name, v]) => [name, this.serialize(v)])
-				.map(([name, v]) => [name, this.indent(v)])
-				.map(([name, v]) => `${name}: ${v}`);
+				.map(([name, v]) => [this.indent(name), this.indent(v).trim()])
+				.map(([name, v]) => `${name}: ${v}`)
+				.join('\n');
 
 			return `${effectiveTag}{\n${entries}\n}`;
 		});
